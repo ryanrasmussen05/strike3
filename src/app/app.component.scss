@@ -1,0 +1,7 @@
+@import '../styles/variables';
+
+.nav-bar {
+  background-color: $nav-bar-background-color;
+  color: $nav-bar-text-color;
+  height: $nav-bar-height;
+}

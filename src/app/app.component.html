@@ -1,1 +1,8 @@
+<div class="nav-bar flex items-center border-box p1">
+  <div class="flex-auto size-24 weight-500">Strike 3</div>
+  <div class="flex-none">
+    <button class="button" *ngIf="!userModel.loggedIn()" (click)="signIn()">Sign In</button>
+    <button class="button" *ngIf="userModel.loggedIn()" (click)="signOut()">Sign Out</button>
+  </div>
+</div>
 <router-outlet></router-outlet>

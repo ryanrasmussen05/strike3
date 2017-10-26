@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './home/home.component';
 import { FormsModule } from '@angular/forms';
 import { UserModel } from './user/user.model';
+import { UserService } from './user/user.service';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import { UserModel } from './user/user.model';
     FormsModule,
     AppRoutingModule
   ],
-  providers: [UserModel],
+  providers: [UserModel, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

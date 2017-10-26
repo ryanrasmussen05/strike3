@@ -6,6 +6,10 @@ html, input, select, button {
   font-family: RobotoDraft, Roboto, "Helvetica Neue", sans-serif;
 }
 
+body {
+  margin: 0;
+}
+
 .weight-300 { font-weight: 300; }
 .weight-400 { font-weight: 400; }
 .weight-500 { font-weight: 500; }

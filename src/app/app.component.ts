@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as firebase from 'firebase';
+import { UserModel } from './user/user.model';
+import { UserService } from './user/user.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +16,18 @@ export class AppComponent implements OnInit {
     storageBucket: 'strike3-31769'
   };
 
+  constructor(public userModel: UserModel, public userService: UserService) {}
+
   ngOnInit(): void {
     firebase.initializeApp(this.config);
+    this.userModel.init();
+  }
+
+  signIn() {
+    this.userService.signIn('ryanrasmussen05@gmail.com', '123456');
+  }
+
+  signOut() {
+    this.userService.signOut();
   }
 }

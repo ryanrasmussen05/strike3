@@ -6,7 +6,7 @@ import * as firebase from 'firebase';
 export class UserModel {
   currentUser$: BehaviorSubject<firebase.User> = new BehaviorSubject<firebase.User>(null);
 
-  constructor() {
+  init() {
     firebase.auth().onAuthStateChanged((user) => {
       this.setCurrentUser(user);
     });
