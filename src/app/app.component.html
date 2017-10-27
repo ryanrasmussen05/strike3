@@ -3,6 +3,12 @@
   <div class="flex-none">
     <button class="button" *ngIf="!userModel.loggedIn()" (click)="signIn()">Sign In</button>
     <button class="button" *ngIf="userModel.loggedIn()" (click)="signOut()">Sign Out</button>
+    <button class="button" data-open="loginModal">Modal</button>
   </div>
 </div>
+
+<div class="reveal" id="loginModal" data-reveal>
+  This is the login modal
+</div>
+
 <router-outlet></router-outlet>
