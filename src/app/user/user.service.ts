@@ -15,4 +15,8 @@ export class UserService {
   createUser(email: string, password: string): Promise<firebase.User> {
     return firebase.auth().createUserWithEmailAndPassword(email, password);
   }
+
+  resetPassword(email: string): Promise<void> {
+    return firebase.auth().sendPasswordResetEmail(email);
+  }
 }

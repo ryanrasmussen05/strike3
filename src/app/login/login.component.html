@@ -1,0 +1,68 @@
+<div *ngIf="state === LoginState.Login">
+  <div class="center size-24 weight-500">Sign In</div>
+
+  <form #loginForm="ngForm" (ngSubmit)="signIn()">
+    <label>
+      Email
+      <input type="text" name="email" [(ngModel)]="email" required>
+    </label>
+    <label>
+      Password
+      <input type="password" name="password" [(ngModel)]="password" required>
+    </label>
+    <div class="flex">
+      <button class="button flex-auto" [disabled]="loginForm.invalid">Sign In</button>
+    </div>
+  </form>
+
+  <div class="center">
+    <a (click)="toggleCreateAccount()">Create Account</a>
+  </div>
+</div>
+
+
+<div *ngIf="state === LoginState.Create">
+  <div class="center size-24 weight-500">Create Account</div>
+
+  <form #createAccountForm="ngForm" (ngSubmit)="createAccount()">
+    <label>
+      Email
+      <input type="text" name="email" [(ngModel)]="email" required>
+    </label>
+    <label>
+      Password
+      <input type="password" name="password" [(ngModel)]="password" required>
+    </label>
+    <label>
+      Confirm Password
+      <input type="password" name="passwordConfirm" [(ngModel)]="passwordConfirm" required>
+    </label>
+    <div class="flex">
+      <button class="button flex-auto" [disabled]="createAccountForm.invalid || (password !== passwordConfirm)">Create Account</button>
+    </div>
+  </form>
+</div>
+
+
+<div *ngIf="state === LoginState.ResetPassword || state === LoginState.ResetComplete">
+  <div class="center size-24 weight-500">Create Account</div>
+
+  <form #resetPasswordForm="ngForm" (ngSubmit)="resetPassword()">
+    <label>
+      Email
+      <input type="text" name="email" [(ngModel)]="email" required>
+    </label>
+    <div class="flex">
+      <button *ngIf="state === LoginState.ResetPassword" class="button flex-auto" [disabled]="resetPasswordForm.invalid">Reset Password</button>
+      <div *ngIf="state === LoginState.ResetComplete" class="callout primary">
+        Password Reset Email Sent
+      </div>
+    </div>
+  </form>
+</div>
+
+<div *ngIf="error" class="callout alert">
+  {{error}}
+  <a *ngIf="errorType === ErrorType.Create" (click)="toggleCreateAccount()">Create Account</a>
+  <a *ngIf="errorType === ErrorType.Reset" (click)="toggleResetPassword()">Reset Password</a>
+</div>
