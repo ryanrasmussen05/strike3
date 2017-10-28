@@ -19,4 +19,8 @@ export class UserService {
   resetPassword(email: string): Promise<void> {
     return firebase.auth().sendPasswordResetEmail(email);
   }
+
+  setUsername(user: firebase.User, name: string): Promise<void> {
+    return user.updateProfile({displayName: name, photoURL: null});
+  }
 }

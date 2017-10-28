@@ -1,6 +1,8 @@
 @import 'variables';
 @import 'basscss';
 @import 'foundation';
+@import '~font-awesome/scss/font-awesome';
+@import '~motion-ui/motion-ui';
 
 html, input, select, button {
   font-family: RobotoDraft, Roboto, "Helvetica Neue", sans-serif;

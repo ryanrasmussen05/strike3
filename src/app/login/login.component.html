@@ -11,7 +11,10 @@
       <input type="password" name="password" [(ngModel)]="password" required>
     </label>
     <div class="flex">
-      <button class="button flex-auto" [disabled]="loginForm.invalid">Sign In</button>
+      <button class="button flex-auto" [disabled]="loginForm.invalid || loading">
+        <span *ngIf="!loading">Sign In</span>
+        <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+      </button>
     </div>
   </form>
 
@@ -25,6 +28,16 @@
   <div class="center size-24 weight-500">Create Account</div>
 
   <form #createAccountForm="ngForm" (ngSubmit)="createAccount()">
+    <div class="flex">
+      <label class="flex-auto">
+        First Name
+        <input type="text" name="email" [(ngModel)]="firstName" required>
+      </label>
+      <label class="flex-auto">
+        Last Name
+        <input type="text" name="password" [(ngModel)]="lastName" required>
+      </label>
+    </div>
     <label>
       Email
       <input type="text" name="email" [(ngModel)]="email" required>
@@ -38,7 +51,10 @@
       <input type="password" name="passwordConfirm" [(ngModel)]="passwordConfirm" required>
     </label>
     <div class="flex">
-      <button class="button flex-auto" [disabled]="createAccountForm.invalid || (password !== passwordConfirm)">Create Account</button>
+      <button class="button flex-auto" [disabled]="createAccountForm.invalid || (password !== passwordConfirm) || loading">
+        <span *ngIf="!loading">Create Account</span>
+        <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+      </button>
     </div>
   </form>
 </div>
@@ -48,14 +64,17 @@
   <div class="center size-24 weight-500">Create Account</div>
 
   <form #resetPasswordForm="ngForm" (ngSubmit)="resetPassword()">
-    <label>
+    <label *ngIf="state === LoginState.ResetPassword">
       Email
       <input type="text" name="email" [(ngModel)]="email" required>
     </label>
     <div class="flex">
-      <button *ngIf="state === LoginState.ResetPassword" class="button flex-auto" [disabled]="resetPasswordForm.invalid">Reset Password</button>
+      <button *ngIf="state === LoginState.ResetPassword" class="button flex-auto" [disabled]="resetPasswordForm.invalid || loading">
+        <span *ngIf="!loading">Reset Password</span>
+        <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+      </button>
       <div *ngIf="state === LoginState.ResetComplete" class="callout primary">
-        Password Reset Email Sent
+        Password Reset Requested, You will receive an email with reset instructions
       </div>
     </div>
   </form>

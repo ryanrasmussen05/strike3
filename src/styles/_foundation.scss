@@ -1,9 +1,11 @@
 @import '~foundation-sites/scss/foundation';
 @import 'settings';
 
-@include foundation-button();
-@include foundation-switch();
-@include foundation-form-select();
-@include foundation-reveal();
-@include foundation-form-text();
-@include foundation-callout();
+@include foundation-global-styles;
+@include foundation-button;
+@include foundation-switch;
+@include foundation-form-select;
+@include foundation-reveal;
+@include foundation-form-text;
+@include foundation-callout;
+@include foundation-close-button;

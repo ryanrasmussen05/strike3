@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserModel } from '../user/user.model';
 import { UserService } from '../user/user.service';
 import * as firebase from 'firebase';
+
+declare let $;
 
 enum LoginState { Login, Create, ResetPassword, ResetComplete }
 enum ErrorType { Create, Reset }
@@ -11,7 +13,9 @@ enum ErrorType { Create, Reset }
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   passwordConfirm: string;
@@ -28,6 +32,13 @@ export class LoginComponent {
     this.state = LoginState.Login;
   }
 
+  ngOnInit() {
+    $('#loginModal').on('closed.zf.reveal', () => {
+      this.state = LoginState.Login;
+      this._clearForm();
+    });
+  }
+
   toggleCreateAccount() {
     this._clearForm();
     this.state = LoginState.Create;
@@ -39,37 +50,53 @@ export class LoginComponent {
   }
 
   signIn() {
+    this.loading = true;
     this._clearErrors();
 
     this.userService.signIn(this.email, this.password).then(() => {
-      this.loading = true;
+      this.loading = false;
+      this._closeModal();
     }).catch((error: firebase.auth.Error) => {
+      this.loading = false;
       this.error = this._getErrorText(error.code);
     });
   }
 
   createAccount() {
+    this.loading = true;
     this._clearErrors();
 
-    this.userService.createUser(this.email, this.password).then(() => {
-      this.loading = true;
+    this.userService.createUser(this.email, this.password).then((user: firebase.User) => {
+      this.userService.setUsername(user, this.firstName + ' ' + this.lastName).then(() => {
+        this.loading = false;
+        this._closeModal();
+      });
     }).catch((error: firebase.auth.Error) => {
+      this.loading = false;
       this.error = this._getErrorText(error.code);
     });
   }
 
   resetPassword() {
+    this.loading = true;
     this._clearErrors();
 
     this.userService.resetPassword(this.email).then(() => {
+      this.loading = false;
       this.state = LoginState.ResetComplete;
-      this.loading = true;
     }).catch((error: firebase.auth.Error) => {
+      this.loading = false;
       this.error = this._getErrorText(error.code);
     });
   }
 
+  private _closeModal() {
+    $('#loginModal').foundation('close');
+  }
+
   private _clearForm() {
+    this.firstName = null;
+    this.lastName = null;
     this.email = null;
     this.password = null;
     this.passwordConfirm = null;
