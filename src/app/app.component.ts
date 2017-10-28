@@ -1,9 +1,8 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import * as firebase from 'firebase';
 import { UserModel } from './user/user.model';
 import { UserService } from './user/user.service';
 
-//TODO
 declare let $;
 
 @Component({
@@ -11,7 +10,7 @@ declare let $;
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit {
   config = {
     apiKey: 'AIzaSyAJG85EJA1lBmYS31zcOqjSECZ2YSpWHxo',
     authDomain: 'strike3-31769.firebaseapp.com',
@@ -19,21 +18,12 @@ export class AppComponent implements OnInit, AfterViewInit {
     storageBucket: 'strike3-31769'
   };
 
-  constructor(public userModel: UserModel, public userService: UserService) {
-  }
+  constructor(public userModel: UserModel, public userService: UserService) {}
 
   ngOnInit(): void {
+    $('body').foundation();
     firebase.initializeApp(this.config);
     this.userModel.init();
-  }
-
-  //TODO does this have to be here?
-  ngAfterViewInit(): void {
-    $('body').foundation();
-  }
-
-  signIn() {
-    this.userService.signIn('ryanrasmussen05@gmail.com', '123456');
   }
 
   signOut() {
