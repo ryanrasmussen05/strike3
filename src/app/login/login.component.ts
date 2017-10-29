@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { UserModel } from '../user/user.model';
 import { UserService } from '../user/user.service';
 import * as firebase from 'firebase';
@@ -28,14 +28,16 @@ export class LoginComponent implements OnInit {
   errorType: ErrorType;
   loading: boolean = false;
 
-  constructor(public userModel: UserModel, public userService: UserService) {
+  constructor(public userModel: UserModel, public userService: UserService, public zone: NgZone) {
     this.state = LoginState.Login;
   }
 
   ngOnInit() {
     $('#loginModal').on('closed.zf.reveal', () => {
-      this.state = LoginState.Login;
-      this._clearForm();
+      this.zone.run(() => {
+        this.state = LoginState.Login;
+        this._clearForm();
+      });
     });
   }
 

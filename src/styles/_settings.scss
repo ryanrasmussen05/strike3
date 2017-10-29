@@ -4,6 +4,12 @@ $primary-color: $primary-theme-color;
 $secondary-color: $secondary-theme-color;
 
 //
+// BASE STYLES
+//
+$anchor-text-decoration: underline;
+$anchor-text-decoration-hover: underline;
+
+//
 // BUTTON
 //
 $button-radius: 3px;
@@ -22,3 +28,19 @@ $switch-paddle-radius: 100%;
 // SELECT
 //
 $select-radius: 3px;
+
+//
+// MODAL
+//
+$reveal-radius: 3px;
+
+//
+// FORMS
+//
+$form-label-font-weight: 500;
+$input-radius: 3px;
+
+//
+// CALLOUT
+//
+$callout-radius: 3px;

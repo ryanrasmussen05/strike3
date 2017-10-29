@@ -2,10 +2,14 @@
 @import 'settings';
 
 @include foundation-global-styles;
+@include foundation-typography-base();
 @include foundation-button;
 @include foundation-switch;
-@include foundation-form-select;
+@include foundation-forms();
 @include foundation-reveal;
-@include foundation-form-text;
 @include foundation-callout;
 @include foundation-close-button;
+
+.reveal-overlay {
+  overflow-y: auto;
+}

@@ -1,5 +1,5 @@
 <div *ngIf="state === LoginState.Login">
-  <div class="center size-24 weight-500">Sign In</div>
+  <div class="center size-24 weight-500 my2">Sign In</div>
 
   <form #loginForm="ngForm" (ngSubmit)="signIn()">
     <label>
@@ -18,18 +18,18 @@
     </div>
   </form>
 
-  <div class="center">
+  <div class="center mt2">
     <a (click)="toggleCreateAccount()">Create Account</a>
   </div>
 </div>
 
 
 <div *ngIf="state === LoginState.Create">
-  <div class="center size-24 weight-500">Create Account</div>
+  <div class="center size-24 weight-500 my2">Create Account</div>
 
   <form #createAccountForm="ngForm" (ngSubmit)="createAccount()">
     <div class="flex">
-      <label class="flex-auto">
+      <label class="flex-auto mr1">
         First Name
         <input type="text" name="email" [(ngModel)]="firstName" required>
       </label>
@@ -61,7 +61,7 @@
 
 
 <div *ngIf="state === LoginState.ResetPassword || state === LoginState.ResetComplete">
-  <div class="center size-24 weight-500">Create Account</div>
+  <div class="center size-24 weight-500 my2">Reset Password</div>
 
   <form #resetPasswordForm="ngForm" (ngSubmit)="resetPassword()">
     <label *ngIf="state === LoginState.ResetPassword">
@@ -80,7 +80,7 @@
   </form>
 </div>
 
-<div *ngIf="error" class="callout alert">
+<div *ngIf="error" class="callout alert mt2">
   {{error}}
   <a *ngIf="errorType === ErrorType.Create" (click)="toggleCreateAccount()">Create Account</a>
   <a *ngIf="errorType === ErrorType.Reset" (click)="toggleResetPassword()">Reset Password</a>
