@@ -4,4 +4,16 @@
   background-color: $nav-bar-background-color;
   color: $nav-bar-text-color;
   height: $nav-bar-height;
+
+  .user-menu {
+    cursor: pointer;
+
+    &:hover {
+      color: $primary-theme-color;
+    }
+  }
+
+  .user-menu-item:hover {
+    background-color: $dropdown-menu-item-hover;
+  }
 }

@@ -28,7 +28,10 @@
         "../node_modules/foundation-sites/dist/js/plugins/foundation.util.triggers.js",
         "../node_modules/foundation-sites/dist/js/plugins/foundation.util.mediaQuery.js",
         "../node_modules/foundation-sites/dist/js/plugins/foundation.util.motion.js",
-        "../node_modules/foundation-sites/dist/js/plugins/foundation.reveal.js"
+        "../node_modules/foundation-sites/dist/js/plugins/foundation.util.box.js",
+        "../node_modules/foundation-sites/dist/js/plugins/foundation.util.nest.js",
+        "../node_modules/foundation-sites/dist/js/plugins/foundation.reveal.js",
+        "../node_modules/foundation-sites/dist/js/plugins/foundation.dropdownMenu.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

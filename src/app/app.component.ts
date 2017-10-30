@@ -18,12 +18,18 @@ export class AppComponent implements OnInit {
     storageBucket: 'strike3-31769'
   };
 
+  user: firebase.User;
+
   constructor(public userModel: UserModel, public userService: UserService) {}
 
   ngOnInit(): void {
     $('body').foundation();
     firebase.initializeApp(this.config);
     this.userModel.init();
+
+    this.userModel.currentUser$.subscribe((currentUser) => {
+      this.user = currentUser;
+    });
   }
 
   signOut() {
