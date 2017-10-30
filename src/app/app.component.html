@@ -1,26 +1,2 @@
-<div class="nav-bar flex items-center border-box p1">
-  <div class="flex-auto size-24 weight-500">Strike 3</div>
-  <div class="flex-none">
-    <button class="button" *ngIf="!user" data-open="loginModal">Sign In</button>
-
-    <ul class="dropdown menu" data-dropdown-menu data-disable-hover="true" data-click-open="true" [hidden]="!user">
-      <li>
-        <div class="user-menu">
-          {{ user?.displayName }}
-          <i class="fa fa-angle-down"></i>
-        </div>
-        <ul class="menu">
-          <li class="user-menu-item"><a (click)="signOut()">Sign Out</a></li>
-        </ul>
-      </li>
-    </ul>
-
-  </div>
-</div>
-
-<div class="reveal" id="loginModal" data-reveal data-animation-in="fade-in" data-animation-out="fade-out">
-  <button class="close-button" data-close type="button"><span aria-hidden="true">&times;</span></button>
-  <app-login></app-login>
-</div>
-
+<app-header></app-header>
 <router-outlet></router-outlet>

@@ -8,10 +8,12 @@ import { FormsModule } from '@angular/forms';
 import { UserModel } from './user/user.model';
 import { UserService } from './user/user.service';
 import { LoginComponent } from './login/login.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    HeaderComponent,
     HomeComponent,
     LoginComponent
   ],
