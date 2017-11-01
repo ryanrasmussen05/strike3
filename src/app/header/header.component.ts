@@ -3,8 +3,6 @@ import * as firebase from 'firebase';
 import { UserModel } from '../user/user.model';
 import { UserService } from '../user/user.service';
 
-declare let $;
-
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',

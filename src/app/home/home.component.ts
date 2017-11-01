@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import * as firebase from 'firebase';
-import { UserModel } from '../user/user.model';
 
 @Component({
   selector: 'app-home',

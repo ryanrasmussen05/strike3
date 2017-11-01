@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 
+require('firebase/firestore');
+
 @Injectable()
 export class UserService {
 
@@ -12,8 +14,12 @@ export class UserService {
     return firebase.auth().signOut();
   }
 
-  createUser(email: string, password: string): Promise<firebase.User> {
-    return firebase.auth().createUserWithEmailAndPassword(email, password);
+  createUser(email: string, displayName: string, password: string): Promise<void> {
+    return firebase.auth().createUserWithEmailAndPassword(email, password).then((user: firebase.User) => {
+      return this.setUsername(user, displayName).then(() => {
+        return this.addPlayerForUser(user);
+      });
+    });
   }
 
   resetPassword(email: string): Promise<void> {
@@ -22,5 +28,12 @@ export class UserService {
 
   setUsername(user: firebase.User, name: string): Promise<void> {
     return user.updateProfile({displayName: name, photoURL: null});
+  }
+
+  addPlayerForUser(user: firebase.User): Promise<void> {
+    return firebase.firestore().collection('players').doc(user.uid).set({
+      name: user.displayName,
+      admin: false
+    });
   }
 }
