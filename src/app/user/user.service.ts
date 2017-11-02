@@ -32,6 +32,7 @@ export class UserService {
 
   addPlayerForUser(user: firebase.User): Promise<void> {
     return firebase.firestore().collection('players').doc(user.uid).set({
+      uid: user.uid,
       name: user.displayName,
       admin: false
     });
