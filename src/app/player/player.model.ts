@@ -4,7 +4,7 @@ import { Player } from './player';
 
 @Injectable()
 export class PlayerModel {
-  allPlayers$: BehaviorSubject<Player[]> = new BehaviorSubject<Player[]>([]);
+  allPlayers$: BehaviorSubject<Player[]> = new BehaviorSubject<Player[]>(null);
 
   setPlayers(players: Player[]) {
     this.allPlayers$.next(players);

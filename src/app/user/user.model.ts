@@ -13,10 +13,7 @@ export class UserModel {
   }
 
   setCurrentUser(user: firebase.User) {
+    console.log('user set');
     this.currentUser$.next(user);
-  }
-
-  loggedIn(): boolean {
-    return !!this.currentUser$.getValue();
   }
 }

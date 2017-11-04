@@ -11,6 +11,7 @@ import { LoginComponent } from './components/login/login.component';
 import { HeaderComponent } from './components/header/header.component';
 import { PlayerModel } from './player/player.model';
 import { PlayerService } from './player/player.service';
+import { HomeResolver } from './components/home/home.resolver';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,13 @@ import { PlayerService } from './player/player.service';
     FormsModule,
     AppRoutingModule
   ],
-  providers: [UserModel, UserService, PlayerModel, PlayerService],
+  providers: [
+    UserModel,
+    UserService,
+    PlayerModel,
+    PlayerService,
+    HomeResolver
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
