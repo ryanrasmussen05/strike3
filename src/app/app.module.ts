@@ -12,6 +12,8 @@ import { HeaderComponent } from './components/header/header.component';
 import { PlayerModel } from './player/player.model';
 import { PlayerService } from './player/player.service';
 import { HomeResolver } from './components/home/home.resolver';
+import { PickModel } from './pick/pick.model';
+import { PickService } from './pick/pick.service';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,8 @@ import { HomeResolver } from './components/home/home.resolver';
     UserService,
     PlayerModel,
     PlayerService,
+    PickModel,
+    PickService,
     HomeResolver
   ],
   bootstrap: [AppComponent]

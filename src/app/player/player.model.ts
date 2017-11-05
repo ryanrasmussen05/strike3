@@ -7,6 +7,7 @@ export class PlayerModel {
   allPlayers$: BehaviorSubject<Player[]> = new BehaviorSubject<Player[]>(null);
 
   setPlayers(players: Player[]) {
+    console.log('set players');
     this.allPlayers$.next(players);
   }
 }

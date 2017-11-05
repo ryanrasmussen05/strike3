@@ -1,29 +1,31 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 import { PlayerModel } from '../../player/player.model';
 import { PlayerService } from '../../player/player.service';
-
-import 'rxjs/add/observable/of';
+import { PickModel } from '../../pick/pick.model';
+import { PickService } from '../../pick/pick.service';
 
 @Injectable()
 export class HomeResolver implements Resolve<boolean> {
 
-  constructor(public playerModel: PlayerModel, public playerService: PlayerService) {
+  constructor(public playerModel: PlayerModel, public playerService: PlayerService, public pickModel: PickModel,
+              public pickService: PickService) {
   }
 
-  resolve(): Observable<boolean> {
+  resolve(): Promise<boolean> {
     console.log('resolving home');
-    const firstLoad: boolean = this.playerModel.allPlayers$.getValue() === null;
+    const firstLoad: boolean = this.playerModel.allPlayers$.getValue() === null
+      || this.pickModel.allPicks$.getValue() === null;
+
     const getPlayersPromise = this.playerService.getAllPlayers();
+    const getPicksPromise = this.pickService.getAllPicks();
 
     if (!firstLoad) {
-      return Observable.of(true);
+      return Promise.resolve(true);
     } else {
       //TODO loading screen
-      getPlayersPromise.then(() => {
+      return Promise.all([getPlayersPromise, getPicksPromise]).then(() => {
         //TODO loading screen
-        console.log(this.playerModel.allPlayers$.getValue());
         return true;
       }).catch((error) => {
         //TODO loading screen

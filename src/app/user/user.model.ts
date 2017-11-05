@@ -13,7 +13,7 @@ export class UserModel {
   }
 
   setCurrentUser(user: firebase.User) {
-    console.log('user set');
+    console.log('set user');
     this.currentUser$.next(user);
   }
 }
