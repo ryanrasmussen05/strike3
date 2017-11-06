@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './components/app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { HomeComponent } from './components/home/home.component';
+import { GameComponent } from './components/game/game.component';
 import { FormsModule } from '@angular/forms';
 import { UserModel } from './user/user.model';
 import { UserService } from './user/user.service';
@@ -11,16 +11,17 @@ import { LoginComponent } from './components/login/login.component';
 import { HeaderComponent } from './components/header/header.component';
 import { PlayerModel } from './player/player.model';
 import { PlayerService } from './player/player.service';
-import { HomeResolver } from './components/home/home.resolver';
 import { PickModel } from './pick/pick.model';
 import { PickService } from './pick/pick.service';
 import { LoadingComponent } from './components/loading/loading.component';
+import { GameModel } from './game/game.model';
+import { GameResolver } from './components/game/game.resolver';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    HomeComponent,
+    GameComponent,
     LoginComponent,
     LoadingComponent
   ],
@@ -36,7 +37,8 @@ import { LoadingComponent } from './components/loading/loading.component';
     PlayerService,
     PickModel,
     PickService,
-    HomeResolver
+    GameModel,
+    GameResolver
   ],
   bootstrap: [AppComponent]
 })

@@ -6,7 +6,7 @@ import { PickModel } from '../../pick/pick.model';
 import { PickService } from '../../pick/pick.service';
 
 @Injectable()
-export class HomeResolver implements Resolve<boolean> {
+export class GameResolver implements Resolve<boolean> {
 
   constructor(public playerModel: PlayerModel, public playerService: PlayerService, public pickModel: PickModel,
               public pickService: PickService) {
