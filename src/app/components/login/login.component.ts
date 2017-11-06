@@ -1,6 +1,7 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import * as firebase from 'firebase';
 import { UserService } from '../../user/user.service';
+import { PlayerService } from '../../player/player.service';
 
 enum LoginState { Login, Create, ResetPassword, ResetComplete }
 enum ErrorType { Create, Reset }
@@ -24,7 +25,7 @@ export class LoginComponent implements OnInit {
   errorType: ErrorType;
   loading: boolean = false;
 
-  constructor(public userService: UserService, public zone: NgZone) {
+  constructor(public userService: UserService, public playerService: PlayerService, public zone: NgZone) {
     this.state = LoginState.Login;
   }
 
@@ -67,12 +68,14 @@ export class LoginComponent implements OnInit {
     const displayName = this.firstName + ' ' + this.lastName;
 
     this.userService.createUser(this.email, displayName, this.password).then(() => {
-        this.loading = false;
+      this.playerService.getAllPlayers().then(() => {
         this._closeModal();
+      });
     }).catch((error: firebase.auth.Error) => {
       console.error(error);
-      this.loading = false;
       this.error = this._getErrorText(error.code);
+    }).then(() => {
+      this.loading = false;
     });
   }
 

@@ -14,13 +14,15 @@ import { PlayerService } from './player/player.service';
 import { HomeResolver } from './components/home/home.resolver';
 import { PickModel } from './pick/pick.model';
 import { PickService } from './pick/pick.service';
+import { LoadingComponent } from './components/loading/loading.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
