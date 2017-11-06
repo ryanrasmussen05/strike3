@@ -4,12 +4,13 @@ import { PlayerModel } from '../../player/player.model';
 import { PlayerService } from '../../player/player.service';
 import { PickModel } from '../../pick/pick.model';
 import { PickService } from '../../pick/pick.service';
+import { LoadingService } from '../../loading/loading.service';
 
 @Injectable()
 export class GameResolver implements Resolve<boolean> {
 
   constructor(public playerModel: PlayerModel, public playerService: PlayerService, public pickModel: PickModel,
-              public pickService: PickService) {
+              public pickService: PickService, public loadingService: LoadingService) {
   }
 
   resolve(): Promise<boolean> {
@@ -23,12 +24,12 @@ export class GameResolver implements Resolve<boolean> {
     if (!firstLoad) {
       return Promise.resolve(true);
     } else {
-      //TODO loading screen
+      this.loadingService.loading();
       return Promise.all([getPlayersPromise, getPicksPromise]).then(() => {
-        //TODO loading screen
+        this.loadingService.done();
         return true;
       }).catch((error) => {
-        //TODO loading screen
+        this.loadingService.done();
         console.error(error);
         return false;
       });

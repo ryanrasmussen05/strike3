@@ -1,3 +1,4 @@
-<div>
-  Game Component
+<div class="flex" *ngFor="let player of game.players">
+  <div>{{ player.name }}</div>
+  <div *ngFor="let pick of player.picks">{{ pick.team }}</div>
 </div>

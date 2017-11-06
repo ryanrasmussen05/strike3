@@ -16,6 +16,7 @@ import { PickService } from './pick/pick.service';
 import { LoadingComponent } from './components/loading/loading.component';
 import { GameModel } from './game/game.model';
 import { GameResolver } from './components/game/game.resolver';
+import { LoadingService } from './loading/loading.service';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { GameResolver } from './components/game/game.resolver';
     PickModel,
     PickService,
     GameModel,
+    LoadingService,
     GameResolver
   ],
   bootstrap: [AppComponent]
