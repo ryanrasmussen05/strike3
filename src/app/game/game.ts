@@ -1,6 +1,6 @@
 export interface GamePick {
   week: number;
-  team: string;
+  team?: string;
   canEdit: boolean;
   win?: boolean;
 }
