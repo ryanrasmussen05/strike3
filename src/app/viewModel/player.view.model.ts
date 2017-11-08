@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Game, GamePick, GamePlayer } from './game';
 import { PickModel } from '../pick/pick.model';
 import { UserModel } from '../user/user.model';
 import { Pick } from '../pick/pick';
 import { GameDataModel } from '../gameData/game.data.model';
 import { Player } from '../gameData/player';
+import { Strike3Game, Strike3Pick, Strike3Player } from './strike3.game';
 
 @Injectable()
-export class GameModel {
-  game$: BehaviorSubject<Game> = new BehaviorSubject<Game>(null);
+export class PlayerViewModel {
+  strike3Game$: BehaviorSubject<Strike3Game> = new BehaviorSubject<Strike3Game>(null);
 
   constructor(public gameDataModel: GameDataModel, public pickModel: PickModel, public userModel: UserModel) {
     gameDataModel.allPlayers$.subscribe(() => { this._buildGameModel(); });
@@ -18,52 +18,52 @@ export class GameModel {
   }
 
   private _buildGameModel() {
-    console.log('build game model');
+    console.log('build player view model');
 
-    const allPlayers = this.gameDataModel.allPlayers$.getValue();
+    const allPlayers: Player[] = this.gameDataModel.allPlayers$.getValue();
 
-    const game: Game = { players: [] };
+    const strike3Game: Strike3Game = { players: [] };
 
     if (allPlayers) {
       for (const player of allPlayers) {
 
-        const gamePlayer: GamePlayer = {
+        const strike3Player: Strike3Player = {
           name: player.name,
-          picks: this._getGamePicksForPlayer(player)
+          picks: this._getStrike3PicksForPlayer(player)
         };
 
-        game.players.push(gamePlayer);
+        strike3Game.players.push(strike3Player);
       }
     }
 
-    this._sortPlayers(game.players);
+    this._sortStrike3Players(strike3Game.players);
 
-    this.game$.next(game);
+    this.strike3Game$.next(strike3Game);
   }
 
-  private _getGamePicksForPlayer(player: Player): GamePick[] {
+  private _getStrike3PicksForPlayer(player: Player): Strike3Pick[] {
     const currentUser = this.userModel.currentUser$.getValue();
 
-    const gamePicks: GamePick[] = [];
-    const picks = this._getPicksForPlayer(player);
+    const strike3Picks: Strike3Pick[] = [];
+    const picks: Pick[] = this._getPicksForPlayer(player);
 
     for (const pick of picks) {
       const canEdit = currentUser && currentUser.uid === player.uid; //TODO check current week
 
-      const gamePick: GamePick = {
+      const strike3Pick: Strike3Pick = {
         week: pick.week,
         team: pick.team,
         canEdit: canEdit
       };
 
       if (pick.win !== undefined && pick.win !== null) {
-        gamePick.win = pick.win;
+        strike3Pick.win = pick.win;
       }
 
-      gamePicks.push(gamePick);
+      strike3Picks.push(strike3Pick);
     }
 
-    return gamePicks;
+    return strike3Picks;
   }
 
   private _getPicksForPlayer(player: Player): Pick[] {
@@ -106,8 +106,8 @@ export class GameModel {
   }
 
   //TODO make this more advanced
-  private _sortPlayers(gamePlayers: GamePlayer[]) {
-    gamePlayers.sort((a, b): number => {
+  private _sortStrike3Players(strike3Players: Strike3Player[]) {
+    strike3Players.sort((a, b): number => {
       if (a.name < b.name) return -1;
       if (a.name > b.name) return 1;
       return 0;

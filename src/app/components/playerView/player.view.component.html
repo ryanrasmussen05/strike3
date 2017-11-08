@@ -1,0 +1,6 @@
+<div class="flex flex-column mt3">
+  <div class="flex flex-none ml-auto mr-auto" *ngFor="let strike3Player of strike3Game.players">
+    <div class="player-name flex-none center truncate">{{ strike3Player.name }}</div>
+    <div *ngFor="let strike3Pick of strike3Player.picks" class="pick flex-none center">{{ strike3Pick.team }}</div>
+  </div>
+</div>

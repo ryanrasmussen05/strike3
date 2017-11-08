@@ -7,14 +7,14 @@ import { GameDataService } from '../../gameData/game.data.service';
 import { GameDataModel } from '../../gameData/game.data.model';
 
 @Injectable()
-export class GameResolver implements Resolve<boolean> {
+export class PlayerViewResolver implements Resolve<boolean> {
 
   constructor(public pickModel: PickModel, public pickService: PickService, public gameDataService: GameDataService,
               public gameDataModel: GameDataModel, public loadingService: LoadingService) {
   }
 
   resolve(): Promise<boolean> {
-    console.log('resolving home');
+    console.log('resolving player view');
     const firstLoad: boolean = this.gameDataModel.allPlayers$.getValue() === null
       || this.gameDataModel.week$.getValue() === null
       || this.pickModel.allPicks$.getValue() === null;

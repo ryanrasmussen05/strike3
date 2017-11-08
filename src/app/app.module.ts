@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './components/app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { GameComponent } from './components/game/game.component';
 import { FormsModule } from '@angular/forms';
 import { UserModel } from './user/user.model';
 import { UserService } from './user/user.service';
@@ -12,17 +11,18 @@ import { HeaderComponent } from './components/header/header.component';
 import { PickModel } from './pick/pick.model';
 import { PickService } from './pick/pick.service';
 import { LoadingComponent } from './components/loading/loading.component';
-import { GameModel } from './game/game.model';
-import { GameResolver } from './components/game/game.resolver';
 import { LoadingService } from './loading/loading.service';
 import { GameDataService } from './gameData/game.data.service';
 import { GameDataModel } from './gameData/game.data.model';
+import { PlayerViewComponent } from './components/playerView/player.view.component';
+import { PlayerViewModel } from './viewModel/player.view.model';
+import { PlayerViewResolver } from './components/playerView/player.view.resolver';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    GameComponent,
+    PlayerViewComponent,
     LoginComponent,
     LoadingComponent
   ],
@@ -38,9 +38,9 @@ import { GameDataModel } from './gameData/game.data.model';
     PickService,
     GameDataModel,
     GameDataService,
-    GameModel,
+    PlayerViewModel,
     LoadingService,
-    GameResolver
+    PlayerViewResolver
   ],
   bootstrap: [AppComponent]
 })

@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { GameComponent } from './components/game/game.component';
-import { GameResolver } from './components/game/game.resolver';
+import { PlayerViewComponent } from './components/playerView/player.view.component';
+import { PlayerViewResolver } from './components/playerView/player.view.resolver';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/game', pathMatch: 'full' },
+  { path: '', redirectTo: '/player', pathMatch: 'full' },
   {
-    path: 'game',
-    component: GameComponent,
-    resolve: { dataLoaded: GameResolver }
+    path: 'player',
+    component: PlayerViewComponent,
+    resolve: { dataLoaded: PlayerViewResolver }
   },
 ];
 
