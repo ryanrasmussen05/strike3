@@ -1,5 +1,10 @@
 @import '../../../styles/variables';
 
+:host {
+  position: fixed;
+  width: 100%;
+}
+
 .nav-bar {
   background-color: $nav-bar-background-color;
   color: $nav-bar-text-color;

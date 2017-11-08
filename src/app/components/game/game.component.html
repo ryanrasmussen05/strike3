@@ -1,4 +1,6 @@
-<div class="flex" *ngFor="let player of game.players">
-  <div>{{ player.name }}</div>
-  <div *ngFor="let pick of player.picks">{{ pick.team }}</div>
+<div class="flex flex-column mt3">
+  <div class="flex flex-none ml-auto mr-auto" *ngFor="let player of game.players">
+    <div class="player-name flex-none center truncate">{{ player.name }}</div>
+    <div *ngFor="let pick of player.picks" class="pick flex-none center">{{ pick.team }}</div>
+  </div>
 </div>
