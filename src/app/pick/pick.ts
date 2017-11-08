@@ -1,6 +1,6 @@
 export interface Pick {
   week: number;
-  userId: string;
+  uid: string;
   team?: string;
   win?: boolean;
 }

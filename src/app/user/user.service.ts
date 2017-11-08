@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
+import { GameDataService } from '../gameData/game.data.service';
 
 require('firebase/firestore');
 
 @Injectable()
 export class UserService {
+
+  constructor(public gameDataService: GameDataService) {
+  }
 
   signIn(email: string, password: string): Promise<firebase.User> {
     return firebase.auth().signInWithEmailAndPassword(email, password);
@@ -31,10 +35,6 @@ export class UserService {
   }
 
   addPlayerForUser(user: firebase.User): Promise<void> {
-    return firebase.firestore().collection('players').doc(user.uid).set({
-      uid: user.uid,
-      name: user.displayName,
-      admin: false
-    });
+    return this.gameDataService.addPlayerForUser(user);
   }
 }

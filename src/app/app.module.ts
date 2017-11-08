@@ -9,14 +9,14 @@ import { UserModel } from './user/user.model';
 import { UserService } from './user/user.service';
 import { LoginComponent } from './components/login/login.component';
 import { HeaderComponent } from './components/header/header.component';
-import { PlayerModel } from './player/player.model';
-import { PlayerService } from './player/player.service';
 import { PickModel } from './pick/pick.model';
 import { PickService } from './pick/pick.service';
 import { LoadingComponent } from './components/loading/loading.component';
 import { GameModel } from './game/game.model';
 import { GameResolver } from './components/game/game.resolver';
 import { LoadingService } from './loading/loading.service';
+import { GameDataService } from './gameData/game.data.service';
+import { GameDataModel } from './gameData/game.data.model';
 
 @NgModule({
   declarations: [
@@ -34,10 +34,10 @@ import { LoadingService } from './loading/loading.service';
   providers: [
     UserModel,
     UserService,
-    PlayerModel,
-    PlayerService,
     PickModel,
     PickService,
+    GameDataModel,
+    GameDataService,
     GameModel,
     LoadingService,
     GameResolver

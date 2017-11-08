@@ -1,25 +1,26 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Game, GamePick, GamePlayer } from './game';
-import { PlayerModel } from '../player/player.model';
 import { PickModel } from '../pick/pick.model';
 import { UserModel } from '../user/user.model';
 import { Pick } from '../pick/pick';
-import { Player } from '../player/player';
+import { GameDataModel } from '../gameData/game.data.model';
+import { Player } from '../gameData/player';
 
 @Injectable()
 export class GameModel {
   game$: BehaviorSubject<Game> = new BehaviorSubject<Game>(null);
 
-  constructor(public playerModel: PlayerModel, public pickModel: PickModel, public userModel: UserModel) {
-    playerModel.allPlayers$.subscribe(() => { this._buildGameModel(); });
+  constructor(public gameDataModel: GameDataModel, public pickModel: PickModel, public userModel: UserModel) {
+    gameDataModel.allPlayers$.subscribe(() => { this._buildGameModel(); });
+    gameDataModel.week$.subscribe(() => { this._buildGameModel(); });
     pickModel.allPicks$.subscribe(() => { this._buildGameModel(); });
   }
 
   private _buildGameModel() {
     console.log('build game model');
 
-    const allPlayers = this.playerModel.allPlayers$.getValue();
+    const allPlayers = this.gameDataModel.allPlayers$.getValue();
 
     const game: Game = { players: [] };
 
@@ -47,7 +48,7 @@ export class GameModel {
     const picks = this._getPicksForPlayer(player);
 
     for (const pick of picks) {
-      const canEdit = currentUser && currentUser.uid === player.userId; //TODO check current week
+      const canEdit = currentUser && currentUser.uid === player.uid; //TODO check current week
 
       const gamePick: GamePick = {
         week: pick.week,
@@ -71,7 +72,7 @@ export class GameModel {
 
     if (allPicks) {
       sortedPicks = allPicks.filter((currentPick) => {
-        return currentPick.userId === player.userId;
+        return currentPick.uid === player.uid;
       });
 
       this._addEmptyPicks(sortedPicks, player);
@@ -90,7 +91,7 @@ export class GameModel {
       if (!foundPick) {
         picks.push({
           week: week,
-          userId: player.userId
+          uid: player.uid
         });
       }
     }
