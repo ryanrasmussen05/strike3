@@ -49,6 +49,23 @@ export class PickService {
     });
   }
 
+  filterPicksForSignOut() {
+    const currentPicks: Pick[] = this.pickModel.allPicks$.getValue();
+    const currentWeek: Week = this.gameDataModel.week$.getValue();
+    const maxWeekToFetch = currentWeek.locked ? currentWeek.weekNumber : currentWeek.weekNumber - 1;
+    const adminUid = this._getAdminUid();
+
+    const filteredPicks: Pick[] = [];
+
+    currentPicks.forEach((currentPick: Pick) => {
+      if (currentPick.week <= maxWeekToFetch || currentPick.uid === adminUid) {
+        filteredPicks.push(currentPick);
+      }
+    });
+
+    this.pickModel.setPicks(filteredPicks);
+  }
+
   private _getPicks(query: firebase.firestore.Query): Promise<Pick[]> {
     return new Promise((resolve, reject) => {
       const picks = [];

@@ -3,6 +3,7 @@ import * as firebase from 'firebase';
 import { GameDataService } from '../gameData/game.data.service';
 import { PickService } from '../pick/pick.service';
 import { UserModel } from './user.model';
+import { PickModel } from '../pick/pick.model';
 
 require('firebase/firestore');
 
@@ -20,7 +21,10 @@ export class UserService {
   }
 
   signOut(): Promise<void> {
-    return firebase.auth().signOut();
+    return firebase.auth().signOut().then(() => {
+      this.userModel.setCurrentUser(null);
+      this.pickService.filterPicksForSignOut();
+    });
   }
 
   createUser(email: string, displayName: string, password: string): Promise<void> {
