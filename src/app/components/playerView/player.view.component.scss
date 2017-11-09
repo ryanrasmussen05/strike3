@@ -1,13 +1,40 @@
+@import '../../../styles/variables';
+
 .player-name {
   width: 200px;
-  border: 1px solid black;
-  padding-top: 3px;
-  padding-bottom: 3px;
 }
 
 .pick {
   width: 50px;
-  border: 1px solid black;
-  padding-top: 3px;
-  padding-bottom: 3px;
 }
+
+.player-wrapper {
+
+  &.current-user {
+    border-top: 10px solid $primary-theme-color;
+    border-bottom: 10px solid $primary-theme-color;
+
+    @media (min-width: $game-table-width + 20) {
+      border-left: 10px solid $primary-theme-color;
+      border-right: 10px solid $primary-theme-color;
+    }
+  }
+
+  .player-name {
+    border: 1px solid black;
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+
+  .pick {
+    border: 1px solid black;
+    padding-top: 3px;
+    padding-bottom: 3px;
+
+    &.editable:hover {
+      cursor: pointer;
+      background-color: rgba(0, 0, 0, 0.25);
+    }
+  }
+}
+

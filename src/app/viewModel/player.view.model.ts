@@ -21,6 +21,7 @@ export class PlayerViewModel {
   private _buildGameModel() {
     console.log('build player view model');
 
+    const currentUser = this.userModel.currentUser$.getValue();
     const allPlayers: Player[] = this.gameDataModel.allPlayers$.getValue();
     const week: Week = this.gameDataModel.week$.getValue();
 
@@ -31,7 +32,8 @@ export class PlayerViewModel {
 
         const strike3Player: Strike3Player = {
           name: player.name,
-          picks: this._getStrike3PicksForPlayer(player)
+          picks: this._getStrike3PicksForPlayer(player),
+          signedIn: currentUser && player.uid === currentUser.uid
         };
 
         strike3Game.players.push(strike3Player);
@@ -45,12 +47,16 @@ export class PlayerViewModel {
 
   private _getStrike3PicksForPlayer(player: Player): Strike3Pick[] {
     const currentUser = this.userModel.currentUser$.getValue();
+    const week: Week = this.gameDataModel.week$.getValue();
+    const firstEditableWeek = week.locked ? week.weekNumber + 1 : week.weekNumber;
 
     const strike3Picks: Strike3Pick[] = [];
     const picks: Pick[] = this._getPicksForPlayer(player);
 
     for (const pick of picks) {
-      const canEdit = currentUser && currentUser.uid === player.uid; //TODO check current week
+      let canEdit = currentUser && currentUser.uid === player.uid;
+      canEdit = canEdit && pick.week >= firstEditableWeek;
+      canEdit = canEdit && !pick.team;
 
       const strike3Pick: Strike3Pick = {
         week: pick.week,
