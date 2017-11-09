@@ -42,8 +42,7 @@ export class GameDataService {
     const userEntry = {};
     userEntry[user.uid] = {
       uid: user.uid,
-      name: user.displayName,
-      admin: false
+      name: user.displayName
     };
 
     return firebase.firestore().collection(this.GAME_DATA_COLLECTION_ID).doc(this.PLAYERS_DOC_ID).set(userEntry, {merge: true});

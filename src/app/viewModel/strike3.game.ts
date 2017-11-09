@@ -1,3 +1,5 @@
+import { Week } from '../gameData/week';
+
 export interface Strike3Pick {
   week: number;
   team?: string;
@@ -12,4 +14,5 @@ export interface Strike3Player {
 
 export interface Strike3Game {
   players: Strike3Player[];
+  week: Week;
 }

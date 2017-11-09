@@ -6,6 +6,7 @@ import { Pick } from '../pick/pick';
 import { GameDataModel } from '../gameData/game.data.model';
 import { Player } from '../gameData/player';
 import { Strike3Game, Strike3Pick, Strike3Player } from './strike3.game';
+import { Week } from '../gameData/week';
 
 @Injectable()
 export class PlayerViewModel {
@@ -21,8 +22,9 @@ export class PlayerViewModel {
     console.log('build player view model');
 
     const allPlayers: Player[] = this.gameDataModel.allPlayers$.getValue();
+    const week: Week = this.gameDataModel.week$.getValue();
 
-    const strike3Game: Strike3Game = { players: [] };
+    const strike3Game: Strike3Game = { players: [], week: week };
 
     if (allPlayers) {
       for (const player of allPlayers) {

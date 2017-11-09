@@ -19,14 +19,15 @@ export class PlayerViewResolver implements Resolve<boolean> {
       || this.gameDataModel.week$.getValue() === null
       || this.pickModel.allPicks$.getValue() === null;
 
-    const getPicksPromise = this.pickService.getAllPicks();
-    const getGameDataPromise = this.gameDataService.getGameData();
+    const resolvePromise = this.gameDataService.getGameData().then(() => {
+      return this.pickService.getViewablePicks();
+    });
 
     if (!firstLoad) {
       return Promise.resolve(true);
     } else {
       this.loadingService.loading();
-      return Promise.all([getPicksPromise, getGameDataPromise]).then(() => {
+      return resolvePromise.then(() => {
         this.loadingService.done();
         return true;
       }).catch((error) => {
