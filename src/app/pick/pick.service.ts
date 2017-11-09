@@ -46,6 +46,7 @@ export class PickService {
       return allViewablePicks;
     }).catch((error) => {
       console.error(error);
+      return [];
     });
   }
 
