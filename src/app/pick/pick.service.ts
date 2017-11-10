@@ -67,6 +67,11 @@ export class PickService {
     this.pickModel.setPicks(filteredPicks);
   }
 
+  submitPick(pick: Pick): Promise<void> {
+    const pickId = pick.uid + '_' + pick.week;
+    return firebase.firestore().collection(this.PICKS_COLLECTION_ID).doc(pickId).set(pick);
+  }
+
   private _getPicks(query: firebase.firestore.Query): Promise<Pick[]> {
     return new Promise((resolve, reject) => {
       const picks = [];

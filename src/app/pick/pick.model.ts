@@ -46,4 +46,10 @@ export class PickModel {
     console.log('set picks');
     this.allPicks$.next(picks);
   }
+
+  addPick(pick: Pick) {
+    const updatedPicks = this.allPicks$.getValue().map(currentPick => currentPick);
+    updatedPicks.push(pick);
+    this.allPicks$.next(updatedPicks);
+  }
 }
