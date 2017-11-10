@@ -69,13 +69,13 @@ export class LoginComponent implements OnInit {
 
     this.userService.createUser(this.email, displayName, this.password).then(() => {
       this.gameDataService.getGameData().then(() => {
+        this.loading = false;
         this._closeModal();
       });
     }).catch((error: firebase.auth.Error) => {
       console.error(error);
-      this.error = this._getErrorText(error.code);
-    }).then(() => {
       this.loading = false;
+      this.error = this._getErrorText(error.code);
     });
   }
 

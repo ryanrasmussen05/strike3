@@ -22,6 +22,8 @@ export class PickComponent implements OnInit {
     $('#pick-modal').on('closed.zf.reveal', () => {
       this.zone.run(() => {
         this.selectedTeam = '';
+        this.error = false;
+        this.loading = false;
       });
     });
   }
