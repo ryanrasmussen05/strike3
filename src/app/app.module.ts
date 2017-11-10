@@ -17,6 +17,7 @@ import { GameDataModel } from './gameData/game.data.model';
 import { PlayerViewComponent } from './components/playerView/player.view.component';
 import { PlayerViewModel } from './viewModel/player.view.model';
 import { PlayerViewResolver } from './components/playerView/player.view.resolver';
+import { PickComponent } from './components/pick/pick.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { PlayerViewResolver } from './components/playerView/player.view.resolver
     HeaderComponent,
     PlayerViewComponent,
     LoginComponent,
-    LoadingComponent
+    LoadingComponent,
+    PickComponent
   ],
   imports: [
     BrowserModule,

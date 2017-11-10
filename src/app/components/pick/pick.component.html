@@ -1,0 +1,16 @@
+<div class="center size-24 weight-500 my2">Week {{ week }} Pick</div>
+
+<label>Team
+  <select [(ngModel)]="selectedTeam">
+    <option value="">Select Team</option>
+    <option *ngFor="let team of pickModel.allTeams" [value]="team.abbreviation">{{ team.name }}</option>
+  </select>
+</label>
+
+<div class="size-12 mb2">
+  *Once you submit your pick, only the admin can edit it
+</div>
+
+<div class="right-align">
+  <button class="button" [disabled]="!selectedTeam">Submit Pick</button>
+</div>

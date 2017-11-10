@@ -1,4 +1,4 @@
-<div class="flex flex-column">
+<div id="player-view" class="flex flex-column">
 
   <div class="flex justify-center items-center my2">
     <span class="size-24 weight-500">{{ "Week " + strike3Game.week.weekNumber }}</span>
@@ -28,9 +28,14 @@
 
   <div class="player-wrapper flex flex-none ml-auto mr-auto" *ngFor="let strike3Player of strike3Game.players" [class.current-user]="strike3Player.signedIn">
     <div class="player-name flex-none center truncate">{{ strike3Player.name }}</div>
-    <div *ngFor="let strike3Pick of strike3Player.picks" class="pick flex-none center" [class.editable]="strike3Pick.canEdit">
+    <div *ngFor="let strike3Pick of strike3Player.picks" class="pick flex-none center" [class.editable]="strike3Pick.canEdit" (click)="openPickModal(strike3Pick)">
       {{ strike3Pick.team }}
     </div>
+  </div>
+
+  <div class="reveal" id="pick-modal" data-reveal>
+    <button class="close-button" data-close type="button"><span aria-hidden="true">&times;</span></button>
+    <app-pick [week]="selectedWeek"></app-pick>
   </div>
 
 </div>

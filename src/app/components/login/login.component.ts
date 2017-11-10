@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    $('#loginModal').on('closed.zf.reveal', () => {
+    $('#login-modal').on('closed.zf.reveal', () => {
       this.zone.run(() => {
         this.state = LoginState.Login;
         this._clearForm();
@@ -93,7 +93,7 @@ export class LoginComponent implements OnInit {
   }
 
   private _closeModal() {
-    $('#loginModal').foundation('close');
+    $('#login-modal').foundation('close');
   }
 
   private _clearForm() {
