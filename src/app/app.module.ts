@@ -21,6 +21,7 @@ import { PickComponent } from './components/pick/pick.component';
 import { AdminViewComponent } from './components/adminView/admin.view.component';
 import { AdminViewResolver } from './components/adminView/admin.view.resolver';
 import { AdminViewModel } from './viewModel/admin.view.model';
+import { ViewModelUtil } from './viewModel/view.model.util';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { AdminViewModel } from './viewModel/admin.view.model';
     GameDataService,
     PlayerViewModel,
     AdminViewModel,
+    ViewModelUtil,
     LoadingService,
     PlayerViewResolver,
     AdminViewResolver
