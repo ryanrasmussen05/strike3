@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as firebase from 'firebase';
 import { UserModel } from '../../user/user.model';
 import { UserService } from '../../user/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +12,7 @@ import { UserService } from '../../user/user.service';
 export class HeaderComponent implements OnInit {
   user: firebase.User;
 
-  constructor(public userModel: UserModel, public userService: UserService) {
+  constructor(public userModel: UserModel, public userService: UserService, public router: Router) {
   }
 
   ngOnInit(): void {
@@ -23,6 +24,8 @@ export class HeaderComponent implements OnInit {
   }
 
   signOut() {
-    this.userService.signOut();
+    this.userService.signOut().then(() => {
+      this.router.navigate(['player']);
+    });
   }
 }
