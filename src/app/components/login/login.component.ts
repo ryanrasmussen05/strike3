@@ -56,6 +56,7 @@ export class LoginComponent implements OnInit {
       this.loading = false;
       this._closeModal();
     }).catch((error: firebase.auth.Error) => {
+      console.error(error);
       this.loading = false;
       this.error = this._getErrorText(error.code);
     });
@@ -87,6 +88,7 @@ export class LoginComponent implements OnInit {
       this.loading = false;
       this.state = LoginState.ResetComplete;
     }).catch((error: firebase.auth.Error) => {
+      console.error(error);
       this.loading = false;
       this.error = this._getErrorText(error.code);
     });

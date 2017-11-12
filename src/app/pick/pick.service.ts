@@ -53,6 +53,9 @@ export class PickService {
   filterPicksForSignOut() {
     const currentPicks: Pick[] = this.pickModel.allPicks$.getValue();
     const currentWeek: Week = this.gameDataModel.week$.getValue();
+
+    if (!currentPicks || !currentWeek) return;
+
     const maxWeekToFetch = currentWeek.locked ? currentWeek.weekNumber : currentWeek.weekNumber - 1;
     const adminUid = this._getAdminUid();
 

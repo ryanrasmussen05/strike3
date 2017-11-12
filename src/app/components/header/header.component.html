@@ -1,6 +1,13 @@
 <div id="header">
   <div class="nav-bar flex items-center border-box p1">
     <div class="flex-auto size-24 weight-500">Strike 3</div>
+
+    <!--TODO MOVE COMPONENT TO VIEWS-->
+    <div *ngIf="isAdmin" class="flex-none mr1">
+      <button class="button" routerLink="admin" routerLinkActive="display-none">Admin</button>
+      <button class="button" routerLink="player" routerLinkActive="display-none">Home</button>
+    </div>
+
     <div class="flex-none">
       <button class="button" *ngIf="!user" data-open="login-modal">Sign In</button>
 

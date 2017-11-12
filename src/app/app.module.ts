@@ -18,6 +18,8 @@ import { PlayerViewComponent } from './components/playerView/player.view.compone
 import { PlayerViewModel } from './viewModel/player.view.model';
 import { PlayerViewResolver } from './components/playerView/player.view.resolver';
 import { PickComponent } from './components/pick/pick.component';
+import { AdminViewComponent } from './components/adminView/admin.view.component';
+import { AdminViewResolver } from './components/adminView/admin.view.resolver';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,8 @@ import { PickComponent } from './components/pick/pick.component';
     PlayerViewComponent,
     LoginComponent,
     LoadingComponent,
-    PickComponent
+    PickComponent,
+    AdminViewComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +45,8 @@ import { PickComponent } from './components/pick/pick.component';
     GameDataService,
     PlayerViewModel,
     LoadingService,
-    PlayerViewResolver
+    PlayerViewResolver,
+    AdminViewResolver
   ],
   bootstrap: [AppComponent]
 })

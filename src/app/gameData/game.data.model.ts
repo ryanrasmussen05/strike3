@@ -17,4 +17,18 @@ export class GameDataModel {
     console.log('set week');
     this.week$.next(week);
   }
+
+  canAccessAdmin(uid: string): boolean {
+    const players = this.allPlayers$.getValue();
+
+    if (!players || !uid) return false;
+
+    const foundPlayer = players.find((currentPlayer) => {
+      return currentPlayer.uid === uid;
+    });
+
+    if (!foundPlayer) return false;
+
+    return foundPlayer.admin || foundPlayer.superuser;
+  }
 }
