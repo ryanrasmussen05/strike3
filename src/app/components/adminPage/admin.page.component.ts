@@ -6,6 +6,7 @@ import { PickModel } from '../../pick/pick.model';
 import { PickService } from '../../pick/pick.service';
 import { AdminViewModel } from '../../viewModel/admin.view.model';
 import { Strike3Game } from '../../viewModel/strike3.game';
+import { LoadingService } from '../../loading/loading.service';
 
 import 'rxjs/add/operator/merge';
 
@@ -20,7 +21,7 @@ export class AdminPageComponent implements OnInit, OnDestroy {
   adminViewSubscription: Subscription;
 
   constructor(public userModel: UserModel, public gameDataModel: GameDataModel, public pickModel: PickModel,
-              public pickService: PickService, public adminViewModel: AdminViewModel) {
+              public pickService: PickService, public adminViewModel: AdminViewModel, public loadingService: LoadingService) {
   }
 
   ngOnInit() {
@@ -33,7 +34,13 @@ export class AdminPageComponent implements OnInit, OnDestroy {
       this.admin = this.gameDataModel.canAccessAdmin(currentUser ? currentUser.uid : null);
 
       if (this.admin && this.pickModel.allPicksAdmin$.getValue() === null) {
-        this.pickService.getAllPicks(); //TODO LOADING
+        this.loadingService.loading();
+        this.pickService.getAllPicks().then(() => {
+          this.loadingService.done();
+        }).catch((error) => {
+          console.error(error);
+          this.loadingService.done();
+        });
       }
     });
   }
