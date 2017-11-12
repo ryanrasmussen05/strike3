@@ -6,6 +6,7 @@ import { Team } from '../team/team';
 @Injectable()
 export class PickModel {
   allPicks$: BehaviorSubject<Pick[]> = new BehaviorSubject<Pick[]>(null);
+  allPicksAdmin$: BehaviorSubject<Pick[]> = new BehaviorSubject<Pick[]>(null);
 
   allTeams: Team[] = [
     {name: 'Arizona Cardinals', abbreviation: 'ARZ'},
@@ -15,7 +16,7 @@ export class PickModel {
     {name: 'Carolina Panthers', abbreviation: 'CAR'},
     {name: 'Chicago Bears', abbreviation: 'CHI'},
     {name: 'Cincinnati Bengals', abbreviation: 'CIN'},
-    {name: 'Cleveland Brows', abbreviation: 'CLE'},
+    {name: 'Cleveland Browns', abbreviation: 'CLE'},
     {name: 'Dallas Cowboys', abbreviation: 'DAL'},
     {name: 'Denver Broncos', abbreviation: 'DEN'},
     {name: 'Detroit Lions', abbreviation: 'DET'},
@@ -51,5 +52,16 @@ export class PickModel {
     const updatedPicks = this.allPicks$.getValue().map(currentPick => currentPick);
     updatedPicks.push(pick);
     this.allPicks$.next(updatedPicks);
+  }
+
+  setPicksAdmin(picks: Pick[]) {
+    console.log('set picks admin');
+    this.allPicksAdmin$.next(picks);
+  }
+
+  addPickAdmin(pick: Pick) {
+    const updatedPicks = this.allPicksAdmin$.getValue().map(currentPick => currentPick);
+    updatedPicks.push(pick);
+    this.allPicksAdmin$.next(updatedPicks);
   }
 }

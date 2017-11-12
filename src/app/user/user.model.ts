@@ -13,7 +13,18 @@ export class UserModel {
   }
 
   setCurrentUser(user: firebase.User) {
-    console.log('set user');
-    this.currentUser$.next(user);
+    const currentUser = this.currentUser$.getValue();
+
+    if (!this._sameUser(currentUser, user)) {
+      console.log('set user');
+      this.currentUser$.next(user);
+    }
+  }
+
+  private _sameUser(userA: firebase.User, userB: firebase.User): boolean {
+    if (userA === null && userB !== null) return false;
+    if (userA !== null && userB === null) return false;
+    if (userA === null && userB === null) return true;
+    return userA.uid === userB.uid;
   }
 }

@@ -50,6 +50,18 @@ export class PickService {
     });
   }
 
+  getAllPicks(): Promise<Pick[]> {
+    const query = firebase.firestore().collection(this.PICKS_COLLECTION_ID);
+
+    return this._getPicks(query).then((allPicks: Pick[]) => {
+      this.pickModel.setPicksAdmin(allPicks);
+      return allPicks;
+    }).catch((error) => {
+      console.error(error);
+      return [];
+    });
+  }
+
   filterPicksForSignOut() {
     const currentPicks: Pick[] = this.pickModel.allPicks$.getValue();
     const currentWeek: Week = this.gameDataModel.week$.getValue();

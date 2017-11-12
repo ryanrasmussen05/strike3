@@ -1,6 +1,10 @@
 <div id="player-view" class="flex flex-column">
 
-  <div class="flex justify-center items-center my2">
+  <div class="m1">
+    <button *ngIf="admin" class="button" routerLink="../admin">Admin</button>
+  </div>
+
+  <div class="flex justify-center items-center mb2">
     <span class="size-24 weight-500">{{ "Week " + strike3Game.week.weekNumber }}</span>
     <span class="size-16 ml1">{{ strike3Game.week.locked ? "(Locked)" : "(Open)" }}</span>
   </div>
