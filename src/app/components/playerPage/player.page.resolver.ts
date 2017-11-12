@@ -7,7 +7,7 @@ import { GameDataService } from '../../gameData/game.data.service';
 import { GameDataModel } from '../../gameData/game.data.model';
 
 @Injectable()
-export class PlayerViewResolver implements Resolve<boolean> {
+export class PlayerPageResolver implements Resolve<boolean> {
 
   constructor(public pickModel: PickModel, public pickService: PickService, public gameDataService: GameDataService,
               public gameDataModel: GameDataModel, public loadingService: LoadingService) {

@@ -8,7 +8,7 @@ import { PickService } from '../../pick/pick.service';
 import { PickModel } from '../../pick/pick.model';
 
 @Injectable()
-export class AdminViewResolver implements Resolve<boolean> {
+export class AdminPageResolver implements Resolve<boolean> {
 
   constructor(public gameDataService: GameDataService, public gameDataModel: GameDataModel, public userModel: UserModel,
               public loadingService: LoadingService, public pickService: PickService, public pickModel: PickModel) {

@@ -6,10 +6,10 @@ import { UserModel } from '../../user/user.model';
 import { GameDataModel } from '../../gameData/game.data.model';
 
 @Component({
-  templateUrl: './player.view.component.html',
-  styleUrls: ['./player.view.component.scss']
+  templateUrl: './player.page.component.html',
+  styleUrls: ['./player.page.component.scss']
 })
-export class PlayerViewComponent implements OnInit, OnDestroy {
+export class PlayerPageComponent implements OnInit, OnDestroy {
   admin: boolean = false;
   strike3Game: Strike3Game;
   selectedWeek: number;

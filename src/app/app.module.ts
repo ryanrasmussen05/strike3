@@ -14,24 +14,24 @@ import { LoadingComponent } from './components/loading/loading.component';
 import { LoadingService } from './loading/loading.service';
 import { GameDataService } from './gameData/game.data.service';
 import { GameDataModel } from './gameData/game.data.model';
-import { PlayerViewComponent } from './components/playerView/player.view.component';
 import { PlayerViewModel } from './viewModel/player.view.model';
-import { PlayerViewResolver } from './components/playerView/player.view.resolver';
 import { PickComponent } from './components/pick/pick.component';
-import { AdminViewComponent } from './components/adminView/admin.view.component';
-import { AdminViewResolver } from './components/adminView/admin.view.resolver';
 import { AdminViewModel } from './viewModel/admin.view.model';
 import { ViewModelUtil } from './viewModel/view.model.util';
+import { AdminPageComponent } from './components/adminPage/admin.page.component';
+import { AdminPageResolver } from './components/adminPage/admin.page.resolver';
+import { PlayerPageComponent } from './components/playerPage/player.page.component';
+import { PlayerPageResolver } from './components/playerPage/player.page.resolver';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    PlayerViewComponent,
+    PlayerPageComponent,
     LoginComponent,
     LoadingComponent,
     PickComponent,
-    AdminViewComponent
+    AdminPageComponent
   ],
   imports: [
     BrowserModule,
@@ -49,8 +49,8 @@ import { ViewModelUtil } from './viewModel/view.model.util';
     AdminViewModel,
     ViewModelUtil,
     LoadingService,
-    PlayerViewResolver,
-    AdminViewResolver
+    PlayerPageResolver,
+    AdminPageResolver
   ],
   bootstrap: [AppComponent]
 })

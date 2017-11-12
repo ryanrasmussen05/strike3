@@ -10,9 +10,9 @@ import { Strike3Game, Strike3Pick } from '../../viewModel/strike3.game';
 import 'rxjs/add/operator/merge';
 
 @Component({
-  templateUrl: './admin.view.component.html'
+  templateUrl: './admin.page.component.html'
 })
-export class AdminViewComponent implements OnInit, OnDestroy {
+export class AdminPageComponent implements OnInit, OnDestroy {
   admin: boolean = false;
   strike3Game: Strike3Game;
 
