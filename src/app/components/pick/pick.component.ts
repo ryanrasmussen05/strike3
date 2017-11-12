@@ -3,15 +3,22 @@ import { PickModel } from '../../pick/pick.model';
 import { UserModel } from '../../user/user.model';
 import { Pick } from '../../pick/pick';
 import { PickService } from '../../pick/pick.service';
+import { Strike3Pick } from '../../viewModel/strike3.game';
 
 @Component({
   selector: 'app-pick',
   templateUrl: './pick.component.html'
 })
 export class PickComponent implements OnInit {
-  @Input('week') week: number;
+  @Input('strike3Pick') set strike3Pick(value: Strike3Pick) {
+    if (value) {
+      this.selectedTeam = value.team ? value.team : '';
+      this.selectedWeek = value.week;
+    }
+  }
 
   selectedTeam: string = '';
+  selectedWeek: number;
   error: boolean = false;
   loading: boolean = false;
 
@@ -37,12 +44,12 @@ export class PickComponent implements OnInit {
 
     const newPick: Pick = {
       uid: currentUser.uid,
-      week: this.week,
+      week: this.selectedWeek,
       team: this.selectedTeam
     };
 
     this.pickService.submitPick(newPick).then(() => {
-      this.pickModel.addPick(newPick);
+      this.pickModel.addPick(newPick); //TODO different for admin
       this.loading = false;
       this._closeModal();
     }).catch((error) => {

@@ -22,6 +22,7 @@ import { AdminPageComponent } from './components/adminPage/admin.page.component'
 import { AdminPageResolver } from './components/adminPage/admin.page.resolver';
 import { PlayerPageComponent } from './components/playerPage/player.page.component';
 import { PlayerPageResolver } from './components/playerPage/player.page.resolver';
+import { GameTableComponent } from './components/gameTable/game.table.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { PlayerPageResolver } from './components/playerPage/player.page.resolver
     LoginComponent,
     LoadingComponent,
     PickComponent,
-    AdminPageComponent
+    AdminPageComponent,
+    GameTableComponent
   ],
   imports: [
     BrowserModule,

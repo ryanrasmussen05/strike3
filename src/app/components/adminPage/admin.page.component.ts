@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { PickModel } from '../../pick/pick.model';
 import { PickService } from '../../pick/pick.service';
 import { AdminViewModel } from '../../viewModel/admin.view.model';
-import { Strike3Game, Strike3Pick } from '../../viewModel/strike3.game';
+import { Strike3Game } from '../../viewModel/strike3.game';
 
 import 'rxjs/add/operator/merge';
 
@@ -24,8 +24,6 @@ export class AdminPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    $('#admin-view').foundation();
-
     this.adminViewSubscription = this.adminViewModel.strike3Game$.subscribe((game) => {
       this.strike3Game = game;
     });
@@ -43,12 +41,5 @@ export class AdminPageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.playerSubscription.unsubscribe();
     this.adminViewSubscription.unsubscribe();
-  }
-
-  openPickModal(strike3Pick: Strike3Pick) {
-    // if (strike3Pick.canEdit) {
-    //   this.selectedWeek = strike3Pick.week;
-    //   $('#pick-modal').foundation('open');
-    // }
   }
 }

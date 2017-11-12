@@ -1,18 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { Strike3Game, Strike3Pick } from '../../viewModel/strike3.game';
+import { Strike3Game } from '../../viewModel/strike3.game';
 import { PlayerViewModel } from '../../viewModel/player.view.model';
 import { UserModel } from '../../user/user.model';
 import { GameDataModel } from '../../gameData/game.data.model';
 
+import 'rxjs/add/operator/merge';
+
 @Component({
-  templateUrl: './player.page.component.html',
-  styleUrls: ['./player.page.component.scss']
+  templateUrl: './player.page.component.html'
 })
 export class PlayerPageComponent implements OnInit, OnDestroy {
   admin: boolean = false;
   strike3Game: Strike3Game;
-  selectedWeek: number;
 
   playerViewSubscription: Subscription;
   adminSubscription: Subscription;
@@ -21,8 +21,6 @@ export class PlayerPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    $('#player-view').foundation();
-
     this.playerViewSubscription = this.playerViewModel.strike3Game$.subscribe((game) => {
       this.strike3Game = game;
     });
@@ -32,13 +30,6 @@ export class PlayerPageComponent implements OnInit, OnDestroy {
       this.admin = this.gameDataModel.canAccessAdmin(currentUser ? currentUser.uid : null);
     });
 
-  }
-
-  openPickModal(strike3Pick: Strike3Pick) {
-    if (strike3Pick.canEdit) {
-      this.selectedWeek = strike3Pick.week;
-      $('#pick-modal').foundation('open');
-    }
   }
 
   ngOnDestroy() {
