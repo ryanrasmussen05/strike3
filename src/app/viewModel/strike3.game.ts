@@ -5,6 +5,8 @@ export interface Strike3Pick {
   team?: string;
   canEdit: boolean;
   win?: boolean;
+  uid: string;
+  playerName: string;
 }
 
 export interface Strike3Player {

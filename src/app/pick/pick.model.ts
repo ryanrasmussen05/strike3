@@ -48,20 +48,28 @@ export class PickModel {
     this.allPicks$.next(picks);
   }
 
-  addPick(pick: Pick) {
-    const updatedPicks = this.allPicks$.getValue().map(currentPick => currentPick);
-    updatedPicks.push(pick);
-    this.allPicks$.next(updatedPicks);
-  }
-
   setPicksAdmin(picks: Pick[]) {
     console.log('set picks admin');
     this.allPicksAdmin$.next(picks);
   }
 
-  addPickAdmin(pick: Pick) {
-    const updatedPicks = this.allPicksAdmin$.getValue().map(currentPick => currentPick);
-    updatedPicks.push(pick);
-    this.allPicksAdmin$.next(updatedPicks);
+  addOrUpdatePick(pick: Pick, admin: boolean) {
+    let updatedPicks;
+
+    if (admin) {
+      updatedPicks = this.allPicksAdmin$.getValue().filter((currentPick) => {
+        return !(currentPick.uid === pick.uid && currentPick.week === pick.week);
+      });
+
+      updatedPicks.push(pick);
+      this.allPicksAdmin$.next(updatedPicks);
+    } else {
+      updatedPicks = this.allPicks$.getValue().filter((currentPick) => {
+        return !(currentPick.uid === pick.uid && currentPick.week === pick.week);
+      });
+
+      updatedPicks.push(pick);
+      this.allPicks$.next(updatedPicks);
+    }
   }
 }

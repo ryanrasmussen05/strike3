@@ -10,15 +10,16 @@ import { Strike3Pick } from '../../viewModel/strike3.game';
   templateUrl: './pick.component.html'
 })
 export class PickComponent implements OnInit {
+  @Input('admin') admin: boolean;
   @Input('strike3Pick') set strike3Pick(value: Strike3Pick) {
     if (value) {
       this.selectedTeam = value.team ? value.team : '';
-      this.selectedWeek = value.week;
+      this.selectedStrike3Pick = value;
     }
   }
 
+  selectedStrike3Pick: Strike3Pick;
   selectedTeam: string = '';
-  selectedWeek: number;
   error: boolean = false;
   loading: boolean = false;
 
@@ -36,20 +37,17 @@ export class PickComponent implements OnInit {
   }
 
   submitPick() {
-    const currentUser = this.userModel.currentUser$.getValue();
-    if (!currentUser || !this.selectedTeam) return;
-
     this.loading = true;
     this.error = false;
 
-    const newPick: Pick = {
-      uid: currentUser.uid,
-      week: this.selectedWeek,
+    const pick: Pick = {
+      week: this.selectedStrike3Pick.week,
+      uid: this.selectedStrike3Pick.uid,
       team: this.selectedTeam
     };
 
-    this.pickService.submitPick(newPick).then(() => {
-      this.pickModel.addPick(newPick); //TODO different for admin
+    this.pickService.submitPick(pick).then(() => {
+      this.pickModel.addOrUpdatePick(pick,  this.admin);
       this.loading = false;
       this._closeModal();
     }).catch((error) => {

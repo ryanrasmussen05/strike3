@@ -58,7 +58,9 @@ export class ViewModelUtil {
       const strike3Pick: Strike3Pick = {
         week: pick.week,
         team: pick.team,
-        canEdit: canEdit
+        canEdit: canEdit,
+        playerName: player.name,
+        uid: player.uid
       };
 
       if (pick.win !== undefined && pick.win !== null) {

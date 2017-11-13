@@ -1,4 +1,7 @@
-<div class="center size-24 weight-500 my2">Week {{ selectedWeek }} Pick</div>
+<div class="center size-24 weight-500 my2">
+  <span>Week {{ selectedStrike3Pick?.week }} Pick</span>
+  <span *ngIf="admin" class="weight-300">{{ "("  + selectedStrike3Pick?.playerName + ")" }}</span>
+</div>
 
 <label>Team
   <select [(ngModel)]="selectedTeam">
@@ -7,7 +10,7 @@
   </select>
 </label>
 
-<div class="size-12 mb2">
+<div *ngIf="!admin" class="size-12 mb2">
   *Once you submit your pick, only the admin can edit it
 </div>
 
