@@ -43,6 +43,8 @@ export class PickModel {
     {name: 'Washington Redskins', abbreviation: 'WAS'}
   ];
 
+  allTeamsAdmin: Team[] = [{name: 'No Pick', abbreviation: 'NP'}].concat(this.allTeams);
+
   setPicks(picks: Pick[]) {
     console.log('set picks');
     this.allPicks$.next(picks);

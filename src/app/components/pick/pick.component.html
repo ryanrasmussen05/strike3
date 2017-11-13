@@ -3,12 +3,23 @@
   <span *ngIf="admin" class="weight-300">{{ "("  + selectedStrike3Pick?.playerName + ")" }}</span>
 </div>
 
-<label>Team
-  <select [(ngModel)]="selectedTeam">
-    <option value="">Select Team</option>
-    <option *ngFor="let team of pickModel.allTeams" [value]="team.abbreviation">{{ team.name }}</option>
-  </select>
-</label>
+<div *ngIf="!admin">
+  <label>Team
+    <select [(ngModel)]="selectedTeam">
+      <option value="">Select Team</option>
+      <option *ngFor="let team of pickModel.allTeams" [value]="team.abbreviation">{{ team.name }}</option>
+    </select>
+  </label>
+</div>
+
+<div *ngIf="admin">
+  <label>Team
+    <select [(ngModel)]="selectedTeam">
+      <option value="">Select Team</option>
+      <option *ngFor="let team of pickModel.allTeamsAdmin" [value]="team.abbreviation">{{ team.name }}</option>
+    </select>
+  </label>
+</div>
 
 <div *ngIf="!admin" class="size-12 mb2">
   *Once you submit your pick, only the admin can edit it

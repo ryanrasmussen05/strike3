@@ -1,6 +1,5 @@
 import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { PickModel } from '../../pick/pick.model';
-import { UserModel } from '../../user/user.model';
 import { Pick, PickStatus } from '../../pick/pick';
 import { PickService } from '../../pick/pick.service';
 import { Strike3Pick } from '../../viewModel/strike3.game';
@@ -27,7 +26,7 @@ export class PickComponent implements OnInit {
   loading: boolean = false;
   PickStatus = PickStatus;
 
-  constructor(public zone: NgZone, public pickModel: PickModel, public userModel: UserModel, public pickService: PickService) {
+  constructor(public zone: NgZone, public pickModel: PickModel, public pickService: PickService) {
   }
 
   ngOnInit() {
