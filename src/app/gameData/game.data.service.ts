@@ -47,4 +47,10 @@ export class GameDataService {
 
     return firebase.firestore().collection(this.GAME_DATA_COLLECTION_ID).doc(this.PLAYERS_DOC_ID).set(userEntry, {merge: true});
   }
+
+  setWeek(week: Week): Promise<void> {
+    return firebase.firestore().collection(this.GAME_DATA_COLLECTION_ID).doc(this.WEEK_DOC_ID).set(week, {merge: true}).then(() => {
+      this.gameDataModel.setWeek(week);
+    });
+  }
 }

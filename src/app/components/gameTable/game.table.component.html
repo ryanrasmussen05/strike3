@@ -1,32 +1,28 @@
 <div id="game-table" class="flex flex-column">
 
-  <div class="flex justify-center items-center mb2">
-    <span class="size-24 weight-500">{{ "Week " + strike3Game.week?.weekNumber }}</span>
-    <span class="size-16 ml1">{{ strike3Game.week?.locked ? "(Locked)" : "(Open)" }}</span>
+  <div *ngIf="!admin" class="flex justify-center items-center mb2">
+    <span class="size-24 weight-500">{{ "Week " + game.week?.weekNumber }}</span>
+    <span class="size-16 ml1">{{ game.week?.locked ? "(Locked)" : "(Open)" }}</span>
+  </div>
+
+  <div *ngIf="admin" class="flex justify-center items-center mb2">
+    <select class="auto-width m0" [(ngModel)]="week" (change)="weekChange()">
+      <option *ngFor="let number of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]" [value]="number">{{ "Week " + number }}</option>
+    </select>
+    <label for="lock-checkbox" class="size-16 ml2 mr1 clickable">Locked</label>
+    <input id="lock-checkbox" type="checkbox" [(ngModel)]="locked" (change)="weekChange()" class="m0">
+    <button class="button ml2" *ngIf="weekChanged" (click)="saveWeek()" [disabled]="savingWeek">
+      <span *ngIf="!savingWeek">Save Changes</span>
+      <i *ngIf="savingWeek" class="fa fa-spinner fa-spin"></i>
+    </button>
   </div>
 
   <div class="flex flex-none ml-auto mr-auto size-12 weight-500">
     <div class="player-name flex-none"></div>
-    <div class="pick flex-none center">1</div>
-    <div class="pick flex-none center">2</div>
-    <div class="pick flex-none center">3</div>
-    <div class="pick flex-none center">4</div>
-    <div class="pick flex-none center">5</div>
-    <div class="pick flex-none center">6</div>
-    <div class="pick flex-none center">7</div>
-    <div class="pick flex-none center">8</div>
-    <div class="pick flex-none center">9</div>
-    <div class="pick flex-none center">10</div>
-    <div class="pick flex-none center">11</div>
-    <div class="pick flex-none center">12</div>
-    <div class="pick flex-none center">13</div>
-    <div class="pick flex-none center">14</div>
-    <div class="pick flex-none center">15</div>
-    <div class="pick flex-none center">16</div>
-    <div class="pick flex-none center">17</div>
+    <div *ngFor="let number of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]" class="pick flex-none center">{{ number }}</div>
   </div>
 
-  <div class="player-wrapper flex flex-none ml-auto mr-auto" *ngFor="let strike3Player of strike3Game.players" [class.current-user]="strike3Player.signedIn">
+  <div class="player-wrapper flex flex-none ml-auto mr-auto" *ngFor="let strike3Player of game.players" [class.current-user]="strike3Player.signedIn">
     <div class="player-name flex-none center truncate">{{ strike3Player.name }}</div>
     <div *ngFor="let strike3Pick of strike3Player.picks" class="pick flex-none center" [class.editable]="strike3Pick.canEdit" (click)="openPickModal(strike3Pick)">
       {{ strike3Pick.team }}
