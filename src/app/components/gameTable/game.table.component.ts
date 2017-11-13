@@ -43,7 +43,7 @@ export class GameTableComponent implements OnInit, OnDestroy {
 
   openPickModal(strike3Pick: Strike3Pick) {
     if (strike3Pick.canEdit) {
-      this.selectedPick = strike3Pick;
+      this.selectedPick = Object.create(strike3Pick);
       $('#pick-modal').foundation('open');
     }
   }

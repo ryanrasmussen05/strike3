@@ -1,7 +1,7 @@
 import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { PickModel } from '../../pick/pick.model';
 import { UserModel } from '../../user/user.model';
-import { Pick } from '../../pick/pick';
+import { Pick, PickStatus } from '../../pick/pick';
 import { PickService } from '../../pick/pick.service';
 import { Strike3Pick } from '../../viewModel/strike3.game';
 
@@ -14,14 +14,18 @@ export class PickComponent implements OnInit {
   @Input('strike3Pick') set strike3Pick(value: Strike3Pick) {
     if (value) {
       this.selectedTeam = value.team ? value.team : '';
+      this.pickStatus = value.status;
       this.selectedStrike3Pick = value;
     }
   }
 
   selectedStrike3Pick: Strike3Pick;
   selectedTeam: string = '';
+  pickStatus: PickStatus;
+
   error: boolean = false;
   loading: boolean = false;
+  PickStatus = PickStatus;
 
   constructor(public zone: NgZone, public pickModel: PickModel, public userModel: UserModel, public pickService: PickService) {
   }
@@ -30,6 +34,7 @@ export class PickComponent implements OnInit {
     $('#pick-modal').on('closed.zf.reveal', () => {
       this.zone.run(() => {
         this.selectedTeam = '';
+        this.pickStatus = null;
         this.error = false;
         this.loading = false;
       });
@@ -40,10 +45,13 @@ export class PickComponent implements OnInit {
     this.loading = true;
     this.error = false;
 
+    if (!this.pickStatus) this.pickStatus = PickStatus.Open;
+
     const pick: Pick = {
       week: this.selectedStrike3Pick.week,
       uid: this.selectedStrike3Pick.uid,
-      team: this.selectedTeam
+      team: this.selectedTeam,
+      status: this.pickStatus
     };
 
     this.pickService.submitPick(pick).then(() => {

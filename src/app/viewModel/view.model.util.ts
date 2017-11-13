@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PickModel } from '../pick/pick.model';
 import { UserModel } from '../user/user.model';
-import { Pick } from '../pick/pick';
+import { Pick, PickStatus } from '../pick/pick';
 import { GameDataModel } from '../gameData/game.data.model';
 import { Player } from '../gameData/player';
 import { Strike3Game, Strike3Pick, Strike3Player } from './strike3.game';
@@ -60,12 +60,9 @@ export class ViewModelUtil {
         team: pick.team,
         canEdit: canEdit,
         playerName: player.name,
-        uid: player.uid
+        uid: player.uid,
+        status: pick.status
       };
-
-      if (pick.win !== undefined && pick.win !== null) {
-        strike3Pick.win = pick.win;
-      }
 
       strike3Picks.push(strike3Pick);
     }
@@ -98,7 +95,8 @@ export class ViewModelUtil {
       if (!foundPick) {
         picks.push({
           week: week,
-          uid: player.uid
+          uid: player.uid,
+          status: PickStatus.Open
         });
       }
     }

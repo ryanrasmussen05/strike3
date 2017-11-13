@@ -1,12 +1,13 @@
 import { Week } from '../gameData/week';
+import { PickStatus } from '../pick/pick';
 
 export interface Strike3Pick {
   week: number;
   team?: string;
   canEdit: boolean;
-  win?: boolean;
   uid: string;
   playerName: string;
+  status: PickStatus;
 }
 
 export interface Strike3Player {

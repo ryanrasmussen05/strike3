@@ -14,6 +14,17 @@
   *Once you submit your pick, only the admin can edit it
 </div>
 
+<div *ngIf="admin" class="my2 flex items-center">
+  <input type="radio" name="pickStatus" [value]="PickStatus.Open" id="pickOpen" class="m0" [(ngModel)]="pickStatus">
+  <label for="pickWin" class="mr2">Open</label>
+  <input type="radio" name="pickStatus" [value]="PickStatus.Win" id="pickWin" class="m0" [(ngModel)]="pickStatus">
+  <label for="pickWin" class="mr2">Win</label>
+  <input type="radio" name="pickStatus" [value]="PickStatus.Loss" id="pickLoss" class="m0" [(ngModel)]="pickStatus">
+  <label for="pickLoss" class="mr2">Loss</label>
+  <input type="radio" name="pickStatus" [value]="PickStatus.Tie" id="pickTie" class="m0" [(ngModel)]="pickStatus">
+  <label for="pickTie" class="mr2">Tie</label>
+</div>
+
 <div class="right-align">
   <button class="button full-width" [disabled]="!selectedTeam" (click)="submitPick()">
     <span *ngIf="!loading">Submit Pick</span>
