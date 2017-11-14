@@ -8,7 +8,6 @@ $fa-font-path : '../node_modules/font-awesome/fonts';
 //
 $primary-theme-color: #039BE5;
 $secondary-theme-color: #777;
-$game-table-width: 1050px;
 
 //
 // NAV BAR
@@ -16,6 +15,16 @@ $game-table-width: 1050px;
 $nav-bar-background-color: #3a3a3a;
 $nav-bar-text-color: #ffffff;
 $nav-bar-height: 60px;
+
+//
+// GAME TABLE
+//
+
+$game-table-width: 1050px;
+$win-color: #23a815;
+$loss-color: #db555a;
+$tie-color: #4e6dff;
+$eliminated-color: #565656;
 
 //
 // DROPDOWN MENU
