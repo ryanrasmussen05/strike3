@@ -47,6 +47,10 @@
     &.tie {
       background-color: $tie-color;
     }
+
+    &.eliminated {
+      background-color: $eliminated-color;
+    }
   }
 }
 

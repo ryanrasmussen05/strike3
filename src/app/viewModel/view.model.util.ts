@@ -25,8 +25,11 @@ export class ViewModelUtil {
 
         const strike3Player: Strike3Player = {
           name: player.name,
-          picks: this._getStrike3PicksForPlayer(player, admin)
+          picks: this._getStrike3PicksForPlayer(player, admin),
+          strikes: 0
         };
+
+        strike3Player.strikes = this._getNumStrikesForPlayer(strike3Player);
 
         if (!admin) {
           strike3Player.signedIn = currentUser && player.uid === currentUser.uid
@@ -110,12 +113,44 @@ export class ViewModelUtil {
     });
   }
 
-  //TODO make this more advanced
+  private _getNumStrikesForPlayer(strike3Player: Strike3Player): number {
+    let numStrikes = 0;
+
+    for (const strike3Pick of strike3Player.picks) {
+      if (numStrikes >= 3) {
+        strike3Pick.eliminated = true;
+        strike3Pick.canEdit = false;
+      }
+      if (strike3Pick.status === PickStatus.Loss) {
+        numStrikes++;
+      }
+    }
+
+    return numStrikes;
+  }
+
   private _sortStrike3Players(strike3Players: Strike3Player[]) {
     strike3Players.sort((a, b): number => {
+      if (a.strikes < b.strikes) return -1;
+      if (a.strikes > b.strikes) return 1;
+      if (this._getEliminationWeek(a) > this._getEliminationWeek(b)) return -1;
+      if (this._getEliminationWeek(a) < this._getEliminationWeek(b)) return 1;
       if (a.name < b.name) return -1;
       if (a.name > b.name) return 1;
       return 0;
     });
+  }
+
+  private _getEliminationWeek(strike3Player: Strike3Player): number {
+    let eliminationWeek = 100;
+
+    for (const strike3Pick of strike3Player.picks) {
+      if (strike3Pick.eliminated) {
+        eliminationWeek = strike3Pick.week;
+        break;
+      }
+    }
+
+    return eliminationWeek;
   }
 }

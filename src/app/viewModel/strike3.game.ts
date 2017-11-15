@@ -8,12 +8,14 @@ export interface Strike3Pick {
   uid: string;
   playerName: string;
   status: PickStatus;
+  eliminated?: boolean;
 }
 
 export interface Strike3Player {
   name: string;
   picks: Strike3Pick[];
   signedIn?: boolean;
+  strikes: number;
 }
 
 export interface Strike3Game {
