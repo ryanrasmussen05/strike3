@@ -27,7 +27,7 @@
 
 <div *ngIf="admin" class="my2 flex items-center">
   <input type="radio" name="pickStatus" [value]="PickStatus.Open" id="pickOpen" class="m0" [(ngModel)]="pickStatus">
-  <label for="pickWin" class="mr2">Open</label>
+  <label for="pickOpen" class="mr2">Open</label>
   <input type="radio" name="pickStatus" [value]="PickStatus.Win" id="pickWin" class="m0" [(ngModel)]="pickStatus">
   <label for="pickWin" class="mr2">Win</label>
   <input type="radio" name="pickStatus" [value]="PickStatus.Loss" id="pickLoss" class="m0" [(ngModel)]="pickStatus">

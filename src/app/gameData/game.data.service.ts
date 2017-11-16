@@ -20,11 +20,11 @@ export class GameDataService {
       //we need to convert JS objects to ES6 Maps
       const gameData: GameData = {
         week: serviceGameData.week,
-        players: this._buildMap(serviceGameData.players)
+        players: this._buildMap(serviceGameData.players, false)
       };
 
       gameData.players.forEach((currentPlayer) => {
-        currentPlayer.picks = this._buildMap(currentPlayer.picks);
+        currentPlayer.picks = this._buildMap(currentPlayer.picks, true);
       });
 
       this.gameDataModel.setGameData(gameData);
@@ -50,15 +50,19 @@ export class GameDataService {
 
   submitPick(pick: Pick, uid: string): Promise<void> {
     return firebase.database().ref('players/' + uid + '/picks/' + pick.week).set(pick).then(() => {
-      this.gameDataModel.addPick(pick, uid);
+      this.gameDataModel.addOrUpdatePick(pick, uid);
     });
   }
 
-  private _buildMap(obj) {
+  private _buildMap(obj, isKeyNumber: boolean) {
     const map = new Map();
     if (obj) {
       Object.keys(obj).forEach(key => {
-        map.set(key, obj[key]);
+        if (isKeyNumber) {
+          map.set(parseInt(key), obj[key]);
+        } else {
+          map.set(key, obj[key]);
+        }
       });
     }
     return map;

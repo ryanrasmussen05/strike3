@@ -27,7 +27,7 @@ export class GameDataModel {
     this.gameData$.next(updatedGameData);
   }
 
-  addPick(pick: Pick, uid: string) {
+  addOrUpdatePick(pick: Pick, uid: string) {
     console.log('add pick');
 
     const updatedGameData: GameData = Object.create(this.gameData$.getValue());

@@ -4,7 +4,6 @@ import { GameDataModel } from '../../gameData/game.data.model';
 import { Subscription } from 'rxjs/Subscription';
 import { AdminViewModel } from '../../viewModel/admin.view.model';
 import { Strike3Game } from '../../viewModel/strike3.game';
-import { LoadingService } from '../../loading/loading.service';
 
 import 'rxjs/add/operator/merge';
 
@@ -18,29 +17,18 @@ export class AdminPageComponent implements OnInit, OnDestroy {
   playerSubscription: Subscription;
   adminViewSubscription: Subscription;
 
-  constructor(public userModel: UserModel, public gameDataModel: GameDataModel, public adminViewModel: AdminViewModel,
-              public loadingService: LoadingService) {
+  constructor(public userModel: UserModel, public gameDataModel: GameDataModel, public adminViewModel: AdminViewModel) {
   }
 
   ngOnInit() {
-    // this.adminViewSubscription = this.adminViewModel.strike3Game$.subscribe((game) => {
-    //   this.strike3Game = game;
-    // });
-    //
-    // this.playerSubscription = this.userModel.currentUser$.merge(this.gameDataModel.allPlayers$).subscribe(() => {
-    //   const currentUser = this.userModel.currentUser$.getValue();
-    //   this.admin = this.gameDataModel.canAccessAdmin(currentUser ? currentUser.uid : null);
-    //
-    //   if (this.admin && this.pickModel.allPicksAdmin$.getValue() === null) {
-    //     this.loadingService.loading();
-    //     this.pickService.getAllPicks().then(() => {
-    //       this.loadingService.done();
-    //     }).catch((error) => {
-    //       console.error(error);
-    //       this.loadingService.done();
-    //     });
-    //   }
-    // });
+    this.adminViewSubscription = this.adminViewModel.strike3Game$.subscribe((game) => {
+      this.strike3Game = game;
+    });
+
+    this.playerSubscription = this.userModel.currentUser$.merge(this.gameDataModel.gameData$).subscribe(() => {
+      const currentUser = this.userModel.currentUser$.getValue();
+      this.admin = this.gameDataModel.canAccessAdmin(currentUser ? currentUser.uid : null);
+    });
   }
 
   ngOnDestroy() {
