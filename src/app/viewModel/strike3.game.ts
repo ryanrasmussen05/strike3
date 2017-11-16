@@ -1,5 +1,5 @@
 import { Week } from '../gameData/week';
-import { PickStatus } from '../pick/pick';
+import { PickStatus } from '../gameData/pick';
 
 export interface Strike3Pick {
   week: number;

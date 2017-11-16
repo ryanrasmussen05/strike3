@@ -1,56 +1,66 @@
 import { Injectable } from '@angular/core';
-import * as firebase from 'firebase';
 import { GameDataModel } from './game.data.model';
-import { Player } from './player';
 import { Week } from './week';
+import { GameData } from './game.data';
+import { Pick } from './pick';
 
-require('firebase/firestore');
+import * as firebase from 'firebase';
 
 @Injectable()
 export class GameDataService {
 
-  GAME_DATA_COLLECTION_ID = 'gameData';
-  PLAYERS_DOC_ID = 'players';
-  WEEK_DOC_ID = 'week';
-
   constructor(public gameDataModel: GameDataModel) {
   }
 
-  getGameData(): Promise<any> {
-    return new Promise((resolve, reject) => {
+  getGameData(): Promise<GameData> {
+    return firebase.database().ref('/').once('value').then((value: firebase.database.DataSnapshot) => {
 
-      firebase.firestore().collection(this.GAME_DATA_COLLECTION_ID).get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          if (doc.id === this.PLAYERS_DOC_ID) {
-            const playerMap: Map<string, Player> = <Map<string, Player>>doc.data();
-            const players: Player[] = Object.keys(playerMap).map(key => playerMap[key]);
-            this.gameDataModel.setPlayers(players);
-          }
-          if (doc.id === this.WEEK_DOC_ID) {
-            this.gameDataModel.setWeek(<Week>doc.data());
-          }
-        });
-        resolve();
-      })
-        .catch((error) => {
-          reject(error);
-        });
+      const serviceGameData: GameData = value.val();
+
+      //we need to convert JS objects to ES6 Maps
+      const gameData: GameData = {
+        week: serviceGameData.week,
+        players: this._buildMap(serviceGameData.players)
+      };
+
+      gameData.players.forEach((currentPlayer) => {
+        currentPlayer.picks = this._buildMap(currentPlayer.picks);
+      });
+
+      this.gameDataModel.setGameData(gameData);
+
+      return gameData;
     });
   }
 
-  addPlayerForUser(user: firebase.User): Promise<void> {
-    const userEntry = {};
-    userEntry[user.uid] = {
-      uid: user.uid,
-      name: user.displayName
+  addPlayerForUser(user: firebase.User): Promise<any> {
+    const userEntry = {
+      name: user.displayName,
+      uid: user.uid
     };
 
-    return firebase.firestore().collection(this.GAME_DATA_COLLECTION_ID).doc(this.PLAYERS_DOC_ID).set(userEntry, {merge: true});
+    return firebase.database().ref('players/' + user.uid).set(userEntry);
   }
 
   setWeek(week: Week): Promise<void> {
-    return firebase.firestore().collection(this.GAME_DATA_COLLECTION_ID).doc(this.WEEK_DOC_ID).set(week, {merge: true}).then(() => {
+    return firebase.database().ref('week').set(week).then(() => {
       this.gameDataModel.setWeek(week);
     });
+  }
+
+  submitPick(pick: Pick, uid: string): Promise<void> {
+    return firebase.database().ref('players/' + uid + '/picks/' + pick.week).set(pick).then(() => {
+      this.gameDataModel.addPick(pick, uid);
+    });
+  }
+
+  private _buildMap(obj) {
+    const map = new Map();
+    if (obj) {
+      Object.keys(obj).forEach(key => {
+        map.set(key, obj[key]);
+      });
+    }
+    return map;
   }
 }

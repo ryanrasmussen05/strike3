@@ -25,11 +25,10 @@ export class PlayerPageComponent implements OnInit, OnDestroy {
       this.strike3Game = game;
     });
 
-    this.adminSubscription = this.userModel.currentUser$.merge(this.gameDataModel.allPlayers$).subscribe(() => {
+    this.adminSubscription = this.userModel.currentUser$.merge(this.gameDataModel.gameData$).subscribe(() => {
       const currentUser = this.userModel.currentUser$.getValue();
       this.admin = this.gameDataModel.canAccessAdmin(currentUser ? currentUser.uid : null);
     });
-
   }
 
   ngOnDestroy() {

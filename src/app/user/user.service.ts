@@ -1,29 +1,25 @@
 import { Injectable } from '@angular/core';
-import * as firebase from 'firebase';
 import { GameDataService } from '../gameData/game.data.service';
-import { PickService } from '../pick/pick.service';
 import { UserModel } from './user.model';
-import { PickModel } from '../pick/pick.model';
+import { GameData } from '../gameData/game.data';
 
-require('firebase/firestore');
+import * as firebase from 'firebase';
 
 @Injectable()
 export class UserService {
 
-  constructor(public gameDataService: GameDataService, public pickService: PickService, public userModel: UserModel) {
+  constructor(public gameDataService: GameDataService, public userModel: UserModel) {
   }
 
-  signIn(email: string, password: string): Promise<any> {
+  signIn(email: string, password: string): Promise<void> {
     return firebase.auth().signInWithEmailAndPassword(email, password).then((user: firebase.User) => {
       this.userModel.setCurrentUser(user);
-      return this.pickService.getViewablePicks();
     });
   }
 
   signOut(): Promise<void> {
     return firebase.auth().signOut().then(() => {
       this.userModel.setCurrentUser(null);
-      this.pickService.filterPicksForSignOut();
     });
   }
 

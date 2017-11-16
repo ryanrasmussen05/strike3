@@ -2,30 +2,47 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Player } from './player';
 import { Week } from './week';
+import { GameData } from './game.data';
+import { Pick } from './pick';
 
 @Injectable()
 export class GameDataModel {
-  allPlayers$: BehaviorSubject<Player[]> = new BehaviorSubject<Player[]>(null);
-  week$: BehaviorSubject<Week> = new BehaviorSubject<Week>(null);
+  gameData$: BehaviorSubject<GameData> = new BehaviorSubject<GameData>(null);
 
-  setPlayers(players: Player[]) {
-    console.log('set players');
-    this.allPlayers$.next(players);
+  setGameData(gameData: GameData) {
+    console.log('set game data');
+    this.gameData$.next(gameData);
   }
 
   setWeek(week: Week) {
     console.log('set week');
-    this.week$.next(week);
+
+    const gameData = this.gameData$.getValue();
+
+    if (!gameData) return false;
+
+    const updatedGameData = Object.create(gameData);
+    updatedGameData.week = week;
+
+    this.gameData$.next(updatedGameData);
+  }
+
+  addPick(pick: Pick, uid: string) {
+    console.log('add pick');
+
+    const updatedGameData: GameData = Object.create(this.gameData$.getValue());
+
+    updatedGameData.players.get(uid).picks.set(pick.week, pick);
+
+    this.gameData$.next(updatedGameData);
   }
 
   canAccessAdmin(uid: string): boolean {
-    const players = this.allPlayers$.getValue();
+    const gameData = this.gameData$.getValue();
 
-    if (!players || !uid) return false;
+    if (!gameData || !uid) return false;
 
-    const foundPlayer = players.find((currentPlayer) => {
-      return currentPlayer.uid === uid;
-    });
+    const foundPlayer = gameData.players.get(uid);
 
     if (!foundPlayer) return false;
 

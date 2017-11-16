@@ -1,12 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Pick } from './pick';
-import { Team } from '../team/team';
+import { Team } from './team';
 
 @Injectable()
-export class PickModel {
-  allPicks$: BehaviorSubject<Pick[]> = new BehaviorSubject<Pick[]>(null);
-  allPicksAdmin$: BehaviorSubject<Pick[]> = new BehaviorSubject<Pick[]>(null);
+export class TeamModel {
 
   allTeams: Team[] = [
     {name: 'Arizona Cardinals', abbreviation: 'ARZ'},
@@ -44,34 +40,4 @@ export class PickModel {
   ];
 
   allTeamsAdmin: Team[] = [{name: 'No Pick', abbreviation: 'NP'}].concat(this.allTeams);
-
-  setPicks(picks: Pick[]) {
-    console.log('set picks');
-    this.allPicks$.next(picks);
-  }
-
-  setPicksAdmin(picks: Pick[]) {
-    console.log('set picks admin');
-    this.allPicksAdmin$.next(picks);
-  }
-
-  addOrUpdatePick(pick: Pick, admin: boolean) {
-    let updatedPicks;
-
-    if (admin) {
-      updatedPicks = this.allPicksAdmin$.getValue().filter((currentPick) => {
-        return !(currentPick.uid === pick.uid && currentPick.week === pick.week);
-      });
-
-      updatedPicks.push(pick);
-      this.allPicksAdmin$.next(updatedPicks);
-    } else {
-      updatedPicks = this.allPicks$.getValue().filter((currentPick) => {
-        return !(currentPick.uid === pick.uid && currentPick.week === pick.week);
-      });
-
-      updatedPicks.push(pick);
-      this.allPicks$.next(updatedPicks);
-    }
-  }
 }

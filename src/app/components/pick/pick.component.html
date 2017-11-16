@@ -7,7 +7,7 @@
   <label>Team
     <select [(ngModel)]="selectedTeam">
       <option value="">Select Team</option>
-      <option *ngFor="let team of pickModel.allTeams" [value]="team.abbreviation">{{ team.name }}</option>
+      <option *ngFor="let team of teamModel.allTeams" [value]="team.abbreviation">{{ team.name }}</option>
     </select>
   </label>
 </div>
@@ -16,7 +16,7 @@
   <label>Team
     <select [(ngModel)]="selectedTeam">
       <option value="">Select Team</option>
-      <option *ngFor="let team of pickModel.allTeamsAdmin" [value]="team.abbreviation">{{ team.name }}</option>
+      <option *ngFor="let team of teamModel.allTeamsAdmin" [value]="team.abbreviation">{{ team.name }}</option>
     </select>
   </label>
 </div>

@@ -1,43 +1,42 @@
 import { Injectable } from '@angular/core';
-import { PickModel } from '../pick/pick.model';
 import { UserModel } from '../user/user.model';
-import { Pick, PickStatus } from '../pick/pick';
 import { GameDataModel } from '../gameData/game.data.model';
 import { Player } from '../gameData/player';
+import { Pick, PickStatus } from '../gameData/pick';
 import { Strike3Game, Strike3Pick, Strike3Player } from './strike3.game';
 import { Week } from '../gameData/week';
+import { GameData } from '../gameData/game.data';
 
 @Injectable()
 export class ViewModelUtil {
 
-  constructor(public gameDataModel: GameDataModel, public pickModel: PickModel, public userModel: UserModel) {
+  constructor(public gameDataModel: GameDataModel, public userModel: UserModel) {
   }
 
   buildViewModel(admin: boolean): Strike3Game {
     const currentUser = this.userModel.currentUser$.getValue();
-    const allPlayers: Player[] = this.gameDataModel.allPlayers$.getValue();
-    const week: Week = this.gameDataModel.week$.getValue();
+    const gameData: GameData = this.gameDataModel.gameData$.getValue();
+    const strike3Game: Strike3Game = { players: [], week: null };
 
-    const strike3Game: Strike3Game = { players: [], week: week };
+    if (!gameData) return strike3Game;
 
-    if (allPlayers) {
-      for (const player of allPlayers) {
+    strike3Game.week = gameData.week;
 
-        const strike3Player: Strike3Player = {
-          name: player.name,
-          picks: this._getStrike3PicksForPlayer(player, admin),
-          strikes: 0
-        };
+    gameData.players.forEach((player) => {
+      const strike3Player: Strike3Player = {
+        name: player.name,
+        picks: this._getStrike3PicksForPlayer(player, admin),
+        strikes: 0
+      };
 
-        strike3Player.strikes = this._getNumStrikesForPlayer(strike3Player);
+      strike3Player.strikes = this._getNumStrikesForPlayer(strike3Player);
 
-        if (!admin) {
-          strike3Player.signedIn = currentUser && player.uid === currentUser.uid
-        }
-
-        strike3Game.players.push(strike3Player);
+      if (!admin) {
+        strike3Player.signedIn = currentUser && player.uid === currentUser.uid;
       }
-    }
+
+      strike3Game.players.push(strike3Player);
+    });
 
     this._sortStrike3Players(strike3Game.players);
 
@@ -46,8 +45,8 @@ export class ViewModelUtil {
 
   private _getStrike3PicksForPlayer(player: Player, admin: boolean): Strike3Pick[] {
     const currentUser = this.userModel.currentUser$.getValue();
-    const week: Week = this.gameDataModel.week$.getValue();
-    const firstEditableWeek = week.locked ? week.weekNumber + 1 : week.weekNumber;
+    const gameData: GameData = this.gameDataModel.gameData$.getValue();
+    const firstEditableWeek = gameData.week.locked ? gameData.week.weekNumber + 1 : gameData.week.weekNumber;
 
     const strike3Picks: Strike3Pick[] = [];
     const picks: Pick[] = this._getPicksForPlayer(player, admin);
@@ -74,22 +73,33 @@ export class ViewModelUtil {
   }
 
   private _getPicksForPlayer(player: Player, admin: boolean): Pick[] {
-    const allPicks = admin ? this.pickModel.allPicksAdmin$.getValue() : this.pickModel.allPicks$.getValue();
-    let sortedPicks: Pick[] = [];
+    const currentUser = this.userModel.currentUser$.getValue();
+    const gameData: GameData = this.gameDataModel.gameData$.getValue();
+    const lastViewableWeek = gameData.week.locked ? gameData.week.weekNumber : gameData.week.weekNumber - 1;
 
-    if (allPicks) {
-      sortedPicks = allPicks.filter((currentPick) => {
-        return currentPick.uid === player.uid;
+    let playerPicks: Pick[] = [];
+
+    if (player.picks) {
+      player.picks.forEach((currentPick) => {
+        playerPicks.push(currentPick);
       });
-
-      this._addEmptyPicks(sortedPicks, player);
-      this._sortPicks(sortedPicks);
     }
 
-    return sortedPicks;
+    const canViewAllPicks = admin || (currentUser && currentUser.uid === player.uid);
+
+    if (!canViewAllPicks) {
+      playerPicks = playerPicks.filter((currentPick) => {
+        return currentPick.week <= lastViewableWeek;
+      });
+    }
+
+    this._addEmptyPicks(playerPicks);
+    this._sortPicks(playerPicks);
+
+    return playerPicks;
   }
 
-  private _addEmptyPicks(picks: Pick[], player: Player) {
+  private _addEmptyPicks(picks: Pick[]) {
     for (let week = 1; week <= 17; week++) {
       const foundPick = picks.find((currentPick) => {
         return currentPick.week === week;
@@ -98,7 +108,6 @@ export class ViewModelUtil {
       if (!foundPick) {
         picks.push({
           week: week,
-          uid: player.uid,
           status: PickStatus.Open
         });
       }

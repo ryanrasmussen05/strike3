@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Strike3Game, Strike3Pick } from '../../viewModel/strike3.game';
 import { GameDataService } from '../../gameData/game.data.service';
 import { Week } from '../../gameData/week';
-import { PickStatus } from '../../pick/pick';
+import { PickStatus } from '../../gameData/pick';
 
 @Component({
   selector: 'app-game-table',

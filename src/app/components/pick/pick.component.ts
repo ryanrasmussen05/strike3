@@ -1,8 +1,8 @@
 import { Component, Input, NgZone, OnInit } from '@angular/core';
-import { PickModel } from '../../pick/pick.model';
-import { Pick, PickStatus } from '../../pick/pick';
-import { PickService } from '../../pick/pick.service';
 import { Strike3Pick } from '../../viewModel/strike3.game';
+import { Pick, PickStatus } from '../../gameData/pick';
+import { TeamModel } from '../../gameData/team.model';
+import { GameDataService } from '../../gameData/game.data.service';
 
 @Component({
   selector: 'app-pick',
@@ -26,7 +26,7 @@ export class PickComponent implements OnInit {
   loading: boolean = false;
   PickStatus = PickStatus;
 
-  constructor(public zone: NgZone, public pickModel: PickModel, public pickService: PickService) {
+  constructor(public zone: NgZone, public gameDataService: GameDataService, public teamModel: TeamModel) {
   }
 
   ngOnInit() {
@@ -48,13 +48,11 @@ export class PickComponent implements OnInit {
 
     const pick: Pick = {
       week: this.selectedStrike3Pick.week,
-      uid: this.selectedStrike3Pick.uid,
       team: this.selectedTeam,
       status: this.pickStatus
     };
 
-    this.pickService.submitPick(pick).then(() => {
-      this.pickModel.addOrUpdatePick(pick,  this.admin);
+    this.gameDataService.submitPick(pick, this.selectedStrike3Pick.uid).then(() => {
       this.loading = false;
       this._closeModal();
     }).catch((error) => {
