@@ -85,7 +85,7 @@ export class ViewModelUtil {
       });
     }
 
-    const canViewAllPicks = admin || (currentUser && currentUser.uid === player.uid);
+    const canViewAllPicks = admin || (currentUser && currentUser.uid === player.uid) || player.admin;
 
     if (!canViewAllPicks) {
       playerPicks = playerPicks.filter((currentPick) => {
