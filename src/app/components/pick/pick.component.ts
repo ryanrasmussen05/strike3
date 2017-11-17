@@ -49,7 +49,8 @@ export class PickComponent implements OnInit {
     const pick: Pick = {
       week: this.selectedStrike3Pick.week,
       team: this.selectedTeam,
-      status: this.pickStatus
+      status: this.pickStatus,
+      time: 1510869962418 //TODO remove
     };
 
     this.gameDataService.submitPick(pick, this.selectedStrike3Pick.uid).then(() => {
