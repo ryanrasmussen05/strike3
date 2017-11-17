@@ -1,0 +1,28 @@
+<div id="pick-log">
+  <h1 class="center">Pick Log</h1>
+
+  <div class="flex justify-center items-center mb2">
+    <select class="auto-width m0" [(ngModel)]="selectedWeek" (change)="weekChange()">
+      <option *ngFor="let number of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]" [value]="number">{{ "Week " + number }}</option>
+    </select>
+  </div>
+
+  <div *ngIf="playerLogs.length > 0">
+    <table class="ml-auto mr-auto mb4">
+      <tr>
+        <th>Picker</th>
+        <th>Pick</th>
+        <th>Time</th>
+      </tr>
+      <tr *ngFor="let playerLog of playerLogs">
+        <td class="log-player center"><div class="mx3">{{ playerLog.playerName }}</div></td>
+        <td class="log-team center"><div class="mx3">{{ playerLog.team }}</div></td>
+        <td class="log-time center"><div class="mx3">{{ playerLog.time | date:'short'}}</div></td>
+      </tr>
+    </table>
+  </div>
+
+  <div *ngIf="playerLogs.length <= 0" class="center">
+    {{ "No Picks Have Been Made for Week " + selectedWeek }}
+  </div>
+</div>

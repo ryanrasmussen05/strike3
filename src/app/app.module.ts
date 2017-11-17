@@ -22,6 +22,7 @@ import { PlayerPageComponent } from './components/playerPage/player.page.compone
 import { PlayerPageResolver } from './components/playerPage/player.page.resolver';
 import { GameTableComponent } from './components/gameTable/game.table.component';
 import { TeamModel } from './gameData/team.model';
+import { PickLogComponent } from './components/adminPage/pickLog/pick.log.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { TeamModel } from './gameData/team.model';
     LoadingComponent,
     PickComponent,
     AdminPageComponent,
-    GameTableComponent
+    GameTableComponent,
+    PickLogComponent
   ],
   imports: [
     BrowserModule,
