@@ -32,7 +32,14 @@ export class GameDataModel {
 
     const updatedGameData: GameData = Object.create(this.gameData$.getValue());
 
-    updatedGameData.players.get(uid).picks.set(pick.week, pick);
+    const existingPick = updatedGameData.players.get(uid).picks.get(pick.week);
+
+    if (existingPick) {
+      Object.assign(existingPick, pick);
+      updatedGameData.players.get(uid).picks.set(pick.week, existingPick);
+    } else {
+      updatedGameData.players.get(uid).picks.set(pick.week, pick);
+    }
 
     this.gameData$.next(updatedGameData);
   }

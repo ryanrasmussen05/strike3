@@ -49,7 +49,7 @@ export class GameDataService {
   }
 
   submitPick(pick: Pick, uid: string): Promise<void> {
-    return firebase.database().ref('players/' + uid + '/picks/' + pick.week).set(pick).then(() => {
+    return firebase.database().ref('players/' + uid + '/picks/' + pick.week).update(pick).then(() => {
       this.gameDataModel.addOrUpdatePick(pick, uid);
     });
   }
