@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { LoadingService } from '../../loading/loading.service';
 import { GameDataService } from '../../gameData/game.data.service';
-import { GameDataModel } from '../../gameData/game.data.model';
-import { UserModel } from '../../user/user.model';
 
 @Injectable()
 export class AdminPageResolver implements Resolve<boolean> {

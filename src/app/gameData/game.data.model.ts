@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Player } from './player';
 import { Week } from './week';
 import { GameData } from './game.data';
 import { Pick } from './pick';

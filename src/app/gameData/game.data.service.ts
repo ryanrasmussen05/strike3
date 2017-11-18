@@ -3,7 +3,6 @@ import { GameDataModel } from './game.data.model';
 import { Week } from './week';
 import { GameData } from './game.data';
 import { Pick } from './pick';
-
 import * as firebase from 'firebase';
 
 @Injectable()

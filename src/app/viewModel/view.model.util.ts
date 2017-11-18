@@ -4,7 +4,6 @@ import { GameDataModel } from '../gameData/game.data.model';
 import { Player } from '../gameData/player';
 import { Pick, PickStatus } from '../gameData/pick';
 import { Strike3Game, Strike3Pick, Strike3Player } from './strike3.game';
-import { Week } from '../gameData/week';
 import { GameData } from '../gameData/game.data';
 
 @Injectable()

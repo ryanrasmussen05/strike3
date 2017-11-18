@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import * as firebase from 'firebase';
 import { UserModel } from '../../user/user.model';
 import { UserService } from '../../user/user.service';
 import { Router } from '@angular/router';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-header',

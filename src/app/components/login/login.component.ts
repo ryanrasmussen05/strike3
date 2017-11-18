@@ -1,7 +1,7 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import * as firebase from 'firebase';
 import { UserService } from '../../user/user.service';
 import { GameDataService } from '../../gameData/game.data.service';
+import * as firebase from 'firebase';
 
 enum LoginState { Login, Create, ResetPassword, ResetComplete }
 enum ErrorType { Create, Reset }
