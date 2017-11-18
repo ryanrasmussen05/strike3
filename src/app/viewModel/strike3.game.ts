@@ -16,6 +16,7 @@ export interface Strike3Player {
   picks: Strike3Pick[];
   signedIn?: boolean;
   strikes: number;
+  admin: boolean;
 }
 
 export interface Strike3Game {

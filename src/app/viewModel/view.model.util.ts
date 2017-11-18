@@ -26,7 +26,8 @@ export class ViewModelUtil {
       const strike3Player: Strike3Player = {
         name: player.name,
         picks: this._getStrike3PicksForPlayer(player, admin),
-        strikes: 0
+        strikes: 0,
+        admin: player.admin
       };
 
       strike3Player.strikes = this._getNumStrikesForPlayer(strike3Player);
