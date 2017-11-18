@@ -23,7 +23,7 @@
   </div>
 
   <div class="player-wrapper flex ml-auto mr-auto" *ngFor="let strike3Player of game.players" [class.current-user]="strike3Player.signedIn">
-    <div class="player-name flex-none center truncate">{{ strike3Player.name }}</div>
+    <div class="player-name flex-none center truncate">{{ strike3Player.admin ? strike3Player.name + " (admin)" : strike3Player.name }}</div>
     <div *ngFor="let strike3Pick of strike3Player.picks" class="pick flex-none center" [class.editable]="strike3Pick.canEdit" (click)="openPickModal(strike3Pick)"
          [ngClass]="{'win': strike3Pick.status === pickStatus.Win, 'loss': strike3Pick.status === pickStatus.Loss, 'tie': strike3Pick.status === pickStatus.Tie, 'eliminated': strike3Pick.eliminated}" >
       {{ strike3Pick.team }}
