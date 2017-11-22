@@ -7,13 +7,14 @@ import { NFLGame, NFLScheduleUtil } from '../gameData/nfl.schedule';
 @Injectable()
 export class NFLService {
   nflApiEndpoint = 'https://api.mysportsfeeds.com/v1.1/pull/nfl/2017-2018-regular/full_game_schedule.json';
+  nflApiAuth = 'rlras05:strike3'; //username:password
 
   constructor(public http: HttpClient) {
   }
 
   getNflSchedule(): Promise<Map<number, NFLGame[]>> {
     let headers = new HttpHeaders();
-    headers = headers.append('Authorization', 'Basic ' + btoa('rlras05:strike3'));
+    headers = headers.append('Authorization', 'Basic ' + btoa(this.nflApiAuth));
 
     return this.http.get(this.nflApiEndpoint, { headers: headers }).toPromise().then((nflServiceSchedule: NFLServiceSchedule) => {
       return NFLScheduleUtil.ParseFromService(nflServiceSchedule);
