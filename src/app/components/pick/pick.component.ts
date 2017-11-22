@@ -3,6 +3,8 @@ import { Strike3Pick } from '../../viewModel/strike3.game';
 import { Pick, PickStatus } from '../../gameData/pick';
 import { TeamModel } from '../../gameData/team.model';
 import { GameDataService } from '../../gameData/game.data.service';
+import { GameDataModel } from '../../gameData/game.data.model';
+import { Team } from '../../gameData/team';
 
 @Component({
   selector: 'app-pick',
@@ -15,18 +17,21 @@ export class PickComponent implements OnInit {
       this.selectedTeam = value.team ? value.team : '';
       this.pickStatus = value.status;
       this.selectedStrike3Pick = value;
+      this.filterGamesForCurrentTime();
     }
   }
 
   selectedStrike3Pick: Strike3Pick;
   selectedTeam: string = '';
   pickStatus: PickStatus;
+  filteredTeams: Team[] = [];
 
   error: boolean = false;
   loading: boolean = false;
   PickStatus = PickStatus;
 
-  constructor(public zone: NgZone, public gameDataService: GameDataService, public teamModel: TeamModel) {
+  constructor(public zone: NgZone, public gameDataService: GameDataService, public teamModel: TeamModel,
+              public gameDataModel: GameDataModel) {
   }
 
   ngOnInit() {
@@ -37,6 +42,21 @@ export class PickComponent implements OnInit {
         this.error = false;
         this.loading = false;
       });
+    });
+  }
+
+  filterGamesForCurrentTime() {
+    const availTeams = this.gameDataModel.getAvailableTeamsForPlayerAndWeek(this.selectedStrike3Pick.uid, this.selectedStrike3Pick.week);
+    const filteredTeams = [];
+
+    this.teamModel.allTeams.forEach((currentTeam) => {
+      const foundAvailableTeam = availTeams.find((currentAvailTeam) => {
+        return currentAvailTeam === currentTeam.abbreviation;
+      });
+
+      if (foundAvailableTeam) {
+        currentTeam.time = new Date()
+      }
     });
   }
 

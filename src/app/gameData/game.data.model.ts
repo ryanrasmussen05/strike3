@@ -76,4 +76,45 @@ export class GameDataModel {
 
     return foundPlayer.superuser;
   }
+
+  getAvailableTeamsForPlayerAndWeek(uid: string, week: number): string[] {
+    const teamsYetToPlay = this._filterTeamsForCurrentTime(week);
+    const previousTeams = this._getPreviousTeamsForPlayer(uid, week);
+
+    return teamsYetToPlay.filter((teamYetToPlay) => {
+      const foundPreviousTeam = previousTeams.find((previousTeam) => {
+        return previousTeam === teamYetToPlay;
+      });
+
+      return !foundPreviousTeam;
+    });
+  }
+
+  private _filterTeamsForCurrentTime(week: number): string[] {
+    const currentTime = new Date().getTime();
+    const availableTeams: string[] = [];
+
+    this.gameData$.getValue().schedule.get(week).forEach((currentNflGame) => {
+      if (currentTime < currentNflGame.time) {
+        availableTeams.push(currentNflGame.homeTeam, currentNflGame.awayTeam);
+      }
+    });
+
+    return availableTeams;
+  }
+
+  private _getPreviousTeamsForPlayer(uid: string, week: number): string[] {
+    const previousTeams: string[] = [];
+
+    const playerPicks: Map<number, Pick> = this.gameData$.getValue().players.get(uid).picks;
+
+    for (let index = 1; index < week; index++) {
+      const pick = playerPicks.get(index);
+      if (pick) {
+        previousTeams.push(pick.team);
+      }
+    }
+
+    return previousTeams;
+  }
 }
