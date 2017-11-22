@@ -17,12 +17,14 @@ import { PickComponent } from './components/pick/pick.component';
 import { AdminViewModel } from './viewModel/admin.view.model';
 import { ViewModelUtil } from './viewModel/view.model.util';
 import { AdminPageComponent } from './components/adminPage/admin.page.component';
-import { AdminPageResolver } from './components/adminPage/admin.page.resolver';
 import { PlayerPageComponent } from './components/playerPage/player.page.component';
-import { PlayerPageResolver } from './components/playerPage/player.page.resolver';
 import { GameTableComponent } from './components/gameTable/game.table.component';
 import { TeamModel } from './gameData/team.model';
 import { PickLogComponent } from './components/adminPage/pickLog/pick.log.component';
+import { NFLService } from './nfl/nfl.service';
+import { HttpClientModule } from '@angular/common/http';
+import { SuperuserPageComponent } from './components/superuserPage/superuser.page.component';
+import { GameDataResolver } from './components/game.data.resolver';
 
 @NgModule({
   declarations: [
@@ -34,12 +36,14 @@ import { PickLogComponent } from './components/adminPage/pickLog/pick.log.compon
     PickComponent,
     AdminPageComponent,
     GameTableComponent,
-    PickLogComponent
+    PickLogComponent,
+    SuperuserPageComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [
     UserModel,
@@ -51,8 +55,8 @@ import { PickLogComponent } from './components/adminPage/pickLog/pick.log.compon
     AdminViewModel,
     ViewModelUtil,
     LoadingService,
-    PlayerPageResolver,
-    AdminPageResolver
+    NFLService,
+    GameDataResolver
   ],
   bootstrap: [AppComponent]
 })

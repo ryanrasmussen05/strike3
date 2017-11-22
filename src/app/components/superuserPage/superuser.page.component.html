@@ -1,0 +1,18 @@
+<div *ngIf="!superuser" class="mr2 center">
+  Access Denied: Sign in as superuser to view this page
+</div>
+
+<div *ngIf="superuser" class="flex flex-column">
+
+  <div class="m1">
+    <button class="button" routerLink="../player">Home</button>
+    <button class="button" (click)="fetchSchedule()">Fetch Updated Schedule</button>
+    <button *ngIf="schedule" class="button" (click)="postSchedule()">Post Updated Schedule</button>
+  </div>
+
+  <app-game-table [admin]="true" [strike3Game]="strike3Game" class="mb4"></app-game-table>
+
+  <app-pick-log class="mb4"></app-pick-log>
+
+</div>
+

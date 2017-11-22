@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Week } from './week';
 import { GameData } from './game.data';
 import { Pick } from './pick';
+import { NFLGame } from './nfl.schedule';
 
 @Injectable()
 export class GameDataModel {
@@ -22,6 +23,15 @@ export class GameDataModel {
 
     const updatedGameData = Object.create(gameData);
     updatedGameData.week = week;
+
+    this.gameData$.next(updatedGameData);
+  }
+
+  setNflSchedule(nflSchedule: Map<number, NFLGame[]>) {
+    console.log('set schedule');
+
+    const updatedGameData: GameData = Object.create(this.gameData$.getValue());
+    updatedGameData.schedule = nflSchedule;
 
     this.gameData$.next(updatedGameData);
   }
@@ -52,6 +62,18 @@ export class GameDataModel {
 
     if (!foundPlayer) return false;
 
-    return foundPlayer.admin || foundPlayer.superuser;
+    return foundPlayer.admin;
+  }
+
+  canAccessSuperuser(uid: string): boolean {
+    const gameData = this.gameData$.getValue();
+
+    if (!gameData || !uid) return false;
+
+    const foundPlayer = gameData.players.get(uid);
+
+    if (!foundPlayer) return false;
+
+    return foundPlayer.superuser;
   }
 }

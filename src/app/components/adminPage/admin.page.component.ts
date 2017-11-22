@@ -12,6 +12,7 @@ import 'rxjs/add/operator/merge';
 })
 export class AdminPageComponent implements OnInit, OnDestroy {
   admin: boolean = false;
+  superuser: boolean = false;
   strike3Game: Strike3Game;
 
   playerSubscription: Subscription;
@@ -28,6 +29,7 @@ export class AdminPageComponent implements OnInit, OnDestroy {
     this.playerSubscription = this.userModel.currentUser$.merge(this.gameDataModel.gameData$).subscribe(() => {
       const currentUser = this.userModel.currentUser$.getValue();
       this.admin = this.gameDataModel.canAccessAdmin(currentUser ? currentUser.uid : null);
+      this.superuser = this.gameDataModel.canAccessSuperuser(currentUser ? currentUser.uid : null);
     });
   }
 

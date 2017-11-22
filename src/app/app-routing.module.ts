@@ -1,21 +1,25 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminPageComponent } from './components/adminPage/admin.page.component';
-import { AdminPageResolver } from './components/adminPage/admin.page.resolver';
 import { PlayerPageComponent } from './components/playerPage/player.page.component';
-import { PlayerPageResolver } from './components/playerPage/player.page.resolver';
+import { SuperuserPageComponent } from './components/superuserPage/superuser.page.component';
+import { GameDataResolver } from './components/game.data.resolver';
 
 const routes: Routes = [
   { path: '', redirectTo: '/player', pathMatch: 'full' },
   {
     path: 'player',
     component: PlayerPageComponent,
-    resolve: { dataLoaded: PlayerPageResolver }
+    resolve: { dataLoaded: GameDataResolver }
   },
   {
     path: 'admin',
     component: AdminPageComponent,
-    resolve: { dataLoaded: AdminPageResolver }
+    resolve: { dataLoaded: GameDataResolver }
+  }, {
+    path: 'superuser',
+    component: SuperuserPageComponent,
+    resolve: { dataLoaded: GameDataResolver }
   }
 ];
 

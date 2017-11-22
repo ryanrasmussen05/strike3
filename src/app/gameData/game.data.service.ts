@@ -3,6 +3,7 @@ import { GameDataModel } from './game.data.model';
 import { Week } from './week';
 import { GameData } from './game.data';
 import { Pick } from './pick';
+import { NFLGame, NFLScheduleUtil } from './nfl.schedule';
 import * as firebase from 'firebase';
 
 @Injectable()
@@ -19,7 +20,8 @@ export class GameDataService {
       //we need to convert JS objects to ES6 Maps
       const gameData: GameData = {
         week: serviceGameData.week,
-        players: this._buildMap(serviceGameData.players, false)
+        players: this._buildMap(serviceGameData.players, false),
+        schedule: this._buildMap(serviceGameData.schedule, true)
       };
 
       gameData.players.forEach((currentPlayer) => {
@@ -50,6 +52,12 @@ export class GameDataService {
   submitPick(pick: Pick, uid: string): Promise<void> {
     return firebase.database().ref('players/' + uid + '/picks/' + pick.week).update(pick).then(() => {
       this.gameDataModel.addOrUpdatePick(pick, uid);
+    });
+  }
+
+  setSchedule(nflSchedule: Map<number, NFLGame[]>): Promise<void> {
+    return firebase.database().ref('schedule').set(NFLScheduleUtil.ToJson(nflSchedule)).then(() => {
+      this.gameDataModel.setNflSchedule(nflSchedule);
     });
   }
 

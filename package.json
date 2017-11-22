@@ -25,6 +25,8 @@
     "firebase": "4.6.1",
     "font-awesome": "4.7.0",
     "foundation-sites": "6.4.3",
+    "moment": "2.19.2",
+    "moment-timezone": "^0.5.14",
     "rxjs": "5.5.2",
     "zone.js": "0.8.18"
   },
