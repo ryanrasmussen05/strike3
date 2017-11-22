@@ -16,7 +16,7 @@ export class NFLService {
     headers = headers.append('Authorization', 'Basic ' + btoa('rlras05:strike3'));
 
     return this.http.get(this.nflApiEndpoint, { headers: headers }).toPromise().then((nflServiceSchedule: NFLServiceSchedule) => {
-      return NFLScheduleUtil.parseFromService(nflServiceSchedule);
+      return NFLScheduleUtil.ParseFromService(nflServiceSchedule);
     });
   }
 }

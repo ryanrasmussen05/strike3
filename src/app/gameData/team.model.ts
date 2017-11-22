@@ -5,7 +5,7 @@ import { Team } from './team';
 export class TeamModel {
 
   allTeams: Team[] = [
-    {name: 'Arizona Cardinals', abbreviation: 'ARI'},
+    {name: 'Arizona Cardinals', abbreviation: 'ARZ'},
     {name: 'Atlanta Falcons', abbreviation: 'ATL'},
     {name: 'Baltimore Ravens', abbreviation: 'BAL'},
     {name: 'Buffalo Bills', abbreviation: 'BUF'},
@@ -22,7 +22,7 @@ export class TeamModel {
     {name: 'Jacksonville Jaguars', abbreviation: 'JAX'},
     {name: 'Kansas City Chiefs', abbreviation: 'KC'},
     {name: 'Los Angeles Chargers', abbreviation: 'LAC'},
-    {name: 'Los Angeles Rams', abbreviation: 'LA'},
+    {name: 'Los Angeles Rams', abbreviation: 'LAR'},
     {name: 'Miami Dolphins', abbreviation: 'MIA'},
     {name: 'Minnesota Vikings', abbreviation: 'MIN'},
     {name: 'New England Patriots', abbreviation: 'NE'},

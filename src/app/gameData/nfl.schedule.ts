@@ -9,13 +9,17 @@ export interface NFLGame {
 
 export class NFLScheduleUtil {
 
-  static parseFromService(nflServiceSchedule: NFLServiceSchedule): Map<number, NFLGame[]> {
+  static ParseFromService(nflServiceSchedule: NFLServiceSchedule): Map<number, NFLGame[]> {
     const weeks = new Map<number, NFLGame[]>();
 
     nflServiceSchedule.fullgameschedule.gameentry.forEach((nflServiceGame) => {
       const week = parseInt(nflServiceGame.week);
-      const homeTeam = nflServiceGame.homeTeam.Abbreviation;
-      const awayTeam = nflServiceGame.awayTeam.Abbreviation;
+
+      let homeTeam = nflServiceGame.homeTeam.Abbreviation;
+      let awayTeam = nflServiceGame.awayTeam.Abbreviation;
+
+      homeTeam = NFLScheduleUtil.UpdateTeamAbbreviations(homeTeam);
+      awayTeam = NFLScheduleUtil.UpdateTeamAbbreviations(awayTeam);
 
       const timeString = moment(nflServiceGame.time, ['h:mm A']).format('HH:mm');
       const dateTimeString = nflServiceGame.date + ' ' + timeString;
@@ -35,6 +39,12 @@ export class NFLScheduleUtil {
     });
 
     return weeks;
+  }
+
+  static UpdateTeamAbbreviations(team: string): string {
+    if (team === 'ARI') return 'ARZ';
+    if (team === 'LA') return 'LAR';
+    return team;
   }
 
   static ToJson(nflSchedule: Map<number, NFLGame[]>): any {
