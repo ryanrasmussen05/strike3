@@ -1,5 +1,6 @@
 import { NFLServiceSchedule } from '../nfl/nfl.service.schedule';
-import * as moment from 'moment-timezone';
+
+declare const moment: any;
 
 export interface NFLGame {
   homeTeam: string;
