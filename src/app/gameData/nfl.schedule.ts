@@ -5,6 +5,7 @@ export interface NFLGame {
   homeTeam: string;
   awayTeam: string;
   time: number;
+  timeString: string;
 }
 
 export class NFLScheduleUtil {
@@ -28,7 +29,8 @@ export class NFLScheduleUtil {
       const nflGame: NFLGame = {
         homeTeam: homeTeam,
         awayTeam: awayTeam,
-        time: gameMoment.valueOf()
+        time: gameMoment.valueOf(),
+        timeString: new Date(gameMoment.valueOf()).toLocaleString()
       };
 
       if (weeks.get(week)) {
