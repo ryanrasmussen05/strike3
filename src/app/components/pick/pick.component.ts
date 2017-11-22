@@ -55,9 +55,11 @@ export class PickComponent implements OnInit {
       });
 
       if (foundAvailableTeam) {
-        currentTeam.time = new Date()
+        filteredTeams.push(currentTeam);
       }
     });
+
+    this.filteredTeams = filteredTeams;
   }
 
   submitPick() {
