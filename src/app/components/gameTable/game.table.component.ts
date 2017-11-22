@@ -14,16 +14,16 @@ export class GameTableComponent implements OnInit, OnDestroy {
 
   @Input('strike3Game')
   set strike3Game(value: Strike3Game) {
-    this.week = value.week.weekNumber;
-    this.locked = value.week.locked;
+    this.weekNumber = value.week.weekNumber;
+    this.isWeekPublic = value.week.public;
     this.game = value;
     this.weekChange();
   }
 
   game: Strike3Game;
 
-  week: number;
-  locked: boolean;
+  weekNumber: number;
+  isWeekPublic: boolean;
   weekChanged: boolean = false;
   savingWeek: boolean = false;
 
@@ -52,13 +52,13 @@ export class GameTableComponent implements OnInit, OnDestroy {
   }
 
   weekChange() {
-    this.weekChanged = (+this.week !== this.game.week.weekNumber || this.locked !== this.game.week.locked);
+    this.weekChanged = (+this.weekNumber !== this.game.week.weekNumber || this.isWeekPublic !== this.game.week.public);
   }
 
   saveWeek() {
     const week: Week = {
-      weekNumber: +this.week,
-      locked: this.locked
+      weekNumber: +this.weekNumber,
+      public: this.isWeekPublic
     };
 
     this.savingWeek = true;

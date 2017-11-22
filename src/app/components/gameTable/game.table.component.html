@@ -2,15 +2,14 @@
 
   <div *ngIf="!admin" class="full-width flex justify-center items-center mb2">
     <span class="size-24 weight-500">{{ "Week " + game.week?.weekNumber }}</span>
-    <span class="size-16 ml1">{{ game.week?.locked ? "(Locked)" : "(Open)" }}</span>
   </div>
 
   <div *ngIf="admin" class="full-width flex justify-center items-center mb2">
-    <select class="auto-width m0" [(ngModel)]="week" (change)="weekChange()">
+    <select class="auto-width m0" [(ngModel)]="weekNumber" (change)="weekChange()">
       <option *ngFor="let number of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]" [value]="number">{{ "Week " + number }}</option>
     </select>
-    <label for="lock-checkbox" class="size-16 ml2 mr1 clickable">Locked</label>
-    <input id="lock-checkbox" type="checkbox" [(ngModel)]="locked" (change)="weekChange()" class="m0">
+    <label for="lock-checkbox" class="size-16 ml2 mr1 clickable">Viewable To All Pickers</label>
+    <input id="lock-checkbox" type="checkbox" [(ngModel)]="isWeekPublic" (change)="weekChange()" class="m0">
     <button class="button ml2" *ngIf="weekChanged" (click)="saveWeek()" [disabled]="savingWeek">
       <span *ngIf="!savingWeek">Save Changes</span>
       <i *ngIf="savingWeek" class="fa fa-spinner fa-spin"></i>

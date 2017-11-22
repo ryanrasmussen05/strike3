@@ -46,7 +46,7 @@ export class ViewModelUtil {
   private _getStrike3PicksForPlayer(player: Player, admin: boolean): Strike3Pick[] {
     const currentUser = this.userModel.currentUser$.getValue();
     const gameData: GameData = this.gameDataModel.gameData$.getValue();
-    const firstEditableWeek = gameData.week.locked ? gameData.week.weekNumber + 1 : gameData.week.weekNumber;
+    const firstEditableWeek = gameData.week.weekNumber;
 
     const strike3Picks: Strike3Pick[] = [];
     const picks: Pick[] = this._getPicksForPlayer(player, admin);
@@ -75,7 +75,7 @@ export class ViewModelUtil {
   private _getPicksForPlayer(player: Player, admin: boolean): Pick[] {
     const currentUser = this.userModel.currentUser$.getValue();
     const gameData: GameData = this.gameDataModel.gameData$.getValue();
-    const lastViewableWeek = gameData.week.locked ? gameData.week.weekNumber : gameData.week.weekNumber - 1;
+    const lastViewableWeek = gameData.week.public ? gameData.week.weekNumber : gameData.week.weekNumber - 1;
 
     let playerPicks: Pick[] = [];
 
@@ -89,7 +89,7 @@ export class ViewModelUtil {
 
     if (!canViewAllPicks) {
       playerPicks = playerPicks.filter((currentPick) => {
-        return currentPick.week <= lastViewableWeek;
+        return (currentPick.week <= lastViewableWeek) || this._hasGameStarted(currentPick.week, currentPick.team);
       });
     }
 
@@ -97,6 +97,23 @@ export class ViewModelUtil {
     this._sortPicks(playerPicks);
 
     return playerPicks;
+  }
+
+  private _hasGameStarted(week: number, team: string): boolean {
+    if (team === 'NP') return true;
+
+    const gameData: GameData = this.gameDataModel.gameData$.getValue();
+
+    const nflGame = gameData.schedule.get(week).find((currentNflGame) => {
+      return currentNflGame.awayTeam === team || currentNflGame.homeTeam === team;
+    });
+
+    if (nflGame) {
+      const currentTime = new Date().getTime();
+      return currentTime > nflGame.time;
+    }
+
+    return false;
   }
 
   private _addEmptyPicks(picks: Pick[]) {
