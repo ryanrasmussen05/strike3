@@ -2,6 +2,8 @@ import { NFLServiceSchedule } from '../nfl/nfl.service.schedule';
 
 declare const moment: any;
 
+export type NFLSchedule = Map<number, NFLGame[]>;
+
 export interface NFLGame {
   homeTeam: string;
   awayTeam: string;
@@ -45,7 +47,6 @@ export class NFLScheduleUtil {
   }
 
   static UpdateTeamAbbreviations(team: string): string {
-    if (team === 'ARI') return 'ARZ';
     if (team === 'LA') return 'LAR';
     return team;
   }

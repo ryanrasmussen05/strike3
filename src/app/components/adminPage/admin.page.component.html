@@ -6,6 +6,7 @@
 
   <div class="m1">
     <button class="button" routerLink="../player">Home</button>
+    <button class="button" (click)="updateResults()">Update Results</button>
   </div>
 
   <app-game-table [admin]="true" [strike3Game]="strike3Game" class="mb4"></app-game-table>

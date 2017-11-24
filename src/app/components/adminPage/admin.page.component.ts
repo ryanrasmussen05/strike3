@@ -4,6 +4,8 @@ import { GameDataModel } from '../../gameData/game.data.model';
 import { Subscription } from 'rxjs/Subscription';
 import { AdminViewModel } from '../../viewModel/admin.view.model';
 import { Strike3Game } from '../../viewModel/strike3.game';
+import { GameDataService } from '../../gameData/game.data.service';
+import { LoadingService } from '../../loading/loading.service';
 
 import 'rxjs/add/operator/merge';
 
@@ -18,7 +20,8 @@ export class AdminPageComponent implements OnInit, OnDestroy {
   playerSubscription: Subscription;
   adminViewSubscription: Subscription;
 
-  constructor(public userModel: UserModel, public gameDataModel: GameDataModel, public adminViewModel: AdminViewModel) {
+  constructor(public userModel: UserModel, public gameDataModel: GameDataModel, public gameDataService: GameDataService,
+              public adminViewModel: AdminViewModel, public loadingService: LoadingService) {
   }
 
   ngOnInit() {
@@ -36,5 +39,16 @@ export class AdminPageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.playerSubscription.unsubscribe();
     this.adminViewSubscription.unsubscribe();
+  }
+
+  updateResults() {
+    this.loadingService.loading();
+
+    this.gameDataService.updateResults().then(() => {
+      this.loadingService.done();
+    }).catch((error) => {
+      console.error(error);
+      this.loadingService.done();
+    });
   }
 }
