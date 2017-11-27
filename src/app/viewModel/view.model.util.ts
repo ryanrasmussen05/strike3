@@ -148,7 +148,9 @@ export class ViewModelUtil {
         strike3Pick.canEdit = false;
       }
       if (strike3Pick.status === PickStatus.Loss) {
-        numStrikes++;
+        numStrikes = numStrikes + 1;
+      } else if (strike3Pick.status === PickStatus.Tie) {
+        numStrikes = numStrikes + 0.5;
       }
     }
 

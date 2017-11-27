@@ -10,6 +10,7 @@ export class NFLScoreboardUtil {
   static ParseFromService(nflServiceScoreboard: NFLServiceScoreboard): NFLScoreboard {
     const nflScoreboard = new Map<number, NFLWeekScoreboard>();
 
+    if (!nflServiceScoreboard) return nflScoreboard;
     if (!nflServiceScoreboard.scoreboard.gameScore) return nflScoreboard;
 
     nflServiceScoreboard.scoreboard.gameScore.forEach((currentGameScore) => {
