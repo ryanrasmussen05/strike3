@@ -10,7 +10,7 @@
     </select>
     <label for="lock-checkbox" class="size-16 ml2 mr1 clickable">Viewable To All Pickers</label>
     <input id="lock-checkbox" type="checkbox" [(ngModel)]="isWeekPublic" (change)="weekChange()" class="m0">
-    <button class="week-change-button button ml2" *ngIf="weekChanged" (click)="saveWeek()" [disabled]="savingWeek">
+    <button class="button ml2" *ngIf="weekChanged" (click)="saveWeek()" [disabled]="savingWeek">
       <span *ngIf="!savingWeek">Save Changes</span>
       <i *ngIf="savingWeek" class="fa fa-spinner fa-spin"></i>
     </button>
