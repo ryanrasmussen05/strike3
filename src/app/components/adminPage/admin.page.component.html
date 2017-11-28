@@ -7,6 +7,8 @@
   <div class="m1">
     <button class="button" routerLink="../player">Home</button>
     <button class="button" (click)="updateResults()">Update Results</button>
+    <button class="button" (click)="screenshot(screenshotLink)">Download Spreadsheet Image</button>
+    <a href="#" target="_blank" #screenshotLink download="strike3.png" hidden></a>
   </div>
 
   <app-game-table [admin]="true" [strike3Game]="strike3Game" class="mb4"></app-game-table>

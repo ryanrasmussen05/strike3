@@ -9,6 +9,8 @@ import { LoadingService } from '../../loading/loading.service';
 
 import 'rxjs/add/operator/merge';
 
+declare const html2canvas: any;
+
 @Component({
   templateUrl: './admin.page.component.html'
 })
@@ -49,6 +51,17 @@ export class AdminPageComponent implements OnInit, OnDestroy {
     }).catch((error) => {
       console.error(error);
       this.loadingService.done();
+    });
+  }
+
+  screenshot(linkElement: HTMLAnchorElement) {
+    html2canvas($('#game-table-results'), {
+      background: '#ffffff',
+      width: 1050,
+      onrendered: function(canvas) {
+        linkElement.href = canvas.toDataURL('image/png');
+        linkElement.click();
+      }
     });
   }
 }

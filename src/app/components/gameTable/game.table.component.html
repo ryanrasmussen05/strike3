@@ -1,4 +1,4 @@
-<div id="game-table" class="flex flex-column items-start">
+<div id="game-table">
 
   <div *ngIf="!admin" class="full-width flex justify-center items-center mb2">
     <span class="size-24 weight-500">{{ "Week " + game.week?.weekNumber }}</span>
@@ -16,16 +16,20 @@
     </button>
   </div>
 
-  <div class="flex ml-auto mr-auto size-12 weight-500">
-    <div class="player-name flex-none"></div>
-    <div *ngFor="let number of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]" class="pick flex-none center">{{ number }}</div>
-  </div>
+  <div class="full-width flex flex-column items-start">
+    <div id="game-table-results" class="mx-auto pt1">
+      <div class="flex size-12 weight-500">
+        <div class="player-name flex-none"></div>
+        <div *ngFor="let number of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]" class="pick flex-none center">{{ number }}</div>
+      </div>
 
-  <div class="player-wrapper flex ml-auto mr-auto" *ngFor="let strike3Player of game.players" [class.current-user]="strike3Player.signedIn">
-    <div class="player-name flex-none center truncate">{{ strike3Player.admin ? strike3Player.name + " (admin)" : strike3Player.name }}</div>
-    <div *ngFor="let strike3Pick of strike3Player.picks" class="pick flex-none center" [class.editable]="strike3Pick.canEdit" (click)="openPickModal(strike3Pick)"
-         [ngClass]="{'win': strike3Pick.status === pickStatus.Win, 'loss': strike3Pick.status === pickStatus.Loss, 'tie': strike3Pick.status === pickStatus.Tie, 'eliminated': strike3Pick.eliminated}" >
-      {{ strike3Pick.team }}
+      <div class="player-wrapper flex" *ngFor="let strike3Player of game.players" [class.current-user]="strike3Player.signedIn">
+        <div class="player-name flex-none center truncate">{{ strike3Player.admin ? strike3Player.name + " (admin)" : strike3Player.name }}</div>
+        <div *ngFor="let strike3Pick of strike3Player.picks" class="pick flex-none center" [class.editable]="strike3Pick.canEdit" (click)="openPickModal(strike3Pick)"
+             [ngClass]="{'win': strike3Pick.status === pickStatus.Win, 'loss': strike3Pick.status === pickStatus.Loss, 'tie': strike3Pick.status === pickStatus.Tie, 'eliminated': strike3Pick.eliminated}" >
+          {{ strike3Pick.team }}
+        </div>
+      </div>
     </div>
   </div>
 
