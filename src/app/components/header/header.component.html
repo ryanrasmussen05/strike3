@@ -1,6 +1,10 @@
 <div id="header">
   <div class="nav-bar flex items-center border-box p1">
-    <div class="flex-auto size-24 weight-500">Strike 3</div>
+    <div class="flex items-center flex-auto">
+      <div class="size-24 weight-500">Strike 3</div>
+      <a *ngIf="admin" class="size-20 underline ml2" routerLink="../player">Home</a>
+      <a *ngIf="admin" class="size-20 underline ml2" routerLink="../admin">Admin</a>
+    </div>
 
     <div class="flex-none">
       <button class="button" *ngIf="!user" data-open="login-modal">Sign In</button>

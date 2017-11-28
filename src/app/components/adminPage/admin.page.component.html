@@ -2,18 +2,38 @@
   Access Denied: Sign in as admin user to view this page
 </div>
 
-<div *ngIf="admin" class="flex flex-column">
+<div [hidden]="!admin" id="admin-view" class="flex flex-column p2">
 
-  <div class="m1">
-    <button class="button" routerLink="../player">Home</button>
-    <button class="button" (click)="updateResults()">Update Results</button>
-    <button class="button" (click)="screenshot(screenshotLink)">Download Spreadsheet Image</button>
-    <a href="#" target="_blank" #screenshotLink download="strike3.png" hidden></a>
+  <ul class="tabs" data-tabs id="admin-tabs">
+    <li class="tabs-title is-active"><a href="#spreadsheet-tab">Spreadsheet</a></li>
+    <li class="tabs-title"><a href="#picks-log-tab">Picks Log</a></li>
+    <li class="tabs-title"><a href="#email-tab">Email</a></li>
+  </ul>
+
+  <div class="tabs-content" data-tabs-content="admin-tabs">
+
+    <div class="tabs-panel is-active" id="spreadsheet-tab">
+      <div *ngIf="admin">
+        <button class="button" (click)="updateResults()">Update Results</button>
+        <button class="button" (click)="screenshot(screenshotLink)">Download Spreadsheet Image</button>
+        <a href="#" target="_blank" #screenshotLink download="strike3.png" hidden></a>
+        <app-game-table [admin]="true" [strike3Game]="strike3Game" class="mb4 mt1"></app-game-table>
+      </div>
+    </div>
+
+    <div class="tabs-panel" id="picks-log-tab">
+      <div *ngIf="admin">
+        <app-pick-log class="mb4"></app-pick-log>
+      </div>
+    </div>
+
+    <div class="tabs-panel" id="email-tab">
+      <div *ngIf="admin">
+        <div>email stuff goes here</div>
+      </div>
+    </div>
+
   </div>
-
-  <app-game-table [admin]="true" [strike3Game]="strike3Game" class="mb4"></app-game-table>
-
-  <app-pick-log class="mb4"></app-pick-log>
 
 </div>
 

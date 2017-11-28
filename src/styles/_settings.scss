@@ -4,12 +4,6 @@ $primary-color: $primary-theme-color;
 $secondary-color: $secondary-theme-color;
 
 //
-// BASE STYLES
-//
-$anchor-text-decoration: underline;
-$anchor-text-decoration-hover: underline;
-
-//
 // BUTTON
 //
 $button-radius: 3px;
@@ -36,3 +30,9 @@ $input-radius: 3px;
 // CALLOUT
 //
 $callout-radius: 3px;
+
+//
+// TABS
+//
+$tab-item-font-size: 16px;
+$tab-item-background-hover: $tab-hover;

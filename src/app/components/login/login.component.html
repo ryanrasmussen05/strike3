@@ -19,7 +19,7 @@
   </form>
 
   <div class="center mt2">
-    <a (click)="toggleCreateAccount()">Create Account</a>
+    <a (click)="toggleCreateAccount()" class="underline">Create Account</a>
   </div>
 </div>
 
@@ -82,6 +82,6 @@
 
 <div *ngIf="error" class="callout alert mt2">
   {{error}}
-  <a *ngIf="errorType === ErrorType.Create" (click)="toggleCreateAccount()">Create Account</a>
-  <a *ngIf="errorType === ErrorType.Reset" (click)="toggleResetPassword()">Reset Password</a>
+  <a *ngIf="errorType === ErrorType.Create" (click)="toggleCreateAccount()" class="underline">Create Account</a>
+  <a *ngIf="errorType === ErrorType.Reset" (click)="toggleResetPassword()" class="underline">Reset Password</a>
 </div>

@@ -27,6 +27,7 @@
         "../node_modules/moment-timezone/builds/moment-timezone-with-data.min.js",
         "../node_modules/foundation-sites/dist/js/plugins/foundation.core.js",
         "../node_modules/foundation-sites/dist/js/plugins/foundation.util.keyboard.js",
+        "../node_modules/foundation-sites/dist/js/plugins/foundation.util.imageLoader.js",
         "../node_modules/foundation-sites/dist/js/plugins/foundation.util.triggers.js",
         "../node_modules/foundation-sites/dist/js/plugins/foundation.util.mediaQuery.js",
         "../node_modules/foundation-sites/dist/js/plugins/foundation.util.motion.js",
@@ -34,6 +35,7 @@
         "../node_modules/foundation-sites/dist/js/plugins/foundation.util.nest.js",
         "../node_modules/foundation-sites/dist/js/plugins/foundation.reveal.js",
         "../node_modules/foundation-sites/dist/js/plugins/foundation.dropdownMenu.js",
+        "../node_modules/foundation-sites/dist/js/plugins/foundation.tabs.js",
         "../src/vendor/html2canvas.min.js"
       ],
       "environmentSource": "environments/environment.ts",

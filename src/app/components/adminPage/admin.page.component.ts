@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { UserModel } from '../../user/user.model';
 import { GameDataModel } from '../../gameData/game.data.model';
 import { Subscription } from 'rxjs/Subscription';
@@ -14,7 +14,7 @@ declare const html2canvas: any;
 @Component({
   templateUrl: './admin.page.component.html'
 })
-export class AdminPageComponent implements OnInit, OnDestroy {
+export class AdminPageComponent implements OnInit, OnDestroy, AfterViewInit {
   admin: boolean = false;
   superuser: boolean = false;
   strike3Game: Strike3Game;
@@ -24,6 +24,10 @@ export class AdminPageComponent implements OnInit, OnDestroy {
 
   constructor(public userModel: UserModel, public gameDataModel: GameDataModel, public gameDataService: GameDataService,
               public adminViewModel: AdminViewModel, public loadingService: LoadingService) {
+  }
+
+  ngAfterViewInit() {
+    $('#admin-view').foundation();
   }
 
   ngOnInit() {
