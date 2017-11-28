@@ -28,6 +28,10 @@ export class SuperuserPageComponent extends AdminPageComponent {
   }
 
   postSchedule() {
-    this.gameDataService.setSchedule(this.schedule);
+    this.gameDataService.setSchedule(this.schedule).then(() => {
+      console.log('schedule updated');
+    }).catch((error) => {
+      console.error(error);
+    });
   }
 }
