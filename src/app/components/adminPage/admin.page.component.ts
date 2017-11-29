@@ -12,7 +12,8 @@ import 'rxjs/add/operator/merge';
 declare const html2canvas: any;
 
 @Component({
-  templateUrl: './admin.page.component.html'
+  templateUrl: './admin.page.component.html',
+  styleUrls: ['./admin.page.component.scss']
 })
 export class AdminPageComponent implements OnInit, OnDestroy, AfterViewInit {
   admin: boolean = false;
@@ -59,10 +60,14 @@ export class AdminPageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   screenshot(linkElement: HTMLAnchorElement) {
+    const tabContainer = $('.tabs-content');
+    tabContainer.removeClass('overflow-auto');
+
     html2canvas($('#game-table-results'), {
       background: '#ffffff',
       width: 1050,
       onrendered: function(canvas) {
+        tabContainer.addClass('overflow-auto');
         linkElement.href = canvas.toDataURL('image/png');
         linkElement.click();
       }

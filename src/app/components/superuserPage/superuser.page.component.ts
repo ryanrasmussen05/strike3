@@ -9,7 +9,8 @@ import { NFLGame } from '../../gameData/nfl.schedule';
 import { LoadingService } from '../../loading/loading.service';
 
 @Component({
-  templateUrl: './superuser.page.component.html'
+  templateUrl: './superuser.page.component.html',
+  styleUrls: ['./superuser.page.component.scss']
 })
 export class SuperuserPageComponent extends AdminPageComponent {
 

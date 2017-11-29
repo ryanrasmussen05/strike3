@@ -23,4 +23,30 @@
   .user-menu-item:hover {
     background-color: $dropdown-menu-item-hover;
   }
+
+  .nav-button {
+    @media (min-width: $media-breakpoint) {
+      display: none !important;
+    }
+  }
+
+  .nav-link {
+    @media (max-width: $media-breakpoint) {
+      display: none !important;
+    }
+  }
+}
+
+#nav-dropdown {
+  width: auto;
+
+  .nav-dropdown-link {
+    font-size: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.12);
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Strike3Game, Strike3Pick } from '../../viewModel/strike3.game';
 import { GameDataService } from '../../gameData/game.data.service';
 import { Week } from '../../gameData/week';
@@ -9,7 +9,7 @@ import { PickStatus } from '../../gameData/pick';
   templateUrl: './game.table.component.html',
   styleUrls: ['./game.table.component.scss']
 })
-export class GameTableComponent implements OnInit, OnDestroy {
+export class GameTableComponent implements AfterViewInit, OnDestroy {
   @Input('admin') admin: boolean;
 
   @Input('strike3Game')
@@ -34,7 +34,7 @@ export class GameTableComponent implements OnInit, OnDestroy {
   constructor(public gameDataService: GameDataService) {
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     $('#game-table').foundation();
   }
 

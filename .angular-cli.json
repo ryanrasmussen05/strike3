@@ -36,6 +36,7 @@
         "../node_modules/foundation-sites/dist/js/plugins/foundation.reveal.js",
         "../node_modules/foundation-sites/dist/js/plugins/foundation.dropdownMenu.js",
         "../node_modules/foundation-sites/dist/js/plugins/foundation.tabs.js",
+        "../node_modules/foundation-sites/dist/js/plugins/foundation.dropdown.js",
         "../src/vendor/html2canvas.min.js"
       ],
       "environmentSource": "environments/environment.ts",

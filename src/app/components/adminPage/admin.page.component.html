@@ -2,7 +2,7 @@
   Access Denied: Sign in as admin user to view this page
 </div>
 
-<div [hidden]="!admin" id="admin-view" class="flex flex-column p2">
+<div [hidden]="!admin" id="admin-view" class="flex flex-column">
 
   <ul class="tabs" data-tabs id="admin-tabs">
     <li class="tabs-title is-active"><a href="#spreadsheet-tab">Spreadsheet</a></li>
@@ -10,7 +10,7 @@
     <li class="tabs-title"><a href="#email-tab">Email</a></li>
   </ul>
 
-  <div class="tabs-content" data-tabs-content="admin-tabs">
+  <div class="tabs-content overflow-auto" data-tabs-content="admin-tabs">
 
     <div class="tabs-panel is-active" id="spreadsheet-tab">
       <div *ngIf="admin">

@@ -1,9 +1,14 @@
 <div id="header">
   <div class="nav-bar flex items-center border-box p1">
     <div class="flex items-center flex-auto">
+
+      <button class="nav-button button mr2" type="button" data-toggle="nav-dropdown" [hidden]="!admin">
+        <i class="fa fa-align-justify size-20"></i>
+      </button>
+
       <div class="size-24 weight-500">Strike 3</div>
-      <a *ngIf="admin" class="size-20 underline ml2" routerLink="../player">Home</a>
-      <a *ngIf="admin" class="size-20 underline ml2" routerLink="../admin">Admin</a>
+      <a *ngIf="admin" class="nav-link size-20 underline ml2" routerLink="../player">Home</a>
+      <a *ngIf="admin" class="nav-link size-20 underline ml2" routerLink="../admin">Admin</a>
     </div>
 
     <div class="flex-none">
@@ -22,6 +27,11 @@
       </ul>
 
     </div>
+  </div>
+
+  <div id="nav-dropdown" class="dropdown-pane" data-dropdown data-close-on-click="true" [hidden]="!admin">
+    <div class="nav-dropdown-link" (click)="navigate('player')">Home</div>
+    <div class="nav-dropdown-link" (click)="navigate('admin')">Admin</div>
   </div>
 
   <div class="reveal" id="login-modal" data-reveal>

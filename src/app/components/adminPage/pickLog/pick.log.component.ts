@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { GameDataModel } from '../../../gameData/game.data.model';
 import { Subscription } from 'rxjs/Subscription';
 import { GameData } from '../../../gameData/game.data';
@@ -9,7 +9,7 @@ import { PlayerLog } from './pick.log';
   templateUrl: './pick.log.component.html',
   styleUrls: ['./pick.log.component.scss']
 })
-export class PickLogComponent implements OnInit, OnDestroy {
+export class PickLogComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedWeek: any;
   gameData: GameData;
   playerLogs: PlayerLog[];
@@ -19,9 +19,11 @@ export class PickLogComponent implements OnInit, OnDestroy {
   constructor(public gameDataModel: GameDataModel) {
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     $('#pick-log').foundation();
+  }
 
+  ngOnInit() {
     this.selectedWeek = this.gameDataModel.gameData$.getValue().week.weekNumber;
     this.playerLogs = [];
 
