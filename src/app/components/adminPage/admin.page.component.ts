@@ -10,6 +10,7 @@ import { LoadingService } from '../../loading/loading.service';
 import 'rxjs/add/operator/merge';
 
 declare const html2canvas: any;
+declare const download: any;
 
 @Component({
   templateUrl: './admin.page.component.html',
@@ -59,7 +60,7 @@ export class AdminPageComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  screenshot(linkElement: HTMLAnchorElement) {
+  screenshot() {
     const tabContainer = $('.tabs-content');
     tabContainer.removeClass('overflow-auto');
 
@@ -68,8 +69,7 @@ export class AdminPageComponent implements OnInit, OnDestroy, AfterViewInit {
       width: 1050,
       onrendered: function(canvas) {
         tabContainer.addClass('overflow-auto');
-        linkElement.href = canvas.toDataURL('image/png');
-        linkElement.click();
+        download(canvas.toDataURL('image/png'), 'strike3.png', 'image/png');
       }
     });
   }
