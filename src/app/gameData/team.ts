@@ -1,4 +1,4 @@
 export interface Team {
-  abbreviation: string;
-  name: string;
+    abbreviation: string;
+    name: string;
 }

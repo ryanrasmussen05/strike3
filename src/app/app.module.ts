@@ -26,38 +26,41 @@ import { HttpClientModule } from '@angular/common/http';
 import { SuperuserPageComponent } from './components/superuserPage/superuser.page.component';
 import { GameDataResolver } from './components/game.data.resolver';
 
+import * as $ from 'jquery';
+
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    PlayerPageComponent,
-    LoginComponent,
-    LoadingComponent,
-    PickComponent,
-    AdminPageComponent,
-    GameTableComponent,
-    PickLogComponent,
-    SuperuserPageComponent
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    AppRoutingModule,
-    HttpClientModule
-  ],
-  providers: [
-    UserModel,
-    UserService,
-    TeamModel,
-    GameDataModel,
-    GameDataService,
-    PlayerViewModel,
-    AdminViewModel,
-    ViewModelUtil,
-    LoadingService,
-    NFLService,
-    GameDataResolver
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        HeaderComponent,
+        PlayerPageComponent,
+        LoginComponent,
+        LoadingComponent,
+        PickComponent,
+        AdminPageComponent,
+        GameTableComponent,
+        PickLogComponent,
+        SuperuserPageComponent
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        AppRoutingModule,
+        HttpClientModule
+    ],
+    providers: [
+        UserModel,
+        UserService,
+        TeamModel,
+        GameDataModel,
+        GameDataService,
+        PlayerViewModel,
+        AdminViewModel,
+        ViewModelUtil,
+        LoadingService,
+        NFLService,
+        GameDataResolver
+    ],
+    bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

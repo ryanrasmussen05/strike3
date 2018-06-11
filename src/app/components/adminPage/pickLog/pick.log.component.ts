@@ -1,76 +1,76 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { GameDataModel } from '../../../gameData/game.data.model';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { GameData } from '../../../gameData/game.data';
 import { PlayerLog } from './pick.log';
 
 @Component({
-  selector: 'app-pick-log',
-  templateUrl: './pick.log.component.html',
-  styleUrls: ['./pick.log.component.scss']
+    selector: 'app-pick-log',
+    templateUrl: './pick.log.component.html',
+    styleUrls: ['./pick.log.component.scss']
 })
 export class PickLogComponent implements OnInit, OnDestroy, AfterViewInit {
-  selectedWeek: any;
-  gameData: GameData;
-  playerLogs: PlayerLog[];
+    selectedWeek: any;
+    gameData: GameData;
+    playerLogs: PlayerLog[];
 
-  gameDataSubscription: Subscription;
+    gameDataSubscription: Subscription;
 
-  constructor(public gameDataModel: GameDataModel) {
-  }
+    constructor(public gameDataModel: GameDataModel) {
+    }
 
-  ngAfterViewInit() {
-    $('#pick-log').foundation();
-  }
+    ngAfterViewInit() {
+        $('#pick-log').foundation();
+    }
 
-  ngOnInit() {
-    this.selectedWeek = this.gameDataModel.gameData$.getValue().week.weekNumber;
-    this.playerLogs = [];
+    ngOnInit() {
+        this.selectedWeek = this.gameDataModel.gameData$.getValue().week.weekNumber;
+        this.playerLogs = [];
 
-    this.gameDataSubscription = this.gameDataModel.gameData$.subscribe((gameData) => {
-      this.gameData = gameData;
-      this._buildModelForWeek();
-    });
-  }
+        this.gameDataSubscription = this.gameDataModel.gameData$.subscribe((gameData) => {
+            this.gameData = gameData;
+            this._buildModelForWeek();
+        });
+    }
 
-  ngOnDestroy() {
-    this.gameDataSubscription.unsubscribe();
-  }
+    ngOnDestroy() {
+        this.gameDataSubscription.unsubscribe();
+    }
 
-  weekChange() {
-    this.selectedWeek = parseInt(this.selectedWeek);
-    this._buildModelForWeek();
-  }
+    weekChange() {
+        this.selectedWeek = parseInt(this.selectedWeek);
+        this._buildModelForWeek();
+    }
 
-  private _buildModelForWeek() {
-    const playerLogs: PlayerLog[] = [];
+    private _buildModelForWeek() {
+        const playerLogs: PlayerLog[] = [];
 
-    this.gameData.players.forEach((currentPlayer) => {
+        this.gameData.players.forEach((currentPlayer) => {
 
-      const pick = currentPlayer.picks.get(this.selectedWeek);
+            const pick = currentPlayer.picks.get(this.selectedWeek);
 
-      if (pick && pick.team) {
-        const playerLog: PlayerLog = {
-          playerName: currentPlayer.name,
-          team: pick.team,
-          time: new Date(pick.time)
-        };
+            if (pick && pick.team) {
+                const playerLog: PlayerLog = {
+                    playerName: currentPlayer.name,
+                    team: pick.team,
+                    time: new Date(pick.time)
+                };
 
-        playerLogs.push(playerLog);
-      }
-    });
+                playerLogs.push(playerLog);
+            }
+        });
 
-    this._sortPlayerLogs(playerLogs);
-    this.playerLogs = playerLogs;
-  }
+        this._sortPlayerLogs(playerLogs);
+        this.playerLogs = playerLogs;
+    }
 
-  private _sortPlayerLogs(playerLogs: PlayerLog[]) {
-    playerLogs.sort((a, b) => {
-      if (a.playerName < b.playerName) return -1;
-      if (a.playerName > b.playerName) return 1;
-      if (a.time < b.time) return -1;
-      if (a.time > b.time) return 1;
-      return 0;
-    });
-  }
+    private _sortPlayerLogs(playerLogs: PlayerLog[]) {
+        playerLogs.sort((a, b) => {
+            if (a.playerName < b.playerName) return -1;
+            if (a.playerName > b.playerName) return 1;
+            if (a.time < b.time) return -1;
+            if (a.time > b.time) return 1;
+            return 0;
+        });
+    }
 }

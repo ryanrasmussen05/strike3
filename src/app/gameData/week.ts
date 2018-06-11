@@ -1,4 +1,4 @@
 export interface Week {
-  weekNumber: number;
-  public: boolean;
+    weekNumber: number;
+    public: boolean;
 }

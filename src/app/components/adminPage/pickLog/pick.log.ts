@@ -1,5 +1,5 @@
 export interface PlayerLog {
-  playerName: string;
-  team: string;
-  time: Date;
+    playerName: string;
+    team: string;
+    time: Date;
 }

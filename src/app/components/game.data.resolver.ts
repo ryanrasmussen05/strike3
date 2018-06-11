@@ -6,21 +6,21 @@ import { GameDataService } from '../gameData/game.data.service';
 @Injectable()
 export class GameDataResolver implements Resolve<boolean> {
 
-  constructor(public gameDataService: GameDataService, public loadingService: LoadingService) {
-  }
+    constructor(public gameDataService: GameDataService, public loadingService: LoadingService) {
+    }
 
-  resolve(): Promise<boolean> {
-    console.log('resolving game data');
+    resolve(): Promise<boolean> {
+        console.log('resolving game data');
 
-    this.loadingService.loading();
+        this.loadingService.loading();
 
-    return this.gameDataService.getGameData().then(() => {
-      this.loadingService.done();
-      return true;
-    }).catch((error) => {
-      this.loadingService.done();
-      console.error(error);
-      return false;
-    });
-  }
+        return this.gameDataService.getGameData().then(() => {
+            this.loadingService.done();
+            return true;
+        }).catch((error) => {
+            this.loadingService.done();
+            console.error(error);
+            return false;
+        });
+    }
 }
