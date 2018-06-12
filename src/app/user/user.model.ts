@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import * as firebase from 'firebase';
+
+import * as firebase from 'firebase/app';
 
 @Injectable()
 export class UserModel {

@@ -4,7 +4,8 @@ import { UserService } from '../../user/user.service';
 import { Router } from '@angular/router';
 import { GameDataModel } from '../../gameData/game.data.model';
 import { merge } from 'rxjs';
-import * as firebase from 'firebase';
+
+import * as firebase from 'firebase/app';
 
 @Component({
     selector: 'app-header',

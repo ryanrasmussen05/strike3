@@ -6,7 +6,8 @@ import { Pick, PickStatus } from './pick';
 import { NFLGame, NFLScheduleUtil } from './nfl.schedule';
 import { NFLService } from '../nfl/nfl.service';
 import { NFLScoreboardUtil } from './nfl.scoreboard';
-import * as firebase from 'firebase';
+
+import * as firebase from 'firebase/app';
 
 @Injectable()
 export class GameDataService {

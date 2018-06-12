@@ -25,6 +25,7 @@ import { NFLService } from './nfl/nfl.service';
 import { HttpClientModule } from '@angular/common/http';
 import { SuperuserPageComponent } from './components/superuserPage/superuser.page.component';
 import { GameDataResolver } from './components/game.data.resolver';
+import { EmailService } from './email/email.service';
 
 import * as $ from 'jquery';
 
@@ -58,7 +59,8 @@ import * as $ from 'jquery';
         ViewModelUtil,
         LoadingService,
         NFLService,
-        GameDataResolver
+        GameDataResolver,
+        EmailService
     ],
     bootstrap: [AppComponent]
 })

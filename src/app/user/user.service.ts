@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { GameDataService } from '../gameData/game.data.service';
 import { UserModel } from './user.model';
-import * as firebase from 'firebase';
+
+import * as firebase from 'firebase/app';
 
 @Injectable()
 export class UserService {
