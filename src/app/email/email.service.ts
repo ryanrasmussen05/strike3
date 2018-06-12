@@ -8,7 +8,7 @@ export class EmailService {
     }
 
     sendEmail(): void {
-        const getDateFunction = firebase.functions().httpsCallable('getDate');
+        const getDateFunction = firebase.functions().httpsCallable('sendEmail');
 
         getDateFunction().then((result) => {
             console.log(result);
