@@ -26,6 +26,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SuperuserPageComponent } from './components/superuserPage/superuser.page.component';
 import { GameDataResolver } from './components/game.data.resolver';
 import { EmailService } from './email/email.service';
+import { EmailComponent } from './components/adminPage/email/email.component';
 
 import * as $ from 'jquery';
 
@@ -40,7 +41,8 @@ import * as $ from 'jquery';
         AdminPageComponent,
         GameTableComponent,
         PickLogComponent,
-        SuperuserPageComponent
+        SuperuserPageComponent,
+        EmailComponent
     ],
     imports: [
         BrowserModule,

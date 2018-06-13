@@ -1,34 +1,40 @@
 import { Injectable } from '@angular/core';
+import { Email } from './email';
 
 import * as firebase from 'firebase/app';
-
-interface Attachment {
-    filename: string;
-    url: string;
-}
 
 @Injectable()
 export class EmailService {
     constructor() {
     }
 
-    uploadAttachmentAndSend(file: File): Promise<void> {
-        const storageRef = firebase.storage().ref();
-        const fileRef = storageRef.child(file.name);
+    sendEmail(email: Email): Promise<firebase.functions.HttpsCallableResult> {
+        if (email.file) {
+            return this._uploadAttachmentAndSend(email);
+        } else {
+            return this._sendEmail(email);
+        }
+    }
 
-        return fileRef.put(file).then(() => {
+    private _uploadAttachmentAndSend(email: Email): Promise<firebase.functions.HttpsCallableResult> {
+        const storageRef = firebase.storage().ref();
+        const fileRef = storageRef.child(email.file.name);
+
+        return fileRef.put(email.file).then(() => {
             return fileRef.getDownloadURL().then((url) => {
-                return this.sendEmail({ filename: file.name, url: url });
+
+                email.attachment = { filename: email.file.name, url: url };
+                email.file = null; //don't send this to firebase again
+
+                return this.sendEmail(email);
             });
         });
     }
 
-    sendEmail(attachment?: Attachment): Promise<void> {
+    private _sendEmail(email: Email): Promise<firebase.functions.HttpsCallableResult> {
         const sendEmailFunction = firebase.functions().httpsCallable('sendEmail');
 
-        return sendEmailFunction({ attachment: attachment }).then((result) => {
-            console.log('Email send result: ', result);
-        });
+        return sendEmailFunction({ email: email });
     }
 }
 

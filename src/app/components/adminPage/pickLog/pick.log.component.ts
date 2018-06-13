@@ -9,7 +9,7 @@ import { PlayerLog } from './pick.log';
     templateUrl: './pick.log.component.html',
     styleUrls: ['./pick.log.component.scss']
 })
-export class PickLogComponent implements OnInit, OnDestroy, AfterViewInit {
+export class PickLogComponent implements OnInit, OnDestroy {
     selectedWeek: any;
     gameData: GameData;
     playerLogs: PlayerLog[];
@@ -17,10 +17,6 @@ export class PickLogComponent implements OnInit, OnDestroy, AfterViewInit {
     gameDataSubscription: Subscription;
 
     constructor(public gameDataModel: GameDataModel) {
-    }
-
-    ngAfterViewInit() {
-        $('#pick-log').foundation();
     }
 
     ngOnInit() {

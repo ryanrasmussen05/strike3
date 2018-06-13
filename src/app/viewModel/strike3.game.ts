@@ -13,6 +13,7 @@ export interface Strike3Pick {
 
 export interface Strike3Player {
     name: string;
+    email: string;
     picks: Strike3Pick[];
     signedIn?: boolean;
     strikes: number;

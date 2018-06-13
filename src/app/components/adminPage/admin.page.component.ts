@@ -6,7 +6,6 @@ import { AdminViewModel } from '../../viewModel/admin.view.model';
 import { Strike3Game } from '../../viewModel/strike3.game';
 import { GameDataService } from '../../gameData/game.data.service';
 import { LoadingService } from '../../loading/loading.service';
-import { EmailService } from '../../email/email.service';
 
 declare const html2canvas: any;
 declare const download: any;
@@ -20,13 +19,11 @@ export class AdminPageComponent implements OnInit, OnDestroy, AfterViewInit {
     superuser: boolean = false;
     strike3Game: Strike3Game;
 
-    attachment: File;
-
     playerSubscription: Subscription;
     adminViewSubscription: Subscription;
 
     constructor(public userModel: UserModel, public gameDataModel: GameDataModel, public gameDataService: GameDataService,
-                public adminViewModel: AdminViewModel, public loadingService: LoadingService, public emailService: EmailService) {
+                public adminViewModel: AdminViewModel, public loadingService: LoadingService) {
     }
 
     ngAfterViewInit() {
@@ -72,26 +69,6 @@ export class AdminPageComponent implements OnInit, OnDestroy, AfterViewInit {
                 tabContainer.addClass('overflow-auto');
                 download(canvas.toDataURL('image/png'), 'strike3.png', 'image/png');
             }
-        });
-    }
-
-    getFiles(fileInputEvent: Event) {
-        this.attachment = (<HTMLInputElement>fileInputEvent.target).files[0];
-    }
-
-    sendEmail() {
-        let promise: Promise<void>;
-
-        if (this.attachment) {
-            promise = this.emailService.uploadAttachmentAndSend(this.attachment);
-        } else {
-            promise = this.emailService.sendEmail();
-        }
-
-        promise.then(() => {
-            console.log('send email call completed');
-        }).catch((error) => {
-            console.error('Send Email Error: ', error);
         });
     }
 }

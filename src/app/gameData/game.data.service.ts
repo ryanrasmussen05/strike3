@@ -40,6 +40,7 @@ export class GameDataService {
     addPlayerForUser(user: firebase.User): Promise<any> {
         const userEntry = {
             name: user.displayName,
+            email: user.email,
             uid: user.uid
         };
 

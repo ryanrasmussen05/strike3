@@ -12,16 +12,17 @@ const mailTransport = nodemailer.createTransport({
     }
 });
 exports.sendEmail = functions.https.onCall((data) => {
+    data.email.recipients.push(gmailEmail);
     const mailOption = {
         from: { name: 'Strike 3', address: gmailEmail },
-        to: ['ryanrasmussen05@gmail.com', gmailEmail],
-        subject: 'This Is A Test',
-        text: 'This is where the text for the message will go. Blah Blah Blah'
+        to: data.email.recipients,
+        subject: data.email.subject,
+        text: data.email.body
     };
-    if (data.attachment) {
+    if (data.email.attachment) {
         mailOption.attachments = [{
-                filename: data.attachment.filename,
-                path: data.attachment.url
+                filename: data.email.attachment.filename,
+                path: data.email.attachment.url
             }];
     }
     mailTransport.sendMail(mailOption).then(() => {

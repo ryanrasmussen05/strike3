@@ -23,9 +23,9 @@ export class UserService {
     }
 
     createUser(email: string, displayName: string, password: string): Promise<void> {
-        return firebase.auth().createUserWithEmailAndPassword(email, password).then((user: firebase.User) => {
-            return this.setUsername(user, displayName).then(() => {
-                return this.addPlayerForUser(user);
+        return firebase.auth().createUserWithEmailAndPassword(email, password).then((credential: firebase.auth.UserCredential) => {
+            return this.setUsername(credential.user, displayName).then(() => {
+                return this.addPlayerForUser(credential.user);
             });
         });
     }

@@ -24,6 +24,7 @@ export class ViewModelUtil {
         gameData.players.forEach((player) => {
             const strike3Player: Strike3Player = {
                 name: player.name,
+                email: player.email,
                 picks: this._getStrike3PicksForPlayer(player, admin),
                 strikes: 0,
                 admin: player.admin

@@ -1,0 +1,40 @@
+<div *ngIf="success" class="callout success">
+    <h5>Email Sent</h5>
+</div>
+
+<div *ngIf="error" class="callout alert">
+    <h5>Email Not Sent</h5>
+    <p>{{ errorMessage }}</p>
+</div>
+
+<div id="send-email">
+    <div class="flex items-center mb2">
+        <div class="nowrap mr1">Recipients:</div>
+        <select [(ngModel)]="selectedEmailGroup" (change)="updateRecipientList()" class="mb0">
+            <option [value]="allPlayers">All Players</option>
+            <option [value]="remainingPlayers">All Non-Eliminated Players</option>
+            <option [value]="playersMissingPick">{{ 'Players Missing Pick for Week ' + currentWeek }}</option>
+        </select>
+    </div>
+
+    <div class="flex items-center mb2">
+        <div class="mr1">Subject:</div>
+        <input [(ngModel)]="subject" type="text" class="mb0" placeholder="Enter Subject..."/>
+    </div>
+
+    <div class="flex mb2">
+        <div class="mr1">Message:</div>
+        <textarea [(ngModel)]="emailBody" rows="10" placeholder="Enter message here..."></textarea>
+    </div>
+
+    <div class="flex items-center mb3">
+        <div class="mr1">Attachment:</div>
+        <label for="fileUpload" class="button secondary">Select File</label>
+        <input type="file" id="fileUpload" class="show-for-sr" (change)="getFiles($event)">
+        <span *ngIf="attachment">{{ attachment.name }}</span>
+    </div>
+
+    <div>
+        <button class="button large" (click)="sendEmail()">Send Email</button>
+    </div>
+</div>
