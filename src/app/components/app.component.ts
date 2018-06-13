@@ -5,6 +5,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/functions';
 import 'firebase/auth';
 import 'firebase/database';
+import 'firebase/storage';
 
 @Component({
     selector: 'app-root',
@@ -17,7 +18,7 @@ export class AppComponent implements OnInit {
         authDomain: 'strike3-31769.firebaseapp.com',
         databaseURL: 'https://strike3-31769.firebaseio.com/',
         projectId: 'strike3-31769',
-        storageBucket: 'strike3-31769'
+        storageBucket: 'gs://strike3-31769.appspot.com'
     };
 
     constructor(public userModel: UserModel) {

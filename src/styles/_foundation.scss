@@ -12,6 +12,7 @@
 @include foundation-dropdown-menu;
 @include foundation-tabs;
 @include foundation-dropdown;
+@include foundation-visibility-classes;
 
 [hidden] {
   display: none !important;

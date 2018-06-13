@@ -29,6 +29,10 @@
 
     <div class="tabs-panel" id="email-tab">
       <div *ngIf="superuser">
+          <!--TODO component-->
+          <label for="fileUpload" class="button">Upload File</label>
+          <input type="file" id="fileUpload" class="show-for-sr" (change)="getFiles($event)">
+          <span *ngIf="attachment">{{ attachment.name }}</span>
           <button class="button" (click)="sendEmail()">Test Email</button>
       </div>
     </div>

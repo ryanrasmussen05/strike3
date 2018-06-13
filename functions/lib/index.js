@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
-const moment = require("moment");
 const nodemailer = require("nodemailer");
 const gmailEmail = functions.config().gmail.email;
 const gmailPassword = functions.config().gmail.password;
@@ -12,10 +11,6 @@ const mailTransport = nodemailer.createTransport({
         pass: gmailPassword
     }
 });
-exports.getDate = functions.https.onCall((data) => {
-    const formattedDate = moment().format();
-    return { date: formattedDate };
-});
 exports.sendEmail = functions.https.onCall((data) => {
     const mailOption = {
         from: { name: 'Strike 3', address: gmailEmail },
@@ -23,6 +18,12 @@ exports.sendEmail = functions.https.onCall((data) => {
         subject: 'This Is A Test',
         text: 'This is where the text for the message will go. Blah Blah Blah'
     };
+    if (data.attachment) {
+        mailOption.attachments = [{
+                filename: data.attachment.filename,
+                path: data.attachment.url
+            }];
+    }
     mailTransport.sendMail(mailOption).then(() => {
         console.log('sent email');
     }).catch((error) => {

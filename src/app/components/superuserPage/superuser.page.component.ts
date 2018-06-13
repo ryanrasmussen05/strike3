@@ -20,7 +20,7 @@ export class SuperuserPageComponent extends AdminPageComponent {
     constructor(public userModel: UserModel, public gameDataModel: GameDataModel, public adminViewModel: AdminViewModel,
                 public nflService: NFLService, public gameDataService: GameDataService, public loadingService: LoadingService,
                 public emailService: EmailService) {
-        super(userModel, gameDataModel, gameDataService, adminViewModel, loadingService);
+        super(userModel, gameDataModel, gameDataService, adminViewModel, loadingService, emailService);
     }
 
     fetchSchedule() {
@@ -36,9 +36,5 @@ export class SuperuserPageComponent extends AdminPageComponent {
         }).catch((error) => {
             console.error(error);
         });
-    }
-
-    sendEmail() {
-        this.emailService.sendEmail();
     }
 }

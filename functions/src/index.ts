@@ -1,5 +1,4 @@
 import * as functions from 'firebase-functions';
-import * as moment from 'moment';
 import * as nodemailer from 'nodemailer';
 import * as Mail from 'nodemailer/lib/mailer';
 
@@ -14,12 +13,6 @@ const mailTransport = nodemailer.createTransport({
     }
 });
 
-export const getDate = functions.https.onCall((data) => {
-    const formattedDate = moment().format();
-
-    return { date: formattedDate };
-});
-
 export const sendEmail = functions.https.onCall((data) => {
     const mailOption: Mail.Options = {
         from: { name: 'Strike 3', address: gmailEmail },
@@ -27,6 +20,13 @@ export const sendEmail = functions.https.onCall((data) => {
         subject: 'This Is A Test',
         text: 'This is where the text for the message will go. Blah Blah Blah'
     };
+
+    if (data.attachment) {
+        mailOption.attachments = [{
+           filename: data.attachment.filename,
+           path: data.attachment.url
+        }];
+    }
 
     mailTransport.sendMail(mailOption).then(() => {
         console.log('sent email');
