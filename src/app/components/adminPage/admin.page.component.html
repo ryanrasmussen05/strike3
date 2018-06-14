@@ -14,7 +14,7 @@
 
     <div class="tabs-panel is-active" id="spreadsheet-tab">
       <div *ngIf="admin">
-        <button class="button" (click)="updateResults()">Update Results</button>
+        <button class="button mr1" (click)="updateResults()">Update Results</button>
         <button class="button" (click)="screenshot()">Download Spreadsheet Image</button>
         <app-game-table [admin]="true" [strike3Game]="strike3Game" class="mb4 mt1"></app-game-table>
       </div>

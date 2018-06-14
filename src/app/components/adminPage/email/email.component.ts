@@ -86,6 +86,9 @@ export class EmailComponent implements OnInit, OnDestroy {
         this.emailService.sendEmail(email).then((result: firebase.functions.HttpsCallableResult) => {
             this.loadingService.done();
             this.success = true;
+            this.subject = '';
+            this.emailBody = '';
+            this.attachment = null;
             console.log('send email completed', result);
         }).catch((error) => {
             this.loadingService.done();

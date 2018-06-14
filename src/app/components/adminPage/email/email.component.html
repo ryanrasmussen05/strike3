@@ -18,23 +18,23 @@
     </div>
 
     <div class="flex items-center mb2">
-        <div class="mr1">Subject:</div>
+        <div class="mr3">Subject:</div>
         <input [(ngModel)]="subject" type="text" class="mb0" placeholder="Enter Subject..."/>
     </div>
 
     <div class="flex mb2">
-        <div class="mr1">Message:</div>
+        <div class="mr2">Message:</div>
         <textarea [(ngModel)]="emailBody" rows="10" placeholder="Enter message here..."></textarea>
     </div>
 
     <div class="flex items-center mb3">
-        <div class="mr1">Attachment:</div>
+        <div class="mr2">Attachment:</div>
         <label for="fileUpload" class="button secondary">Select File</label>
         <input type="file" id="fileUpload" class="show-for-sr" (change)="getFiles($event)">
-        <span *ngIf="attachment">{{ attachment.name }}</span>
+        <span *ngIf="attachment" class="ml1">{{ attachment.name }}</span>
     </div>
 
     <div>
-        <button class="button large" (click)="sendEmail()">Send Email</button>
+        <button class="button large" (click)="sendEmail()" [disabled]="!subject || !emailBody || !recipients">Send Email</button>
     </div>
 </div>
