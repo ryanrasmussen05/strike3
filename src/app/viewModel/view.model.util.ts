@@ -164,6 +164,7 @@ export class ViewModelUtil {
             if (a.strikes > b.strikes) return 1;
             if (this._getEliminationWeek(a) > this._getEliminationWeek(b)) return -1;
             if (this._getEliminationWeek(a) < this._getEliminationWeek(b)) return 1;
+            //TODO tiebreaker logic
             if (a.name < b.name) return -1;
             if (a.name > b.name) return 1;
             return 0;

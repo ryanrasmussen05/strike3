@@ -14,8 +14,8 @@ interface Attachment {
     url: string;
 }
 
-const gmailEmail = functions.config().gmail.email;
-const gmailPassword = functions.config().gmail.password;
+const gmailEmail = 'denisonstrike3@gmail.com';
+const gmailPassword = 'strike3_2018';
 
 const mailTransport = nodemailer.createTransport({
     service: 'gmail',
