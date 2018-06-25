@@ -1,5 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 import { GameDataModel } from '../../../gameData/game.data.model';
 import { GameData } from '../../../gameData/game.data';
 import { TieBreaker } from '../../../gameData/tie.breaker';
@@ -10,7 +9,7 @@ import { GameDataService } from '../../../gameData/game.data.service';
     selector: 'app-tie-breaker-form',
     templateUrl: './tie.breaker.form.html'
 })
-export class TieBreakerFormComponent implements OnInit, OnDestroy {
+export class TieBreakerFormComponent implements OnInit {
     gameData: GameData;
     availableWeeks: number[] = [];
     availableGames: NFLGame[] = null;
@@ -21,27 +20,19 @@ export class TieBreakerFormComponent implements OnInit, OnDestroy {
     error: boolean = false;
     loading: boolean = false;
 
-    gameDataSubscription: Subscription;
-
     constructor(public gameDataModel: GameDataModel, public gameDataService: GameDataService) {
     }
 
     ngOnInit() {
         $('#tiebreaker-modal').on('open.zf.reveal', () => {
-            this.gameDataSubscription = this.gameDataModel.gameData$.subscribe((gameData) => {
-                this.gameData = gameData;
-                this._getAvailableWeeks(gameData);
-            });
+            this.gameData = this.gameDataModel.gameData$.getValue();
+            this._getAvailableWeeks();
         });
 
         $('#tiebreaker-modal').on('closed.zf.reveal', () => {
             this.selectedWeek = null;
             this.selectedGame = null;
         });
-    }
-
-    ngOnDestroy() {
-        this.gameDataSubscription.unsubscribe();
     }
 
     getGamesForWeek() {
@@ -69,10 +60,10 @@ export class TieBreakerFormComponent implements OnInit, OnDestroy {
         });
     }
 
-    private _getAvailableWeeks(gameData: GameData) {
+    private _getAvailableWeeks() {
         const openWeeks: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 
-        gameData.tieBreakers.forEach((tieBreaker: TieBreaker) => {
+        this.gameData.tieBreakers.forEach((tieBreaker: TieBreaker) => {
             if (openWeeks.indexOf(tieBreaker.week) >= 0) {
                 openWeeks.splice(openWeeks.indexOf(tieBreaker.week), 1);
             }
