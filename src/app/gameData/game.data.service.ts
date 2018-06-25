@@ -6,6 +6,7 @@ import { Pick, PickStatus } from './pick';
 import { NFLGame, NFLScheduleUtil } from './nfl.schedule';
 import { NFLService } from '../nfl/nfl.service';
 import { NFLScoreboardUtil } from './nfl.scoreboard';
+import { TieBreaker } from './tie.breaker';
 
 import * as firebase from 'firebase/app';
 
@@ -24,7 +25,8 @@ export class GameDataService {
             const gameData: GameData = {
                 week: serviceGameData.week,
                 players: this._buildMap(serviceGameData.players, false),
-                schedule: this._buildMap(serviceGameData.schedule, true)
+                schedule: this._buildMap(serviceGameData.schedule, true),
+                tieBreakers: this._buildMap(serviceGameData.tieBreakers, true)
             };
 
             gameData.players.forEach((currentPlayer) => {
@@ -56,6 +58,18 @@ export class GameDataService {
     submitPick(pick: Pick, uid: string): Promise<void> {
         return firebase.database().ref('players/' + uid + '/picks/' + pick.week).update(pick).then(() => {
             this.gameDataModel.addOrUpdatePick(pick, uid);
+        });
+    }
+
+    submitTieBreaker(tieBreaker: TieBreaker): Promise<void> {
+        return firebase.database().ref('tieBreakers/' + tieBreaker.week).update(tieBreaker).then(() => {
+            this.gameDataModel.addOrUpdateTieBreaker(tieBreaker);
+        });
+    }
+
+    deleteTieBreaker(tieBreaker: TieBreaker): Promise<void> {
+        return firebase.database().ref('tieBreakers/' + tieBreaker.week).remove().then(() => {
+            this.gameDataModel.removeTieBreaker(tieBreaker);
         });
     }
 

@@ -68,7 +68,6 @@ export class EmailComponent implements OnInit, OnDestroy {
         }
 
         this._addAdminEmail();
-        console.log(this.recipients);
     }
 
     sendEmail() {

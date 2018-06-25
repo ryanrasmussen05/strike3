@@ -1,0 +1,33 @@
+<div class="center size-24 weight-500 my2">
+    <span *ngIf="selectedTieBreaker">
+        {{ 'Week ' + selectedTieBreaker.week + ' (' + selectedTieBreaker.awayTeam + ' vs. ' + selectedTieBreaker.homeTeam +')' }}
+    </span>
+</div>
+
+<div *ngIf="selectedTieBreaker">
+    <label>Winning Team
+        <select [(ngModel)]="winningTeam">
+            <option value="">Select Team</option>
+            <option [value]="selectedTieBreaker.awayTeam">{{ selectedTieBreaker.awayTeam }}</option>
+            <option [value]="selectedTieBreaker.homeTeam">{{ selectedTieBreaker.homeTeam }}</option>
+        </select>
+    </label>
+</div>
+
+<div>
+    <label>
+        Total Points
+        <input type=number [(ngModel)]="totalPoints">
+    </label>
+</div>
+
+<div class="right-align mt2">
+    <button class="button full-width" [disabled]="!winningTeam || !totalPoints" (click)="submitResult()">
+        <span *ngIf="!loading">Set Result</span>
+        <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+    </button>
+</div>
+
+<div *ngIf="error" class="callout alert mt2">
+    Error Occurred, Tie Breaker not saved
+</div>

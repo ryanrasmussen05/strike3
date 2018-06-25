@@ -4,6 +4,7 @@ import { Week } from './week';
 import { GameData } from './game.data';
 import { Pick } from './pick';
 import { NFLGame } from './nfl.schedule';
+import { TieBreaker } from './tie.breaker';
 
 @Injectable()
 export class GameDataModel {
@@ -49,6 +50,24 @@ export class GameDataModel {
         } else {
             updatedGameData.players.get(uid).picks.set(pick.week, pick);
         }
+
+        this.gameData$.next(updatedGameData);
+    }
+
+    addOrUpdateTieBreaker(tieBreaker: TieBreaker) {
+        console.log('add tie breaker');
+
+        const updatedGameData: GameData = Object.create(this.gameData$.getValue());
+        updatedGameData.tieBreakers.set(tieBreaker.week, tieBreaker);
+
+        this.gameData$.next(updatedGameData);
+    }
+
+    removeTieBreaker(tieBreaker: TieBreaker) {
+        console.log('remove tie breaker');
+
+        const updatedGameData: GameData = Object.create(this.gameData$.getValue());
+        updatedGameData.tieBreakers.delete(tieBreaker.week);
 
         this.gameData$.next(updatedGameData);
     }

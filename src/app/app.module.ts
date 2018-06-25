@@ -27,6 +27,9 @@ import { SuperuserPageComponent } from './components/superuserPage/superuser.pag
 import { GameDataResolver } from './components/game.data.resolver';
 import { EmailService } from './email/email.service';
 import { EmailComponent } from './components/adminPage/email/email.component';
+import { TieBreakerComponent } from './components/adminPage/tieBreaker/tie.breaker.component';
+import { TieBreakerFormComponent } from './components/adminPage/tieBreaker/tie.breaker.form';
+import { TieBreakerResultComponent } from './components/adminPage/tieBreaker/tie.breaker.result';
 
 import * as $ from 'jquery';
 
@@ -42,7 +45,10 @@ import * as $ from 'jquery';
         GameTableComponent,
         PickLogComponent,
         SuperuserPageComponent,
-        EmailComponent
+        EmailComponent,
+        TieBreakerComponent,
+        TieBreakerFormComponent,
+        TieBreakerResultComponent
     ],
     imports: [
         BrowserModule,
