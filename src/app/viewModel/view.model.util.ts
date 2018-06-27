@@ -28,7 +28,8 @@ export class ViewModelUtil {
                 email: player.email,
                 picks: this._getStrike3PicksForPlayer(player, admin),
                 strikes: 0,
-                admin: player.admin
+                admin: player.admin,
+                uid: player.uid
             };
 
             strike3Player.strikes = this._getNumStrikesForPlayer(strike3Player);
@@ -65,7 +66,9 @@ export class ViewModelUtil {
                 canEdit: canEdit,
                 playerName: player.name,
                 uid: player.uid,
-                status: pick.status
+                status: pick.status,
+                tieBreakerTeam: pick.tieBreakerTeam,
+                tieBreakerPoints: pick.tieBreakerPoints
             };
 
             strike3Picks.push(strike3Pick);

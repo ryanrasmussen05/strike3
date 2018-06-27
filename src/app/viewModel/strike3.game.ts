@@ -9,6 +9,8 @@ export interface Strike3Pick {
     uid: string;
     playerName: string;
     status: PickStatus;
+    tieBreakerTeam?: string;
+    tieBreakerPoints?: number;
     eliminated?: boolean;
 }
 
@@ -19,6 +21,7 @@ export interface Strike3Player {
     signedIn?: boolean;
     strikes: number;
     admin: boolean;
+    uid: string;
 }
 
 export interface Strike3Game {

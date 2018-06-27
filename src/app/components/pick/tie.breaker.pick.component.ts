@@ -5,6 +5,8 @@ import { GameDataModel } from '../../gameData/game.data.model';
 import { TieBreaker } from '../../gameData/tie.breaker';
 import { GameData } from '../../gameData/game.data';
 import { NFLGame } from '../../gameData/nfl.schedule';
+import { Pick } from '../../gameData/pick';
+import { UserModel } from '../../user/user.model';
 
 @Component({
     selector: 'app-tie-breaker-pick',
@@ -28,7 +30,7 @@ export class TieBreakerPickComponent implements OnInit {
     loading: boolean = false;
 
     constructor(public zone: NgZone, public gameDataService: GameDataService, public teamModel: TeamModel,
-                public gameDataModel: GameDataModel) {
+                public gameDataModel: GameDataModel, public userModel: UserModel) {
     }
 
     ngOnInit() {
@@ -55,7 +57,23 @@ export class TieBreakerPickComponent implements OnInit {
     }
 
     submitTieBreaker() {
-        this._closeModal();
+        this.loading = true;
+        this.error = false;
+
+        const pick: Pick = {
+            week: this.selectedTieBreaker.week,
+            tieBreakerTeam: this.winningTeam,
+            tieBreakerPoints: this.totalPoints
+        };
+
+        this.gameDataService.submitPick(pick, this.userModel.currentUser$.getValue().uid).then(() => {
+            this.loading = false;
+            this._closeModal();
+        }).catch((error) => {
+            console.error(error);
+            this.loading = false;
+            this.error = true;
+        });
     }
 
     private _closeModal() {

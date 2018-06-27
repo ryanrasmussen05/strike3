@@ -18,14 +18,18 @@
 
     <div *ngIf="tieBreaker" class="full-width flex justify-center items-center mb2">
         <div class="tie-breaker-wrapper p2 flex flex-column justify-center items-center">
-            <div class="mb1">
+            <div>
                 <span class="size-20 weight-500 mr1">Tie Breaker Game:</span>
                 <span class="size-20">{{ tieBreaker.awayTeam + " vs. " + tieBreaker.homeTeam }}</span>
             </div>
 
-            <!--TODO only if haven't submitted yet-->
-            <div>
+            <div class="mt1" *ngIf="user && !tieBreakerPick">
                 <button class="button" (click)="openTieBreakerModal()">Enter Tie Breaker Pick</button>
+            </div>
+
+            <div class="mt1" *ngIf="user && tieBreakerPick">
+                <span class="size-16 weight-500 mr1">Your Pick:</span>
+                <span class="size-16">{{ tieBreakerPick.tieBreakerTeam + ' - ' + tieBreakerPick.tieBreakerPoints }}</span>
             </div>
         </div>
     </div>

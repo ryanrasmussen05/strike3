@@ -3,6 +3,8 @@ export interface Pick {
     team?: string;
     status?: PickStatus;
     time?: number;
+    tieBreakerTeam?: string;
+    tieBreakerPoints?: number;
 }
 
 export enum PickStatus {
