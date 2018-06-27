@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { GameDataModel } from '../../../gameData/game.data.model';
 import { GameData } from '../../../gameData/game.data';
 import { TieBreaker } from '../../../gameData/tie.breaker';
@@ -20,18 +20,22 @@ export class TieBreakerFormComponent implements OnInit {
     error: boolean = false;
     loading: boolean = false;
 
-    constructor(public gameDataModel: GameDataModel, public gameDataService: GameDataService) {
+    constructor(public gameDataModel: GameDataModel, public gameDataService: GameDataService, public zone: NgZone) {
     }
 
     ngOnInit() {
         $('#tiebreaker-modal').on('open.zf.reveal', () => {
-            this.gameData = this.gameDataModel.gameData$.getValue();
-            this._getAvailableWeeks();
+            this.zone.run(() => {
+                this.gameData = this.gameDataModel.gameData$.getValue();
+                this._getAvailableWeeks();
+            });
         });
 
         $('#tiebreaker-modal').on('closed.zf.reveal', () => {
-            this.selectedWeek = null;
-            this.selectedGame = null;
+            this.zone.run(() => {
+                this.selectedWeek = null;
+                this.selectedGame = null;
+            });
         });
     }
 

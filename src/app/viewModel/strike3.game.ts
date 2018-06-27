@@ -1,5 +1,6 @@
 import { Week } from '../gameData/week';
 import { PickStatus } from '../gameData/pick';
+import { TieBreaker } from '../gameData/tie.breaker';
 
 export interface Strike3Pick {
     week: number;
@@ -23,4 +24,5 @@ export interface Strike3Player {
 export interface Strike3Game {
     players: Strike3Player[];
     week: Week;
+    tieBreakers: Map<number, TieBreaker>;
 }

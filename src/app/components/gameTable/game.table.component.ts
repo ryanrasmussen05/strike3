@@ -3,6 +3,7 @@ import { Strike3Game, Strike3Pick } from '../../viewModel/strike3.game';
 import { GameDataService } from '../../gameData/game.data.service';
 import { Week } from '../../gameData/week';
 import { PickStatus } from '../../gameData/pick';
+import { TieBreaker } from '../../gameData/tie.breaker';
 
 @Component({
     selector: 'app-game-table',
@@ -18,6 +19,7 @@ export class GameTableComponent implements AfterViewInit, OnDestroy {
         this.isWeekPublic = value.week.public;
         this.game = value;
         this.weekChange();
+        this._setTieBreaker();
     }
 
     game: Strike3Game;
@@ -25,9 +27,12 @@ export class GameTableComponent implements AfterViewInit, OnDestroy {
     weekNumber: number;
     isWeekPublic: boolean;
     weekChanged: boolean = false;
-    savingWeek: boolean = false;
+
+    tieBreaker: TieBreaker = null;
 
     selectedPick: Strike3Pick;
+
+    savingWeek: boolean = false;
 
     pickStatus = PickStatus;
 
@@ -51,6 +56,10 @@ export class GameTableComponent implements AfterViewInit, OnDestroy {
         }
     }
 
+    openTieBreakerModal() {
+        $('#tie-breaker-pick-modal').foundation('open');
+    }
+
     weekChange() {
         this.weekChanged = (+this.weekNumber !== this.game.week.weekNumber || this.isWeekPublic !== this.game.week.public);
     }
@@ -69,5 +78,13 @@ export class GameTableComponent implements AfterViewInit, OnDestroy {
             console.error(error);
             this.savingWeek = false;
         });
+    }
+
+    private _setTieBreaker() {
+        if (this.game.tieBreakers && this.game.tieBreakers.get(this.game.week.weekNumber)) {
+            this.tieBreaker = this.game.tieBreakers.get(this.game.week.weekNumber);
+        } else {
+            this.tieBreaker = null;
+        }
     }
 }

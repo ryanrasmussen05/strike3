@@ -15,11 +15,12 @@ export class ViewModelUtil {
     buildViewModel(admin: boolean): Strike3Game {
         const currentUser = this.userModel.currentUser$.getValue();
         const gameData: GameData = this.gameDataModel.gameData$.getValue();
-        const strike3Game: Strike3Game = {players: [], week: null};
+        const strike3Game: Strike3Game = {players: [], week: null, tieBreakers: null};
 
         if (!gameData) return strike3Game;
 
         strike3Game.week = gameData.week;
+        strike3Game.tieBreakers = gameData.tieBreakers;
 
         gameData.players.forEach((player) => {
             const strike3Player: Strike3Player = {

@@ -1,0 +1,35 @@
+<div class="center size-24 weight-500 my2">
+    <span>Tie Breaker Pick</span>
+    <span class="weight-300">{{ "("  + selectedTieBreaker.awayTeam + ' vs. ' + selectedTieBreaker.homeTeam + ")" }}</span>
+</div>
+
+<div>
+    <label>Winning Team
+        <select [(ngModel)]="winningTeam">
+            <option value="">Select Team</option>
+            <option [value]="selectedTieBreaker.awayTeam">{{ selectedTieBreaker.awayTeam }}</option>
+            <option [value]="selectedTieBreaker.homeTeam">{{ selectedTieBreaker.homeTeam }}</option>
+        </select>
+    </label>
+</div>
+
+<div>
+    <label>Total Combined Points
+        <input type="number" [(ngModel)]="totalPoints"/>
+    </label>
+</div>
+
+<div class="size-12 mb2">
+    *Once you submit your pick, only the admin can edit it
+</div>
+
+<div>
+    <button class="button full-width" [disabled]="!winningTeam || !totalPoints" (click)="submitTieBreaker()">
+        <span *ngIf="!loading">Submit Tie Breaker</span>
+        <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+    </button>
+</div>
+
+<div *ngIf="error" class="callout alert mt2">
+    Error Occurred, Pick not saved
+</div>
