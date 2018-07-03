@@ -6,6 +6,7 @@ import { PickStatus } from '../../gameData/pick';
 import { TieBreaker } from '../../gameData/tie.breaker';
 import { UserModel } from '../../user/user.model';
 import { Subscription } from 'rxjs';
+import { ContextModel } from '../context.model';
 
 import * as firebase from 'firebase';
 
@@ -52,7 +53,7 @@ export class GameTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     pickStatus = PickStatus;
 
-    constructor(public gameDataService: GameDataService, public userModel: UserModel) {
+    constructor(public gameDataService: GameDataService, public userModel: UserModel, public contextModel: ContextModel) {
     }
 
     ngOnInit(): void {
@@ -84,12 +85,14 @@ export class GameTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     openPickModal(strike3Pick: Strike3Pick) {
         if (strike3Pick.canEdit) {
+            this.contextModel.setContextTieBreaker(this._getTieBreakerForWeek(strike3Pick.week));
             this.selectedPick = Object.create(strike3Pick);
             $('#pick-modal').foundation('open');
         }
     }
 
     openTieBreakerModal() {
+        this.contextModel.setContextTieBreaker(this.tieBreaker);
         $('#tie-breaker-pick-modal').foundation('open');
     }
 
@@ -115,6 +118,14 @@ export class GameTableComponent implements OnInit, AfterViewInit, OnDestroy {
             console.error(error);
             this.savingWeek = false;
         });
+    }
+
+    private _getTieBreakerForWeek(week: number) {
+        if (this.game.tieBreakers && this.game.tieBreakers.get(week)) {
+            return this.game.tieBreakers.get(week);
+        } else {
+            return null;
+        }
     }
 
     private _setTieBreaker() {

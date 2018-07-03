@@ -30,10 +30,11 @@ import { EmailComponent } from './components/adminPage/email/email.component';
 import { TieBreakerComponent } from './components/adminPage/tieBreaker/tie.breaker.component';
 import { TieBreakerFormComponent } from './components/adminPage/tieBreaker/tie.breaker.form';
 import { TieBreakerResultComponent } from './components/adminPage/tieBreaker/tie.breaker.result';
-
-import * as $ from 'jquery';
+import { ContextModel } from './components/context.model';
 import { TieBreakerPickComponent } from './components/pick/tie.breaker.pick.component';
 import { ViewTieBreakersComponent } from './components/gameTable/tieBreaker/view.tie.breakers.component';
+
+import * as $ from 'jquery';
 
 @NgModule({
     declarations: [
@@ -72,7 +73,8 @@ import { ViewTieBreakersComponent } from './components/gameTable/tieBreaker/view
         LoadingService,
         NFLService,
         GameDataResolver,
-        EmailService
+        EmailService,
+        ContextModel
     ],
     bootstrap: [AppComponent]
 })

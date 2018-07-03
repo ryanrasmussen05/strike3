@@ -1,4 +1,4 @@
-import { Component, Input, NgZone, OnInit } from '@angular/core';
+import { Component, Input, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Strike3Pick } from '../../viewModel/strike3.game';
 import { Pick, PickStatus } from '../../gameData/pick';
 import { TeamModel } from '../../gameData/team.model';
@@ -6,53 +6,63 @@ import { GameDataService } from '../../gameData/game.data.service';
 import { GameDataModel } from '../../gameData/game.data.model';
 import { Team } from '../../gameData/team';
 import { TieBreaker } from '../../gameData/tie.breaker';
+import { Subscription } from 'rxjs';
+import { ContextModel } from '../context.model';
 
 @Component({
     selector: 'app-pick',
     templateUrl: './pick.component.html'
 })
-export class PickComponent implements OnInit {
+export class PickComponent implements OnInit, OnDestroy {
     @Input('admin') admin: boolean;
 
     @Input('strike3Pick') set strike3Pick(value: Strike3Pick) {
         if (value) {
             this.selectedTeam = value.team ? value.team : '';
+            this.tieBreakerTeam = value.tieBreakerTeam;
+            this.tieBreakerPoints = value.tieBreakerPoints;
             this.pickStatus = value.status;
             this.selectedStrike3Pick = value;
             this.filterGamesForCurrentTime();
         }
     }
 
-    @Input('tieBreaker') set tieBreaker(value: TieBreaker) {
-        if (value) {
-            this.selectedTieBreaker = value;
-        }
-    }
-
     selectedStrike3Pick: Strike3Pick;
-    selectedTieBreaker: TieBreaker = null;
     selectedTeam: string = '';
     pickStatus: PickStatus;
     filteredTeams: Team[] = [];
+
+    tieBreaker: TieBreaker;
+    tieBreakerTeam: string;
+    tieBreakerPoints: number;
 
     error: boolean = false;
     loading: boolean = false;
     PickStatus = PickStatus;
 
+    contextSubscription: Subscription;
+
     constructor(public zone: NgZone, public gameDataService: GameDataService, public teamModel: TeamModel,
-                public gameDataModel: GameDataModel) {
+                public gameDataModel: GameDataModel, public contextModel: ContextModel) {
     }
 
     ngOnInit() {
         $('#pick-modal').on('closed.zf.reveal', () => {
             this.zone.run(() => {
-                this.selectedTieBreaker = null;
                 this.selectedTeam = '';
                 this.pickStatus = null;
                 this.error = false;
                 this.loading = false;
             });
         });
+
+        this.contextSubscription = this.contextModel.contextTieBreaker$.subscribe((tieBreaker: TieBreaker) => {
+            this.tieBreaker = tieBreaker;
+        });
+    }
+
+    ngOnDestroy() {
+        this.contextSubscription.unsubscribe();
     }
 
     filterGamesForCurrentTime() {
@@ -81,8 +91,11 @@ export class PickComponent implements OnInit {
         const pick: Pick = {
             week: this.selectedStrike3Pick.week,
             team: this.selectedTeam,
-            status: this.pickStatus
+            status: this.pickStatus,
         };
+
+        if (this.tieBreakerTeam) pick.tieBreakerTeam = this.tieBreakerTeam;
+        if (this.tieBreakerPoints) pick.tieBreakerPoints = this.tieBreakerPoints;
 
         if (this.selectedTeam !== this.selectedStrike3Pick.team) {
             pick.time = new Date().getTime();
@@ -91,7 +104,7 @@ export class PickComponent implements OnInit {
         this.gameDataService.submitPick(pick, this.selectedStrike3Pick.uid).then(() => {
             this.loading = false;
 
-            const shouldShowTieBreaker = !!this.selectedTieBreaker && !this.selectedStrike3Pick.tieBreakerTeam;
+            const shouldShowTieBreaker = !!this.tieBreaker && !this.selectedStrike3Pick.tieBreakerTeam && !this.admin;
             this._closeModal();
 
             if (shouldShowTieBreaker) {

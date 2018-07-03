@@ -1,4 +1,4 @@
-import { Component, Input, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { TeamModel } from '../../gameData/team.model';
 import { GameDataService } from '../../gameData/game.data.service';
 import { GameDataModel } from '../../gameData/game.data.model';
@@ -7,19 +7,14 @@ import { GameData } from '../../gameData/game.data';
 import { NFLGame } from '../../gameData/nfl.schedule';
 import { Pick } from '../../gameData/pick';
 import { UserModel } from '../../user/user.model';
+import { ContextModel } from '../context.model';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-tie-breaker-pick',
     templateUrl: './tie.breaker.pick.component.html'
 })
-export class TieBreakerPickComponent implements OnInit {
-
-    @Input('tieBreaker') set tieBreaker(value: TieBreaker) {
-        if (value) {
-            this.selectedTieBreaker = value;
-            this.isGameStarted = this._hasGameStarted();
-        }
-    }
+export class TieBreakerPickComponent implements OnInit, OnDestroy {
 
     selectedTieBreaker: TieBreaker;
     isGameStarted: boolean = false;
@@ -29,8 +24,10 @@ export class TieBreakerPickComponent implements OnInit {
     error: boolean = false;
     loading: boolean = false;
 
+    contextSubscription: Subscription;
+
     constructor(public zone: NgZone, public gameDataService: GameDataService, public teamModel: TeamModel,
-                public gameDataModel: GameDataModel, public userModel: UserModel) {
+                public gameDataModel: GameDataModel, public userModel: UserModel, public contextModel: ContextModel) {
     }
 
     ngOnInit() {
@@ -42,13 +39,24 @@ export class TieBreakerPickComponent implements OnInit {
                 this.loading = false;
             });
         });
+
+        this.contextSubscription = this.contextModel.contextTieBreaker$.subscribe((tieBreaker: TieBreaker) => {
+            if (tieBreaker) {
+                this.selectedTieBreaker = tieBreaker;
+                this.isGameStarted = this._hasGameStarted();
+            }
+        });
+    }
+
+    ngOnDestroy() {
+        this.contextSubscription.unsubscribe();
     }
 
     private _hasGameStarted(): boolean {
         const gameData: GameData = this.gameDataModel.gameData$.getValue();
         const currentTime = new Date().getTime();
 
-        const game: NFLGame = gameData.schedule.get(gameData.week.weekNumber).find((nflGame: NFLGame) => {
+        const game: NFLGame = gameData.schedule.get(this.selectedTieBreaker.week).find((nflGame: NFLGame) => {
             return this.selectedTieBreaker.awayTeam === nflGame.awayTeam
                 && this.selectedTieBreaker.homeTeam === nflGame.homeTeam;
         });

@@ -1,48 +1,66 @@
 <div class="center size-24 weight-500 my2">
-  <span>Week {{ selectedStrike3Pick?.week }} Pick</span>
-  <span *ngIf="admin" class="weight-300">{{ "("  + selectedStrike3Pick?.playerName + ")" }}</span>
+    <span>Week {{ selectedStrike3Pick?.week }} Pick</span>
+    <span *ngIf="admin" class="weight-300">{{ "("  + selectedStrike3Pick?.playerName + ")" }}</span>
 </div>
 
 <div *ngIf="!admin">
-  <label>Team
-    <select [(ngModel)]="selectedTeam">
-      <option value="">Select Team</option>
-      <option *ngFor="let team of filteredTeams" [value]="team.abbreviation">{{ team.name }}</option>
-    </select>
-  </label>
+    <label>Team
+        <select [(ngModel)]="selectedTeam">
+            <option value="">Select Team</option>
+            <option *ngFor="let team of filteredTeams" [value]="team.abbreviation">{{ team.name }}</option>
+        </select>
+    </label>
 </div>
 
 <div *ngIf="admin">
-  <label>Team
-    <select [(ngModel)]="selectedTeam">
-      <option value="">Select Team</option>
-      <option *ngFor="let team of teamModel.allTeamsAdmin" [value]="team.abbreviation">{{ team.name }}</option>
-    </select>
-  </label>
+    <label>Team
+        <select [(ngModel)]="selectedTeam">
+            <option value="">Select Team</option>
+            <option *ngFor="let team of teamModel.allTeamsAdmin" [value]="team.abbreviation">{{ team.name }}</option>
+        </select>
+    </label>
+</div>
+
+<div *ngIf="admin && tieBreaker">
+    <div>
+        <label>Tie Breaker Pick
+            <select [(ngModel)]="tieBreakerTeam">
+                <option value="">Select Team</option>
+                <option [value]="tieBreaker.awayTeam">{{ tieBreaker.awayTeam }}</option>
+                <option [value]="tieBreaker.homeTeam">{{ tieBreaker.homeTeam }}</option>
+            </select>
+        </label>
+    </div>
+
+    <div>
+        <label>Tie Breaker Combined Points
+            <input type="number" [(ngModel)]="tieBreakerPoints"/>
+        </label>
+    </div>
 </div>
 
 <div *ngIf="!admin" class="size-12 mb2">
-  *Once you submit your pick, only the admin can edit it
+    *Once you submit your pick, only the admin can edit it
 </div>
 
 <div *ngIf="admin" class="my2 flex items-center">
-  <input type="radio" name="pickStatus" [value]="PickStatus.Open" id="pickOpen" class="m0" [(ngModel)]="pickStatus">
-  <label for="pickOpen" class="mr2">Open</label>
-  <input type="radio" name="pickStatus" [value]="PickStatus.Win" id="pickWin" class="m0" [(ngModel)]="pickStatus">
-  <label for="pickWin" class="mr2">Win</label>
-  <input type="radio" name="pickStatus" [value]="PickStatus.Loss" id="pickLoss" class="m0" [(ngModel)]="pickStatus">
-  <label for="pickLoss" class="mr2">Loss</label>
-  <input type="radio" name="pickStatus" [value]="PickStatus.Tie" id="pickTie" class="m0" [(ngModel)]="pickStatus">
-  <label for="pickTie" class="mr2">Tie</label>
+    <input type="radio" name="pickStatus" [value]="PickStatus.Open" id="pickOpen" class="m0" [(ngModel)]="pickStatus">
+    <label for="pickOpen" class="mr2">Open</label>
+    <input type="radio" name="pickStatus" [value]="PickStatus.Win" id="pickWin" class="m0" [(ngModel)]="pickStatus">
+    <label for="pickWin" class="mr2">Win</label>
+    <input type="radio" name="pickStatus" [value]="PickStatus.Loss" id="pickLoss" class="m0" [(ngModel)]="pickStatus">
+    <label for="pickLoss" class="mr2">Loss</label>
+    <input type="radio" name="pickStatus" [value]="PickStatus.Tie" id="pickTie" class="m0" [(ngModel)]="pickStatus">
+    <label for="pickTie" class="mr2">Tie</label>
 </div>
 
 <div class="right-align">
-  <button class="button full-width" [disabled]="!selectedTeam" (click)="submitPick()">
-    <span *ngIf="!loading">Submit Pick</span>
-    <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
-  </button>
+    <button class="button full-width" [disabled]="!selectedTeam" (click)="submitPick()">
+        <span *ngIf="!loading">Submit Pick</span>
+        <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+    </button>
 </div>
 
 <div *ngIf="error" class="callout alert mt2">
-  Error Occurred, Pick not saved
+    Error Occurred, Pick not saved
 </div>

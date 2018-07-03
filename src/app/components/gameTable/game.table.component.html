@@ -62,12 +62,12 @@
 
     <div class="reveal" id="pick-modal" data-reveal>
         <button class="close-button" data-close type="button"><span aria-hidden="true">&times;</span></button>
-        <app-pick [strike3Pick]="selectedPick" [tieBreaker]="tieBreaker" [admin]="admin"></app-pick>
+        <app-pick [strike3Pick]="selectedPick" [admin]="admin"></app-pick>
     </div>
 
     <div class="reveal" id="tie-breaker-pick-modal" data-reveal>
         <button class="close-button" data-close type="button"><span aria-hidden="true">&times;</span></button>
-        <app-tie-breaker-pick [tieBreaker]="tieBreaker"></app-tie-breaker-pick>
+        <app-tie-breaker-pick></app-tie-breaker-pick>
     </div>
 
     <div class="reveal" id="tie-breakers-modal" data-reveal>
