@@ -5,6 +5,7 @@ import { TeamModel } from '../../gameData/team.model';
 import { GameDataService } from '../../gameData/game.data.service';
 import { GameDataModel } from '../../gameData/game.data.model';
 import { Team } from '../../gameData/team';
+import { TieBreaker } from '../../gameData/tie.breaker';
 
 @Component({
     selector: 'app-pick',
@@ -22,7 +23,14 @@ export class PickComponent implements OnInit {
         }
     }
 
+    @Input('tieBreaker') set tieBreaker(value: TieBreaker) {
+        if (value) {
+            this.selectedTieBreaker = value;
+        }
+    }
+
     selectedStrike3Pick: Strike3Pick;
+    selectedTieBreaker: TieBreaker = null;
     selectedTeam: string = '';
     pickStatus: PickStatus;
     filteredTeams: Team[] = [];
@@ -38,6 +46,7 @@ export class PickComponent implements OnInit {
     ngOnInit() {
         $('#pick-modal').on('closed.zf.reveal', () => {
             this.zone.run(() => {
+                this.selectedTieBreaker = null;
                 this.selectedTeam = '';
                 this.pickStatus = null;
                 this.error = false;
@@ -81,7 +90,13 @@ export class PickComponent implements OnInit {
 
         this.gameDataService.submitPick(pick, this.selectedStrike3Pick.uid).then(() => {
             this.loading = false;
+
+            const shouldShowTieBreaker = !!this.selectedTieBreaker && !this.selectedStrike3Pick.tieBreakerTeam;
             this._closeModal();
+
+            if (shouldShowTieBreaker) {
+                this._openTieBreaker();
+            }
         }).catch((error) => {
             console.error(error);
             this.loading = false;
@@ -91,5 +106,9 @@ export class PickComponent implements OnInit {
 
     private _closeModal() {
         $('#pick-modal').foundation('close');
+    }
+
+    private _openTieBreaker() {
+        $('#tie-breaker-pick-modal').foundation('open');
     }
 }

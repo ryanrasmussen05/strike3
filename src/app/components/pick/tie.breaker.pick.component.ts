@@ -68,7 +68,7 @@ export class TieBreakerPickComponent implements OnInit {
 
         this.gameDataService.submitPick(pick, this.userModel.currentUser$.getValue().uid).then(() => {
             this.loading = false;
-            this._closeModal();
+            this.closeModal();
         }).catch((error) => {
             console.error(error);
             this.loading = false;
@@ -76,7 +76,7 @@ export class TieBreakerPickComponent implements OnInit {
         });
     }
 
-    private _closeModal() {
+    closeModal() {
         $('#tie-breaker-pick-modal').foundation('close');
     }
 }

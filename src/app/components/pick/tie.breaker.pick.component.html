@@ -3,30 +3,41 @@
     <span class="weight-300">{{ "("  + selectedTieBreaker.awayTeam + ' vs. ' + selectedTieBreaker.homeTeam + ")" }}</span>
 </div>
 
-<div>
-    <label>Winning Team
-        <select [(ngModel)]="winningTeam">
-            <option value="">Select Team</option>
-            <option [value]="selectedTieBreaker.awayTeam">{{ selectedTieBreaker.awayTeam }}</option>
-            <option [value]="selectedTieBreaker.homeTeam">{{ selectedTieBreaker.homeTeam }}</option>
-        </select>
-    </label>
-</div>
+<div *ngIf="!isGameStarted">
+    <div>
+        <label>Winning Team
+            <select [(ngModel)]="winningTeam">
+                <option value="">Select Team</option>
+                <option [value]="selectedTieBreaker.awayTeam">{{ selectedTieBreaker.awayTeam }}</option>
+                <option [value]="selectedTieBreaker.homeTeam">{{ selectedTieBreaker.homeTeam }}</option>
+            </select>
+        </label>
+    </div>
 
-<div>
-    <label>Total Combined Points
-        <input type="number" [(ngModel)]="totalPoints"/>
-    </label>
-</div>
+    <div>
+        <label>Total Combined Points
+            <input type="number" [(ngModel)]="totalPoints"/>
+        </label>
+    </div>
 
-<div class="size-12 mb2">
-    *Once you submit your pick, only the admin can edit it
-</div>
+    <div class="size-12 mb2">
+        *Once you submit your pick, only the admin can edit it
+    </div>
 
-<div>
-    <button class="button full-width" [disabled]="!winningTeam || !totalPoints" (click)="submitTieBreaker()">
+    <button class="button full-width" [disabled]="!winningTeam || !totalPoints || loading" (click)="submitTieBreaker()">
         <span *ngIf="!loading">Submit Tie Breaker</span>
         <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+    </button>
+    <button class="button secondary full-width mt1" [disabled]="loading" (click)="closeModal()">
+        <span>Cancel (Don't Forget To Submit Later)</span>
+    </button>
+</div>
+
+<div *ngIf="isGameStarted">
+    <div class="center size-16 my3">This game has already started. It's too late to submit your tie breaker pick.</div>
+
+    <button class="button secondary full-width mt1" (click)="closeModal()">
+        <span>Close</span>
     </button>
 </div>
 
