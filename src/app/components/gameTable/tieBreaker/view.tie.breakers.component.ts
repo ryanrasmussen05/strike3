@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Strike3Game, Strike3Pick } from '../../../viewModel/strike3.game';
 import { TieBreaker } from '../../../gameData/tie.breaker';
 
