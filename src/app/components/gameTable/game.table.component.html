@@ -31,8 +31,14 @@
                 <span class="size-16 weight-500 mr1">Your Pick:</span>
                 <span class="size-16">{{ tieBreakerPick.tieBreakerTeam + ' - ' + tieBreakerPick.tieBreakerPoints }}</span>
             </div>
+
+            <div>
+                <button class="button secondary mt1" (click)="openTieBreakersModal()">View Tie Breaker Picks</button>
+            </div>
         </div>
     </div>
+
+
 
     <div class="full-width flex flex-column items-start">
         <div id="game-table-results" class="mx-auto pt1">
@@ -64,4 +70,8 @@
         <app-tie-breaker-pick [tieBreaker]="tieBreaker"></app-tie-breaker-pick>
     </div>
 
+    <div class="reveal" id="tie-breakers-modal" data-reveal>
+        <button class="close-button" data-close type="button"><span aria-hidden="true">&times;</span></button>
+        <app-view-tie-breakers [strike3Game]="strike3Game"></app-view-tie-breakers>
+    </div>
 </div>

@@ -1,0 +1,31 @@
+<div id="pick-log" *ngIf="currentStrike3Game">
+    <h1 class="center">Tie Breaker Picks</h1>
+
+    <div class="flex justify-center items-center mb2">
+        <select class="auto-width m0" [(ngModel)]="selectedTieBreaker" (change)="tieBreakerChange()">
+            <option *ngFor="let tieBreaker of tieBreakers" [ngValue]="tieBreaker">{{ "Week " + tieBreaker.week }}</option>
+        </select>
+    </div>
+
+    <div *ngIf="selectedTieBreaker" class="mb1">
+        <div class="center size-20 weight-500">{{ selectedTieBreaker.awayTeam + ' vs. ' + selectedTieBreaker.homeTeam }}</div>
+        <div *ngIf="selectedTieBreaker.winningTeam" class="center size-16 weight-500">{{ 'Result: ' + selectedTieBreaker.winningTeam + ' - ' + selectedTieBreaker.points }}</div>
+    </div>
+
+    <div *ngIf="picksForWeek.length > 0">
+        <table class="ml-auto mr-auto mb4">
+            <tr>
+                <th>Picker</th>
+                <th>Pick</th>
+            </tr>
+            <tr *ngFor="let pick of picksForWeek">
+                <td class="log-player center"><div class="mx3">{{ pick.playerName }}</div></td>
+                <td class="log-team center"><div class="mx3">{{ pick.tieBreakerTeam + ' - ' + pick.tieBreakerPoints }}</div></td>
+            </tr>
+        </table>
+    </div>
+
+    <div *ngIf="selectedTieBreaker && picksForWeek.length <= 0" class="center">
+        {{ "No Tie Breaker Picks Have Been Made for Week " + selectedTieBreaker.week }}
+    </div>
+</div>

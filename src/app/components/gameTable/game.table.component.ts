@@ -15,16 +15,23 @@ import * as firebase from 'firebase';
     styleUrls: ['./game.table.component.scss']
 })
 export class GameTableComponent implements OnInit, AfterViewInit, OnDestroy {
+    private _currentStrike3Game: Strike3Game;
+
     @Input('admin') admin: boolean;
 
     @Input('strike3Game')
     set strike3Game(value: Strike3Game) {
+        this._currentStrike3Game = value;
         this.weekNumber = value.week.weekNumber;
         this.isWeekPublic = value.week.public;
         this.game = value;
         this.weekChange();
         this._setTieBreaker();
         this._setTieBreakerPick();
+    }
+
+    get strike3Game() {
+        return this._currentStrike3Game;
     }
 
     game: Strike3Game;
@@ -62,9 +69,17 @@ export class GameTableComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnDestroy() {
         this.userSubscription.unsubscribe();
 
-        const modalElement = $('#pick-modal');
-        modalElement.foundation('_destroy');
-        modalElement.remove();
+        const pickModalElement = $('#pick-modal');
+        pickModalElement.foundation('_destroy');
+        pickModalElement.remove();
+
+        const tieBreakerPickModal = $('#tie-breaker-pick-modal');
+        tieBreakerPickModal.foundation('_destroy');
+        tieBreakerPickModal.remove();
+
+        const tieBreakersModal = $('#tie-breakers-modal');
+        tieBreakersModal.foundation('_destroy');
+        tieBreakersModal.remove();
     }
 
     openPickModal(strike3Pick: Strike3Pick) {
@@ -76,6 +91,10 @@ export class GameTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     openTieBreakerModal() {
         $('#tie-breaker-pick-modal').foundation('open');
+    }
+
+    openTieBreakersModal() {
+        $('#tie-breakers-modal').foundation('open');
     }
 
     weekChange() {

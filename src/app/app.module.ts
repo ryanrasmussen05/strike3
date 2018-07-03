@@ -33,6 +33,7 @@ import { TieBreakerResultComponent } from './components/adminPage/tieBreaker/tie
 
 import * as $ from 'jquery';
 import { TieBreakerPickComponent } from './components/pick/tie.breaker.pick.component';
+import { ViewTieBreakersComponent } from './components/gameTable/tieBreaker/view.tie.breakers.component';
 
 @NgModule({
     declarations: [
@@ -50,7 +51,8 @@ import { TieBreakerPickComponent } from './components/pick/tie.breaker.pick.comp
         TieBreakerComponent,
         TieBreakerFormComponent,
         TieBreakerResultComponent,
-        TieBreakerPickComponent
+        TieBreakerPickComponent,
+        ViewTieBreakersComponent
     ],
     imports: [
         BrowserModule,

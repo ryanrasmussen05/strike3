@@ -26,6 +26,14 @@ export class TieBreakerComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.gameDataSubscription.unsubscribe();
+
+        const tieBreakerModalElement = $('#tiebreaker-modal');
+        tieBreakerModalElement.foundation('_destroy');
+        tieBreakerModalElement.remove();
+
+        const tieBreakerResultModal = $('#tiebreaker-result-modal');
+        tieBreakerResultModal.foundation('_destroy');
+        tieBreakerResultModal.remove();
     }
 
     openTieBreakerModal() {
