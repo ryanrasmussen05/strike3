@@ -29,6 +29,7 @@ export class GameTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     tieBreaker: TieBreaker = null;
     tieBreakerPick: Strike3Pick = null;
+    previousTieBreakers: boolean = false; //show tie breaker button if needed for history
 
     savingWeek: boolean = false;
 
@@ -52,6 +53,7 @@ export class GameTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.weekChange();
             this._setTieBreaker();
             this._setTieBreakerPick();
+            this._setPreviousTieBreakers();
         });
     }
 
@@ -146,5 +148,10 @@ export class GameTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             }
         }
+    }
+
+    //handle rare case that there is no tie breaker for current week, but have been previous tie breaker
+    private _setPreviousTieBreakers() {
+        this.previousTieBreakers = this.strike3Game.tieBreakers && this.strike3Game.tieBreakers.size > 0;
     }
 }

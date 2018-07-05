@@ -38,7 +38,9 @@
         </div>
     </div>
 
-
+    <div *ngIf="!tieBreaker && previousTieBreakers" class="full-width flex justify-center items-center mb2">
+        <button class="button secondary mt1" (click)="openTieBreakersModal()">View Tie Breaker Picks</button>
+    </div>
 
     <div class="full-width flex flex-column items-start">
         <div id="game-table-results" class="mx-auto pt1">

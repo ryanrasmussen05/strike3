@@ -116,13 +116,15 @@ export class EmailComponent implements OnInit, OnDestroy {
     private _getMissingPickPlayerEmails(): string[] {
         const emails: string[] = [];
 
+        const tieBreaker = this.strike3Game.tieBreakers.get(this.currentWeek);
+
         this.strike3Game.players.forEach((player: Strike3Player) => {
             if (player.strikes < 3) {
                 const thisWeeksPick = player.picks.find((pick: Strike3Pick) => {
                     return pick.week === this.currentWeek;
                 });
 
-                if (!thisWeeksPick || !thisWeeksPick.team) {
+                if (!thisWeeksPick || !thisWeeksPick.team || (tieBreaker && !thisWeeksPick.tieBreakerTeam)) {
                     emails.push(player.email);
                 }
             }
