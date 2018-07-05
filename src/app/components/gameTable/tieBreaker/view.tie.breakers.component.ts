@@ -1,13 +1,15 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Strike3Game, Strike3Pick } from '../../../viewModel/strike3.game';
 import { TieBreaker } from '../../../gameData/tie.breaker';
+import { ContextModel } from '../../context.model';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-view-tie-breakers',
     templateUrl: './view.tie.breakers.component.html',
     styleUrls: ['./view.tie.breakers.component.scss']
 })
-export class ViewTieBreakersComponent {
+export class ViewTieBreakersComponent implements OnInit, OnDestroy {
     currentStrike3Game: Strike3Game;
 
     tieBreakers: TieBreaker[] = [];
@@ -15,12 +17,20 @@ export class ViewTieBreakersComponent {
 
     picksForWeek: Strike3Pick[] = [];
 
-    @Input('strike3Game')
-    set strike3Game(value: Strike3Game) {
-        if (value) {
-            this.currentStrike3Game = value;
+    contextSubscription: Subscription;
+
+    constructor(public contextModel: ContextModel){
+    }
+
+    ngOnInit() {
+        this.contextSubscription = this.contextModel.contextStrike3Game$.subscribe((strike3Game: Strike3Game) => {
+            this.currentStrike3Game = strike3Game;
             this._setup();
-        }
+        });
+    }
+
+    ngOnDestroy() {
+        this.contextSubscription.unsubscribe();
     }
 
     tieBreakerChange() {

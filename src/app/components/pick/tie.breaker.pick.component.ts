@@ -50,6 +50,7 @@ export class TieBreakerPickComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.contextSubscription.unsubscribe();
+        $('#tie-breaker-pick-modal').off('closed.zf.reveal');
     }
 
     private _hasGameStarted(): boolean {

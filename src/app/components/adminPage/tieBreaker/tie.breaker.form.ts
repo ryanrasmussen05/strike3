@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { GameDataModel } from '../../../gameData/game.data.model';
 import { GameData } from '../../../gameData/game.data';
 import { TieBreaker } from '../../../gameData/tie.breaker';
@@ -9,7 +9,7 @@ import { GameDataService } from '../../../gameData/game.data.service';
     selector: 'app-tie-breaker-form',
     templateUrl: './tie.breaker.form.html'
 })
-export class TieBreakerFormComponent implements OnInit {
+export class TieBreakerFormComponent implements OnInit, OnDestroy {
     gameData: GameData;
     availableWeeks: number[] = [];
     availableGames: NFLGame[] = null;
@@ -37,6 +37,10 @@ export class TieBreakerFormComponent implements OnInit {
                 this.selectedGame = null;
             });
         });
+    }
+
+    ngOnDestroy() {
+        $('#tiebreaker-modal').off('open.zf.reveal closed.zf.reveal');
     }
 
     getGamesForWeek() {

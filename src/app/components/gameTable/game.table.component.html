@@ -1,7 +1,7 @@
-<div id="game-table">
+<div id="game-table" *ngIf="strike3Game">
 
     <div *ngIf="!admin" class="full-width flex justify-center items-center mb2">
-        <span class="size-24 weight-500">{{ "Week " + game.week?.weekNumber }}</span>
+        <span class="size-24 weight-500">{{ "Week " + strike3Game.week?.weekNumber }}</span>
     </div>
 
     <div *ngIf="admin" class="full-width flex justify-center items-center mb2">
@@ -47,7 +47,7 @@
                 <div *ngFor="let number of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]" class="pick flex-none center">{{ number }}</div>
             </div>
 
-            <div class="player-wrapper flex" *ngFor="let strike3Player of game.players"
+            <div class="player-wrapper flex" *ngFor="let strike3Player of strike3Game.players"
                  [class.current-user]="strike3Player.signedIn">
                 <div class="player-name flex-none center truncate">{{ strike3Player.admin ? strike3Player.name + "(admin)" : strike3Player.name }}
                 </div>
@@ -62,7 +62,7 @@
 
     <div class="reveal" id="pick-modal" data-reveal>
         <button class="close-button" data-close type="button"><span aria-hidden="true">&times;</span></button>
-        <app-pick [strike3Pick]="selectedPick" [admin]="admin"></app-pick>
+        <app-pick [admin]="admin"></app-pick>
     </div>
 
     <div class="reveal" id="tie-breaker-pick-modal" data-reveal>
@@ -72,6 +72,6 @@
 
     <div class="reveal" id="tie-breakers-modal" data-reveal>
         <button class="close-button" data-close type="button"><span aria-hidden="true">&times;</span></button>
-        <app-view-tie-breakers [strike3Game]="strike3Game"></app-view-tie-breakers>
+        <app-view-tie-breakers></app-view-tie-breakers>
     </div>
 </div>

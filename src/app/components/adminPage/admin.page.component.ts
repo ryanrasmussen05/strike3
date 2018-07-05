@@ -3,9 +3,9 @@ import { UserModel } from '../../user/user.model';
 import { GameDataModel } from '../../gameData/game.data.model';
 import { merge, Subscription } from 'rxjs';
 import { AdminViewModel } from '../../viewModel/admin.view.model';
-import { Strike3Game } from '../../viewModel/strike3.game';
 import { GameDataService } from '../../gameData/game.data.service';
 import { LoadingService } from '../../loading/loading.service';
+import { ContextModel } from '../context.model';
 
 declare const html2canvas: any;
 declare const download: any;
@@ -17,13 +17,12 @@ declare const download: any;
 export class AdminPageComponent implements OnInit, OnDestroy, AfterViewInit {
     admin: boolean = false;
     superuser: boolean = false;
-    strike3Game: Strike3Game;
 
     playerSubscription: Subscription;
     adminViewSubscription: Subscription;
 
     constructor(public userModel: UserModel, public gameDataModel: GameDataModel, public gameDataService: GameDataService,
-                public adminViewModel: AdminViewModel, public loadingService: LoadingService) {
+                public adminViewModel: AdminViewModel, public loadingService: LoadingService, public contextModel: ContextModel) {
     }
 
     ngAfterViewInit() {
@@ -32,7 +31,7 @@ export class AdminPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit() {
         this.adminViewSubscription = this.adminViewModel.strike3Game$.subscribe((game) => {
-            this.strike3Game = game;
+            this.contextModel.setContextStrike3Game(game);
         });
 
         this.playerSubscription = merge(this.userModel.currentUser$, this.gameDataModel.gameData$).subscribe(() => {

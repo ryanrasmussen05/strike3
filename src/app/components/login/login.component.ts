@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../user/user.service';
 import { GameDataService } from '../../gameData/game.data.service';
 
@@ -12,7 +12,7 @@ enum ErrorType { Create, Reset }
     selector: 'app-login',
     templateUrl: './login.component.html'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
     firstName: string;
     lastName: string;
     email: string;
@@ -38,6 +38,10 @@ export class LoginComponent implements OnInit {
                 this._clearForm();
             });
         });
+    }
+
+    ngOnDestroy() {
+        $('#login-modal').off('closed.zf.reveal');
     }
 
     toggleCreateAccount() {

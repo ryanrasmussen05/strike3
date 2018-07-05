@@ -16,17 +16,6 @@ import { ContextModel } from '../context.model';
 export class PickComponent implements OnInit, OnDestroy {
     @Input('admin') admin: boolean;
 
-    @Input('strike3Pick') set strike3Pick(value: Strike3Pick) {
-        if (value) {
-            this.selectedTeam = value.team ? value.team : '';
-            this.tieBreakerTeam = value.tieBreakerTeam;
-            this.tieBreakerPoints = value.tieBreakerPoints;
-            this.pickStatus = value.status;
-            this.selectedStrike3Pick = value;
-            this.filterGamesForCurrentTime();
-        }
-    }
-
     selectedStrike3Pick: Strike3Pick;
     selectedTeam: string = '';
     pickStatus: PickStatus;
@@ -40,7 +29,8 @@ export class PickComponent implements OnInit, OnDestroy {
     loading: boolean = false;
     PickStatus = PickStatus;
 
-    contextSubscription: Subscription;
+    contextTieBreakerSubscription: Subscription;
+    contextStrike3PickSubscription: Subscription;
 
     constructor(public zone: NgZone, public gameDataService: GameDataService, public teamModel: TeamModel,
                 public gameDataModel: GameDataModel, public contextModel: ContextModel) {
@@ -56,13 +46,25 @@ export class PickComponent implements OnInit, OnDestroy {
             });
         });
 
-        this.contextSubscription = this.contextModel.contextTieBreaker$.subscribe((tieBreaker: TieBreaker) => {
+        this.contextTieBreakerSubscription = this.contextModel.contextTieBreaker$.subscribe((tieBreaker: TieBreaker) => {
             this.tieBreaker = tieBreaker;
+        });
+
+        this.contextStrike3PickSubscription = this.contextModel.contextStrike3Pick$.subscribe((strike3Pick: Strike3Pick) => {
+            if (strike3Pick) {
+                this.selectedTeam = strike3Pick.team ? strike3Pick.team : '';
+                this.tieBreakerTeam = strike3Pick.tieBreakerTeam;
+                this.tieBreakerPoints = strike3Pick.tieBreakerPoints;
+                this.pickStatus = strike3Pick.status;
+                this.selectedStrike3Pick = strike3Pick;
+                this.filterGamesForCurrentTime();
+            }
         });
     }
 
     ngOnDestroy() {
-        this.contextSubscription.unsubscribe();
+        this.contextTieBreakerSubscription.unsubscribe();
+        $('#pick-modal').off('closed.zf.reveal');
     }
 
     filterGamesForCurrentTime() {

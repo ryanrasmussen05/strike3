@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { TieBreaker } from '../../../gameData/tie.breaker';
 import { GameData } from '../../../gameData/game.data';
 import { GameDataService } from '../../../gameData/game.data.service';
+import { ContextModel } from '../../context.model';
 
 @Component({
     selector: 'app-tie-breaker',
@@ -12,10 +13,9 @@ import { GameDataService } from '../../../gameData/game.data.service';
 })
 export class TieBreakerComponent implements OnInit, OnDestroy {
     tieBreakers: TieBreaker[] = [];
-    selectedTieBreaker: TieBreaker;
     gameDataSubscription: Subscription;
 
-    constructor(public gameDataModel: GameDataModel, public gameDataService: GameDataService) {
+    constructor(public gameDataModel: GameDataModel, public gameDataService: GameDataService, public contextModel: ContextModel) {
     }
 
     ngOnInit() {
@@ -41,7 +41,7 @@ export class TieBreakerComponent implements OnInit, OnDestroy {
     }
 
     setResult(tieBreaker: TieBreaker) {
-        this.selectedTieBreaker = tieBreaker;
+        this.contextModel.setContextTieBreaker(tieBreaker);
         $('#tiebreaker-result-modal').foundation('open');
     }
 

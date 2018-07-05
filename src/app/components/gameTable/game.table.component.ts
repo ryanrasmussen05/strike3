@@ -16,26 +16,9 @@ import * as firebase from 'firebase';
     styleUrls: ['./game.table.component.scss']
 })
 export class GameTableComponent implements OnInit, AfterViewInit, OnDestroy {
-    private _currentStrike3Game: Strike3Game;
-
     @Input('admin') admin: boolean;
 
-    @Input('strike3Game')
-    set strike3Game(value: Strike3Game) {
-        this._currentStrike3Game = value;
-        this.weekNumber = value.week.weekNumber;
-        this.isWeekPublic = value.week.public;
-        this.game = value;
-        this.weekChange();
-        this._setTieBreaker();
-        this._setTieBreakerPick();
-    }
-
-    get strike3Game() {
-        return this._currentStrike3Game;
-    }
-
-    game: Strike3Game;
+    strike3Game: Strike3Game;
 
     user: firebase.User;
     userSubscription: Subscription;
@@ -47,11 +30,11 @@ export class GameTableComponent implements OnInit, AfterViewInit, OnDestroy {
     tieBreaker: TieBreaker = null;
     tieBreakerPick: Strike3Pick = null;
 
-    selectedPick: Strike3Pick;
-
     savingWeek: boolean = false;
 
     pickStatus = PickStatus;
+
+    contextSubscription: Subscription;
 
     constructor(public gameDataService: GameDataService, public userModel: UserModel, public contextModel: ContextModel) {
     }
@@ -59,6 +42,15 @@ export class GameTableComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnInit(): void {
         this.userSubscription = this.userModel.currentUser$.subscribe(() => {
             this.user = this.userModel.currentUser$.getValue();
+            this._setTieBreakerPick();
+        });
+
+        this.contextSubscription = this.contextModel.contextStrike3Game$.subscribe((strike3Game: Strike3Game) => {
+            this.weekNumber = strike3Game.week.weekNumber;
+            this.isWeekPublic = strike3Game.week.public;
+            this.strike3Game = strike3Game;
+            this.weekChange();
+            this._setTieBreaker();
             this._setTieBreakerPick();
         });
     }
@@ -86,7 +78,7 @@ export class GameTableComponent implements OnInit, AfterViewInit, OnDestroy {
     openPickModal(strike3Pick: Strike3Pick) {
         if (strike3Pick.canEdit) {
             this.contextModel.setContextTieBreaker(this._getTieBreakerForWeek(strike3Pick.week));
-            this.selectedPick = Object.create(strike3Pick);
+            this.contextModel.setContextStrike3Pick(Object.create(strike3Pick));
             $('#pick-modal').foundation('open');
         }
     }
@@ -101,7 +93,7 @@ export class GameTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     weekChange() {
-        this.weekChanged = (+this.weekNumber !== this.game.week.weekNumber || this.isWeekPublic !== this.game.week.public);
+        this.weekChanged = (+this.weekNumber !== this.strike3Game.week.weekNumber || this.isWeekPublic !== this.strike3Game.week.public);
     }
 
     saveWeek() {
@@ -121,16 +113,16 @@ export class GameTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private _getTieBreakerForWeek(week: number) {
-        if (this.game.tieBreakers && this.game.tieBreakers.get(week)) {
-            return this.game.tieBreakers.get(week);
+        if (this.strike3Game.tieBreakers && this.strike3Game.tieBreakers.get(week)) {
+            return this.strike3Game.tieBreakers.get(week);
         } else {
             return null;
         }
     }
 
     private _setTieBreaker() {
-        if (this.game.tieBreakers && this.game.tieBreakers.get(this.game.week.weekNumber)) {
-            this.tieBreaker = this.game.tieBreakers.get(this.game.week.weekNumber);
+        if (this.strike3Game.tieBreakers && this.strike3Game.tieBreakers.get(this.strike3Game.week.weekNumber)) {
+            this.tieBreaker = this.strike3Game.tieBreakers.get(this.strike3Game.week.weekNumber);
         } else {
             this.tieBreaker = null;
         }
@@ -139,8 +131,8 @@ export class GameTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private _setTieBreakerPick() {
         this.tieBreakerPick = null;
 
-        if (this.game && this.user) {
-            const s3Player: Strike3Player = this.game.players.find((player: Strike3Player) => {
+        if (this.strike3Game && this.user) {
+            const s3Player: Strike3Player = this.strike3Game.players.find((player: Strike3Player) => {
                 return player.uid === this.user.uid;
             });
 

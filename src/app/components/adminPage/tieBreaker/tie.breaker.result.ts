@@ -1,20 +1,15 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TieBreaker } from '../../../gameData/tie.breaker';
 import { GameDataModel } from '../../../gameData/game.data.model';
 import { GameDataService } from '../../../gameData/game.data.service';
+import { ContextModel } from '../../context.model';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-tie-breaker-result',
     templateUrl: './tie.breaker.result.html'
 })
-export class TieBreakerResultComponent {
-
-    @Input('tieBreaker') set tieBreaker(value: TieBreaker) {
-        if (value) {
-            this.selectedTieBreaker = Object.create(value);
-        }
-    }
-
+export class TieBreakerResultComponent implements OnInit, OnDestroy {
     selectedTieBreaker: TieBreaker;
     winningTeam: string = '';
     totalPoints: number;
@@ -22,7 +17,19 @@ export class TieBreakerResultComponent {
     error: boolean = false;
     loading: boolean = false;
 
-    constructor(public gameDataService: GameDataService, public gameDataModel: GameDataModel) {
+    contextSubscription: Subscription;
+
+    constructor(public gameDataService: GameDataService, public gameDataModel: GameDataModel, public contextModel: ContextModel) {
+    }
+
+    ngOnInit() {
+        this.contextSubscription = this.contextModel.contextTieBreaker$.subscribe((tieBreaker: TieBreaker) => {
+            this.selectedTieBreaker = Object.create(tieBreaker);
+        });
+    }
+
+    ngOnDestroy() {
+        this.contextSubscription.unsubscribe();
     }
 
     submitResult() {
