@@ -63,7 +63,7 @@ export class AdminPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
         html2canvas($('#game-table-results'), {
             background: '#ffffff',
-            width: 1050,
+            width: 1100,
             onrendered: function (canvas) {
                 tabContainer.addClass('overflow-auto');
                 download(canvas.toDataURL('image/png'), 'strike3.png', 'image/png');

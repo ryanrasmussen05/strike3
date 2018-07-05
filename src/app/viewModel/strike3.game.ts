@@ -22,6 +22,7 @@ export interface Strike3Player {
     strikes: number;
     admin: boolean;
     uid: string;
+    rank: number;
 }
 
 export interface Strike3Game {

@@ -1,7 +1,7 @@
 @import '../../../styles/variables';
 
 :host {
-  display: block;
+    display: block;
 }
 
 .tie-breaker-wrapper {
@@ -9,52 +9,62 @@
     border-radius: 5px;
 }
 
+.player-rank {
+    width: 50px;
+}
+
 .player-name {
-  width: 200px;
+    width: 200px;
 }
 
 .pick {
-  width: 50px;
+    width: 50px;
 }
 
 .player-wrapper {
 
-  &.current-user {
-    outline: 10px solid $primary-theme-color;
-    margin: 10px 0;
-  }
-
-  .player-name {
-    border: 1px solid black;
-    padding-top: 3px;
-    padding-bottom: 3px;
-  }
-
-  .pick {
-    border: 1px solid black;
-    padding-top: 3px;
-    padding-bottom: 3px;
-
-    &.editable:hover {
-      cursor: pointer;
-      background-color: rgba(0, 0, 0, 0.25);
+    &.current-user {
+        outline: 10px solid $primary-theme-color;
+        margin: 10px 0;
     }
 
-    &.win {
-      background-color: $win-color;
+    .player-rank {
+        border: 1px solid black;
+        padding-top: 3px;
+        padding-bottom: 3px;
     }
 
-    &.loss {
-      background-color: $loss-color;
+    .player-name {
+        border: 1px solid black;
+        padding-top: 3px;
+        padding-bottom: 3px;
     }
 
-    &.tie {
-      background-color: $tie-color;
-    }
+    .pick {
+        border: 1px solid black;
+        padding-top: 3px;
+        padding-bottom: 3px;
 
-    &.eliminated {
-      background-color: $eliminated-color;
+        &.editable:hover {
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.25);
+        }
+
+        &.win {
+            background-color: $win-color;
+        }
+
+        &.loss {
+            background-color: $loss-color;
+        }
+
+        &.tie {
+            background-color: $tie-color;
+        }
+
+        &.eliminated {
+            background-color: $eliminated-color;
+        }
     }
-  }
 }
 

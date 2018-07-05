@@ -43,12 +43,14 @@
     <div class="full-width flex flex-column items-start">
         <div id="game-table-results" class="mx-auto pt1">
             <div class="flex size-12 weight-500">
-                <div class="player-name flex-none"></div>
+                <div class="player-rank flex-none center">Rank</div>
+                <div class="player-name flex-none center">Player</div>
                 <div *ngFor="let number of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]" class="pick flex-none center">{{ number }}</div>
             </div>
 
             <div class="player-wrapper flex" *ngFor="let strike3Player of strike3Game.players"
                  [class.current-user]="strike3Player.signedIn">
+                <div class="player-rank flex-none center truncate">{{ strike3Player.rank }}</div>
                 <div class="player-name flex-none center truncate">{{ strike3Player.admin ? strike3Player.name + "(admin)" : strike3Player.name }}
                 </div>
                 <div *ngFor="let strike3Pick of strike3Player.picks" class="pick flex-none center"

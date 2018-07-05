@@ -29,7 +29,8 @@ export class ViewModelUtil {
                 picks: this._getStrike3PicksForPlayer(player, admin),
                 strikes: 0,
                 admin: player.admin,
-                uid: player.uid
+                uid: player.uid,
+                rank: 0
             };
 
             strike3Player.strikes = this._getNumStrikesForPlayer(strike3Player);
@@ -39,6 +40,10 @@ export class ViewModelUtil {
             }
 
             strike3Game.players.push(strike3Player);
+        });
+
+        strike3Game.players.forEach((player: Strike3Player) => {
+            player.rank = this._getRankForPlayer(player, strike3Game);
         });
 
         this._sortStrike3Players(strike3Game.players);
@@ -162,29 +167,108 @@ export class ViewModelUtil {
         return numStrikes;
     }
 
-    private _sortStrike3Players(strike3Players: Strike3Player[]) {
-        strike3Players.sort((a, b): number => {
-            if (a.strikes < b.strikes) return -1;
-            if (a.strikes > b.strikes) return 1;
-            if (this._getEliminationWeek(a) > this._getEliminationWeek(b)) return -1;
-            if (this._getEliminationWeek(a) < this._getEliminationWeek(b)) return 1;
-            //TODO tiebreaker logic
-            if (a.name < b.name) return -1;
-            if (a.name > b.name) return 1;
-            return 0;
-        });
-    }
-
     private _getEliminationWeek(strike3Player: Strike3Player): number {
-        let eliminationWeek = 100;
+        let eliminationWeek: number = 100;
+        let strikes: number = 0;
 
         for (const strike3Pick of strike3Player.picks) {
-            if (strike3Pick.eliminated) {
+            if (strike3Pick.status === PickStatus.Loss) {
+                strikes = strikes + 1;
+            } else if (strike3Pick.status === PickStatus.Tie) {
+                strikes = strikes + 0.5;
+            }
+
+            if (strikes >= 3) {
                 eliminationWeek = strike3Pick.week;
                 break;
             }
         }
 
         return eliminationWeek;
+    }
+
+    private _getRankForPlayer(playerToRank: Strike3Player, strike3Game: Strike3Game): number {
+        const playersAhead: Strike3Player[] = [];
+
+        strike3Game.players.forEach((player: Strike3Player) => {
+            if (player.uid !== playerToRank.uid) {
+
+                // if player has less strikes
+                if (player.strikes < playerToRank.strikes) {
+                    playersAhead.push(player);
+                    return;
+                }
+
+                const playerToRankEliminationWeek = this._getEliminationWeek(playerToRank);
+                const playerEliminationWeek = this._getEliminationWeek(player);
+
+                // if player was eliminated later
+                if (playerToRankEliminationWeek < playerEliminationWeek) {
+                    playersAhead.push(player);
+                    return;
+                }
+
+                // if players eliminated same week, go to tie breaker
+                if ((playerToRankEliminationWeek === playerEliminationWeek) && playerEliminationWeek <= 17) {
+                    if (this._didOtherPlayerWinTieBreaker(playerToRank, player, strike3Game, playerEliminationWeek)) {
+                        playersAhead.push(player);
+                    }
+                }
+
+                // if both players not yet eliminated
+                if ((playerToRankEliminationWeek === playerEliminationWeek) && playerEliminationWeek > 17) {
+                    //use final tie breaker
+                    if (this._didOtherPlayerWinTieBreaker(playerToRank, player, strike3Game, 17)) {
+                        playersAhead.push(player);
+                    }
+                }
+            }
+        });
+
+        return playersAhead.length + 1;
+    }
+
+    private _didOtherPlayerWinTieBreaker(playerToRank: Strike3Player, otherPlayer: Strike3Player, strike3Game: Strike3Game, week: number): boolean {
+        const tieBreaker = strike3Game.tieBreakers.get(week);
+
+        const playerToRankPick = playerToRank.picks.find((pick) => {
+            return pick.week === week;
+        });
+
+        const otherPlayerPick = otherPlayer.picks.find((pick) => {
+            return pick.week === week;
+        });
+
+        //if no tie breaker set
+        if (!tieBreaker) return false;
+
+        //if player to rank did not submit a tie breaker
+        if (!playerToRankPick.tieBreakerTeam && otherPlayerPick.tieBreakerTeam) return true;
+
+        if (tieBreaker && tieBreaker.winningTeam && playerToRankPick.tieBreakerTeam && otherPlayerPick.tieBreakerTeam) {
+            let otherPlayerWon: boolean = (playerToRankPick.tieBreakerTeam !== tieBreaker.winningTeam) && (otherPlayerPick.tieBreakerTeam === tieBreaker.winningTeam);
+
+            otherPlayerWon = otherPlayerWon || (playerToRankPick.tieBreakerPoints > tieBreaker.points) && (otherPlayerPick.tieBreakerPoints <= tieBreaker.points);
+
+            otherPlayerWon = otherPlayerWon || ((playerToRankPick.tieBreakerPoints > tieBreaker.points) && (otherPlayerPick.tieBreakerPoints > tieBreaker.points))
+                && (playerToRankPick.tieBreakerPoints > otherPlayerPick.tieBreakerPoints);
+
+            otherPlayerWon = otherPlayerWon || ((playerToRankPick.tieBreakerPoints <= tieBreaker.points) && (otherPlayerPick.tieBreakerPoints <= tieBreaker.points))
+                && (playerToRankPick.tieBreakerPoints < otherPlayerPick.tieBreakerPoints);
+
+            return otherPlayerWon;
+        }
+
+        return false;
+    }
+
+    private _sortStrike3Players(strike3Players: Strike3Player[]) {
+        strike3Players.sort((a, b): number => {
+            if (a.rank < b.rank) return -1;
+            if (a.rank > b.rank) return 1;
+            if (a.name < b.name) return -1;
+            if (a.name > b.name) return 1;
+            return 0;
+        });
     }
 }
