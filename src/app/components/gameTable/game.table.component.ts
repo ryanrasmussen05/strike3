@@ -143,7 +143,7 @@ export class GameTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     return this.weekNumber === pick.week;
                 });
 
-                if (s3Pick && s3Pick.tieBreakerTeam) {
+                if (s3Pick) {
                     this.tieBreakerPick = s3Pick;
                 }
             }

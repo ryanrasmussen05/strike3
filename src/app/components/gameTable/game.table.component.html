@@ -23,11 +23,11 @@
                 <span class="size-20">{{ tieBreaker.awayTeam + " vs. " + tieBreaker.homeTeam }}</span>
             </div>
 
-            <div class="mt1" *ngIf="user && !tieBreakerPick">
+            <div class="mt1" *ngIf="user && !tieBreakerPick?.tieBreakerTeam && !tieBreakerPick?.eliminated">
                 <button class="button" (click)="openTieBreakerModal()">Enter Tie Breaker Pick</button>
             </div>
 
-            <div class="mt1" *ngIf="user && tieBreakerPick">
+            <div class="mt1" *ngIf="user && tieBreakerPick?.tieBreakerTeam">
                 <span class="size-16 weight-500 mr1">Your Pick:</span>
                 <span class="size-16">{{ tieBreakerPick.tieBreakerTeam + ' - ' + tieBreakerPick.tieBreakerPoints }}</span>
             </div>

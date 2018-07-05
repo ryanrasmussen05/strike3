@@ -193,6 +193,9 @@ export class ViewModelUtil {
         strike3Game.players.forEach((player: Strike3Player) => {
             if (player.uid !== playerToRank.uid) {
 
+                // skip everything if player to rank has less strikes
+                if (playerToRank.strikes < player.strikes) return;
+
                 // if player has less strikes
                 if (player.strikes < playerToRank.strikes) {
                     playersAhead.push(player);
@@ -246,9 +249,10 @@ export class ViewModelUtil {
         if (!playerToRankPick.tieBreakerTeam && otherPlayerPick.tieBreakerTeam) return true;
 
         if (tieBreaker && tieBreaker.winningTeam && playerToRankPick.tieBreakerTeam && otherPlayerPick.tieBreakerTeam) {
-            let otherPlayerWon: boolean = (playerToRankPick.tieBreakerTeam !== tieBreaker.winningTeam) && (otherPlayerPick.tieBreakerTeam === tieBreaker.winningTeam);
+            if ((playerToRankPick.tieBreakerTeam === tieBreaker.winningTeam) && (otherPlayerPick.tieBreakerTeam !== tieBreaker.winningTeam)) return false;
+            if ((playerToRankPick.tieBreakerTeam !== tieBreaker.winningTeam) && (otherPlayerPick.tieBreakerTeam === tieBreaker.winningTeam)) return true;
 
-            otherPlayerWon = otherPlayerWon || (playerToRankPick.tieBreakerPoints > tieBreaker.points) && (otherPlayerPick.tieBreakerPoints <= tieBreaker.points);
+            let otherPlayerWon: boolean = (playerToRankPick.tieBreakerPoints > tieBreaker.points) && (otherPlayerPick.tieBreakerPoints <= tieBreaker.points);
 
             otherPlayerWon = otherPlayerWon || ((playerToRankPick.tieBreakerPoints > tieBreaker.points) && (otherPlayerPick.tieBreakerPoints > tieBreaker.points))
                 && (playerToRankPick.tieBreakerPoints > otherPlayerPick.tieBreakerPoints);
