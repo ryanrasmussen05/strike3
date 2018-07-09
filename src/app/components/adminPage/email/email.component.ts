@@ -6,6 +6,8 @@ import { Subscription } from 'rxjs';
 import { AdminViewModel } from '../../../viewModel/admin.view.model';
 import { Strike3Game, Strike3Pick, Strike3Player } from '../../../viewModel/strike3.game';
 import { Email } from '../../../email/email';
+import { PickStatus } from '../../../gameData/pick';
+import { GameData } from '../../../gameData/game.data';
 
 import * as firebase from 'firebase/app';
 
@@ -33,13 +35,20 @@ export class EmailComponent implements OnInit, OnDestroy {
     errorMessage: string;
 
     adminViewSubscription: Subscription;
+    gameDataSubscription: Subscription;
 
     constructor(public emailService: EmailService, public loadingService: LoadingService, public gameDataModel: GameDataModel,
                 public adminViewModel: AdminViewModel) {
     }
 
     ngOnInit() {
-        this.currentWeek = this.gameDataModel.gameData$.getValue().week.weekNumber;
+        this.gameDataSubscription = this.gameDataModel.gameData$.subscribe((gameData: GameData) => {
+            this.currentWeek = gameData.week.weekNumber;
+
+            if (this.strike3Game) {
+                this.updateRecipientList();
+            }
+        });
 
         this.adminViewSubscription = this.adminViewModel.strike3Game$.subscribe((game) => {
             this.strike3Game = game;
@@ -49,6 +58,7 @@ export class EmailComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.adminViewSubscription.unsubscribe();
+        this.gameDataSubscription.unsubscribe();
     }
 
     getFiles(fileInputEvent: Event) {
@@ -105,7 +115,7 @@ export class EmailComponent implements OnInit, OnDestroy {
         const emails: string[] = [];
 
         this.strike3Game.players.forEach((player: Strike3Player) => {
-            if (player.strikes < 3) {
+            if (!this._isPlayerEliminated(player)) {
                 emails.push(player.email);
             }
         });
@@ -146,4 +156,29 @@ export class EmailComponent implements OnInit, OnDestroy {
             }
         }
     }
+
+    private _isPlayerEliminated(player: Strike3Player): boolean {
+        if (player.strikes < 3) {
+            return false;
+        }
+
+        let strikes: number = 0;
+        let eliminationWeek: number = 100;
+
+        for (const pick of player.picks) {
+            if (pick.status === PickStatus.Loss) {
+                strikes = strikes + 1;
+            } else if (pick.status === PickStatus.Tie) {
+                strikes = strikes + 0.5;
+            }
+
+            if (strikes >= 3) {
+                eliminationWeek = pick.week;
+                break;
+            }
+        }
+
+        return (eliminationWeek < this.currentWeek - 1);
+    }
+
 }

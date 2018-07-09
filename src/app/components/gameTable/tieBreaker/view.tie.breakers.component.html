@@ -7,7 +7,7 @@
         </select>
     </div>
 
-    <div *ngIf="selectedTieBreaker" class="mb1">
+    <div *ngIf="selectedTieBreaker" class="mb2">
         <div class="center size-20 weight-500">{{ selectedTieBreaker.awayTeam + ' vs. ' + selectedTieBreaker.homeTeam }}</div>
         <div *ngIf="selectedTieBreaker.winningTeam" class="center size-16 weight-500">{{ 'Result: ' + selectedTieBreaker.winningTeam + ' - ' + selectedTieBreaker.points }}</div>
     </div>
