@@ -7,8 +7,8 @@ import { NFLServiceScoreboard } from './nfl.service.scoreboard';
 
 @Injectable()
 export class NFLService {
-    nflApiScheduleEndpoint = 'https://api.mysportsfeeds.com/v1.1/pull/nfl/2017-2018-regular/full_game_schedule.json';
-    nflApiScoreboardEndpoint = 'https://api.mysportsfeeds.com/v1.1/pull/nfl/2017-2018-regular/scoreboard.json?fordate=';
+    nflApiScheduleEndpoint = 'https://api.mysportsfeeds.com/v1.1/pull/nfl/2018-2019-regular/full_game_schedule.json';
+    nflApiScoreboardEndpoint = 'https://api.mysportsfeeds.com/v1.1/pull/nfl/2018-2019-regular/scoreboard.json?fordate=';
     nflApiAuth = 'rlras05:strike3'; //username:password
 
     constructor(public http: HttpClient) {
