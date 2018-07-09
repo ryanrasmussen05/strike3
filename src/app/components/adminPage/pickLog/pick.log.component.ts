@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { GameDataModel } from '../../../gameData/game.data.model';
 import { Subscription } from 'rxjs';
 import { GameData } from '../../../gameData/game.data';

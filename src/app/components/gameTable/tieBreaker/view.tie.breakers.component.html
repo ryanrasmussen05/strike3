@@ -19,8 +19,12 @@
                 <th>Pick</th>
             </tr>
             <tr *ngFor="let pick of picksForWeek">
-                <td class="log-player center"><div class="mx3">{{ pick.playerName }}</div></td>
-                <td class="log-team center"><div class="mx3">{{ pick.tieBreakerTeam + ' - ' + pick.tieBreakerPoints }}</div></td>
+                <td class="log-player center">
+                    <div class="mx3">{{ pick.playerName }}</div>
+                </td>
+                <td class="log-team center">
+                    <div class="mx3">{{ pick.tieBreakerTeam + ' - ' + pick.tieBreakerPoints }}</div>
+                </td>
             </tr>
         </table>
     </div>

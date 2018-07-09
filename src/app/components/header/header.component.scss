@@ -1,52 +1,52 @@
 @import '../../../styles/variables';
 
 :host {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
 }
 
 .nav-bar {
-  background-color: $nav-bar-background-color;
-  color: $nav-bar-text-color;
-  height: $nav-bar-height;
+    background-color: $nav-bar-background-color;
+    color: $nav-bar-text-color;
+    height: $nav-bar-height;
 
-  .user-menu {
-    cursor: pointer;
+    .user-menu {
+        cursor: pointer;
 
-    &:hover {
-      color: $primary-theme-color;
+        &:hover {
+            color: $primary-theme-color;
+        }
     }
-  }
 
-  .user-menu-item:hover {
-    background-color: $dropdown-menu-item-hover;
-  }
-
-  .nav-button {
-    @media (min-width: $media-breakpoint) {
-      display: none !important;
+    .user-menu-item:hover {
+        background-color: $dropdown-menu-item-hover;
     }
-  }
 
-  .nav-link {
-    @media (max-width: $media-breakpoint) {
-      display: none !important;
+    .nav-button {
+        @media (min-width: $media-breakpoint) {
+            display: none !important;
+        }
     }
-  }
+
+    .nav-link {
+        @media (max-width: $media-breakpoint) {
+            display: none !important;
+        }
+    }
 }
 
 #nav-dropdown {
-  width: auto;
+    width: auto;
 
-  .nav-dropdown-link {
-    font-size: 20px;
-    padding: 10px 20px;
-    cursor: pointer;
+    .nav-dropdown-link {
+        font-size: 20px;
+        padding: 10px 20px;
+        cursor: pointer;
 
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.12);
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.12);
+        }
     }
-  }
 }

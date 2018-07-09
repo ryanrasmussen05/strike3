@@ -14,8 +14,12 @@
                 <th></th>
             </tr>
             <tr *ngFor="let tieBreaker of tieBreakers">
-                <td class="center"><div class="mx3">{{ tieBreaker.week }}</div></td>
-                <td class="center"><div class="mx3">{{ tieBreaker.awayTeam + ' vs. ' + tieBreaker.homeTeam }}</div></td>
+                <td class="center">
+                    <div class="mx3">{{ tieBreaker.week }}</div>
+                </td>
+                <td class="center">
+                    <div class="mx3">{{ tieBreaker.awayTeam + ' vs. ' + tieBreaker.homeTeam }}</div>
+                </td>
                 <td class="center">
                     <div *ngIf="tieBreaker.winningTeam" class="mx2">{{ tieBreaker.winningTeam + ' - ' + tieBreaker.points }}</div>
                     <div *ngIf="!tieBreaker.winningTeam" class="mx2">

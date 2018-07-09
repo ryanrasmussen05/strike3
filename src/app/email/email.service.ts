@@ -23,7 +23,7 @@ export class EmailService {
         return fileRef.put(email.file).then(() => {
             return fileRef.getDownloadURL().then((url) => {
 
-                email.attachment = { filename: email.file.name, url: url };
+                email.attachment = {filename: email.file.name, url: url};
                 email.file = null; //don't send this to firebase again
 
                 return this.sendEmail(email);
@@ -34,7 +34,7 @@ export class EmailService {
     private _sendEmail(email: Email): Promise<firebase.functions.HttpsCallableResult> {
         const sendEmailFunction = firebase.functions().httpsCallable('sendEmail');
 
-        return sendEmailFunction({ email: email });
+        return sendEmailFunction({email: email});
     }
 }
 

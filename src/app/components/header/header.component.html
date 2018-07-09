@@ -1,41 +1,41 @@
 <div id="header">
-  <div class="nav-bar flex items-center border-box p1">
-    <div class="flex items-center flex-auto">
+    <div class="nav-bar flex items-center border-box p1">
+        <div class="flex items-center flex-auto">
 
-      <button class="nav-button button mr2" type="button" data-toggle="nav-dropdown" [hidden]="!admin">
-        <i class="fa fa-align-justify size-20"></i>
-      </button>
+            <button class="nav-button button mr2" type="button" data-toggle="nav-dropdown" [hidden]="!admin">
+                <i class="fa fa-align-justify size-20"></i>
+            </button>
 
-      <div class="size-24 weight-500">Strike 3</div>
-      <a *ngIf="admin" class="nav-link size-20 underline ml2" routerLink="../player">Home</a>
-      <a *ngIf="admin" class="nav-link size-20 underline ml2" routerLink="../admin">Admin</a>
+            <div class="size-24 weight-500">Strike 3</div>
+            <a *ngIf="admin" class="nav-link size-20 underline ml2" routerLink="../player">Home</a>
+            <a *ngIf="admin" class="nav-link size-20 underline ml2" routerLink="../admin">Admin</a>
+        </div>
+
+        <div class="flex-none">
+            <button class="button" *ngIf="!user" data-open="login-modal">Sign In</button>
+
+            <ul class="dropdown menu" data-dropdown-menu data-disable-hover="true" data-click-open="true" [hidden]="!user">
+                <li>
+                    <div class="user-menu">
+                        {{ user?.displayName }}
+                        <i class="fa fa-angle-down"></i>
+                    </div>
+                    <ul class="menu">
+                        <li class="user-menu-item"><a (click)="signOut()">Sign Out</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
     </div>
 
-    <div class="flex-none">
-      <button class="button" *ngIf="!user" data-open="login-modal">Sign In</button>
-
-      <ul class="dropdown menu" data-dropdown-menu data-disable-hover="true" data-click-open="true" [hidden]="!user">
-        <li>
-          <div class="user-menu">
-            {{ user?.displayName }}
-            <i class="fa fa-angle-down"></i>
-          </div>
-          <ul class="menu">
-            <li class="user-menu-item"><a (click)="signOut()">Sign Out</a></li>
-          </ul>
-        </li>
-      </ul>
-
+    <div id="nav-dropdown" class="dropdown-pane" data-dropdown data-close-on-click="true" [hidden]="!admin">
+        <div class="nav-dropdown-link" (click)="navigate('player')">Home</div>
+        <div class="nav-dropdown-link" (click)="navigate('admin')">Admin</div>
     </div>
-  </div>
 
-  <div id="nav-dropdown" class="dropdown-pane" data-dropdown data-close-on-click="true" [hidden]="!admin">
-    <div class="nav-dropdown-link" (click)="navigate('player')">Home</div>
-    <div class="nav-dropdown-link" (click)="navigate('admin')">Admin</div>
-  </div>
-
-  <div class="reveal" id="login-modal" data-reveal>
-    <button class="close-button" data-close type="button"><span aria-hidden="true">&times;</span></button>
-    <app-login></app-login>
-  </div>
+    <div class="reveal" id="login-modal" data-reveal>
+        <button class="close-button" data-close type="button"><span aria-hidden="true">&times;</span></button>
+        <app-login></app-login>
+    </div>
 </div>

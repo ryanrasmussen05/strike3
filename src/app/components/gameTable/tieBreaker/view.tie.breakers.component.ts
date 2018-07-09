@@ -19,7 +19,7 @@ export class ViewTieBreakersComponent implements OnInit, OnDestroy {
 
     contextSubscription: Subscription;
 
-    constructor(public contextModel: ContextModel){
+    constructor(public contextModel: ContextModel) {
     }
 
     ngOnInit() {

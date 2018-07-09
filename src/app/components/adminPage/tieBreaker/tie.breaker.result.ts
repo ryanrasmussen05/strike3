@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TieBreaker } from '../../../gameData/tie.breaker';
 import { GameDataModel } from '../../../gameData/game.data.model';
 import { GameDataService } from '../../../gameData/game.data.service';
