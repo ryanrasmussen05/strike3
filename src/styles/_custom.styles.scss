@@ -3,8 +3,32 @@
 @import 'foundation';
 @import '~font-awesome/scss/font-awesome';
 
+@font-face {
+    font-family: "RobotoCustom";
+    font-weight: 300;
+    src: url("assets/Roboto-Light.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "RobotoCustom";
+    font-weight: 400;
+    src: url("assets/Roboto-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "RobotoCustom";
+    font-weight: 500;
+    src: url("assets/Roboto-Medium.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "RobotoCustom";
+    font-weight: 700;
+    src: url("assets/Roboto-Bold.ttf") format("truetype");
+}
+
 html, body, input, select, button {
-  font-family: RobotoDraft, Roboto, "Helvetica Neue", sans-serif;
+  font-family: RobotoCustom, sans-serif;
 }
 
 body {
@@ -30,7 +54,7 @@ body {
 .weight-300 { font-weight: 300; }
 .weight-400 { font-weight: 400; }
 .weight-500 { font-weight: 500; }
-.weight-600 { font-weight: 700; }
+.weight-700 { font-weight: 700; }
 .size-12 { font-size: 12px; }
 .size-14 { font-size: 14px; }
 .size-16 { font-size: 16px; }

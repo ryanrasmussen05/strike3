@@ -1,7 +1,7 @@
 <div *ngIf="selectedTieBreaker">
     <div class="center size-24 weight-500 my2">
         <span>Tie Breaker Pick</span>
-        <span class="weight-300">{{ "("  + selectedTieBreaker.awayTeam + ' vs. ' + selectedTieBreaker.homeTeam + ")" }}</span>
+        <span class="weight-300">{{ " ("  + selectedTieBreaker.awayTeam + ' vs. ' + selectedTieBreaker.homeTeam + ")" }}</span>
     </div>
 
     <div *ngIf="!isGameStarted">
