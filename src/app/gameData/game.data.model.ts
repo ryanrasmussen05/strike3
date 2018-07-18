@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Week } from './week';
 import { GameData } from './game.data';
-import { Pick } from './pick';
+import { Pick, PickStatus } from './pick';
 import { NFLGame } from './nfl.schedule';
 import { TieBreaker } from './tie.breaker';
+import { Player } from './player';
 
 @Injectable()
 export class GameDataModel {
@@ -107,6 +108,43 @@ export class GameDataModel {
 
             return !foundPreviousTeam;
         });
+    }
+
+    readyToMakeWeekPublic(): boolean {
+        const gameData: GameData = this.gameData$.getValue();
+        const week: number = gameData.week.weekNumber;
+        const tieBreaker: TieBreaker = gameData.tieBreakers.get(week);
+
+        let allPicksIn: boolean = true;
+
+        for (const player of Array.from(gameData.players.values())) {
+
+            if (!this._isPlayerEliminated(player)) {
+
+                const pick: Pick = player.picks.get(week);
+
+                if (!pick || !pick.team || (!!tieBreaker && !pick.tieBreakerTeam)) {
+                    allPicksIn = false;
+                    break;
+                }
+            }
+        }
+
+        return allPicksIn;
+    }
+
+    private _isPlayerEliminated(player: Player): boolean {
+        let strikes: number = 0;
+
+        for (const pick of Array.from(player.picks.values())) {
+            if (pick.status === PickStatus.Loss) {
+                strikes = strikes + 1;
+            } else if (pick.status === PickStatus.Tie) {
+                strikes = strikes + 0.5;
+            }
+        }
+
+        return strikes >= 3;
     }
 
     private _filterTeamsForCurrentTime(week: number): string[] {

@@ -5,10 +5,10 @@
     </div>
 
     <div *ngIf="admin" class="full-width flex justify-center items-center mb2">
-        <select class="auto-width m0" [(ngModel)]="weekNumber" (change)="weekChange()">
+        <select class="auto-width m0" [(ngModel)]="weekNumber" (change)="weekNumberChange()">
             <option *ngFor="let number of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]" [value]="number">{{ "Week " + number }}</option>
         </select>
-        <label for="lock-checkbox" class="size-16 ml2 mr1 clickable">Viewable To All Pickers</label>
+        <label for="lock-checkbox" class="size-16 ml2 mr1 clickable">All Picks In</label>
         <input id="lock-checkbox" type="checkbox" [(ngModel)]="isWeekPublic" (change)="weekChange()" class="m0">
         <button class="button ml2" *ngIf="weekChanged" (click)="saveWeek()" [disabled]="savingWeek">
             <span *ngIf="!savingWeek">Save Changes</span>

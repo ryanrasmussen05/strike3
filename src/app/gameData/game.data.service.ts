@@ -56,9 +56,17 @@ export class GameDataService {
     }
 
     submitPick(pick: Pick, uid: string): Promise<void> {
-        return firebase.database().ref('players/' + uid + '/picks/' + pick.week).update(pick).then(() => {
-            this.gameDataModel.addOrUpdatePick(pick, uid);
-        });
+        return firebase.database().ref('players/' + uid + '/picks/' + pick.week).update(pick)
+            .then(() => {
+                return this.gameDataModel.addOrUpdatePick(pick, uid);
+            })
+            .then(() => {
+                if (this.gameDataModel.readyToMakeWeekPublic()) {
+                    const week: Week = this.gameDataModel.gameData$.getValue().week;
+                    week.public = true;
+                    return this.setWeek(week);
+                }
+            });
     }
 
     submitTieBreaker(tieBreaker: TieBreaker): Promise<void> {

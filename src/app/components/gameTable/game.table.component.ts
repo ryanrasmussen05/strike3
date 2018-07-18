@@ -94,6 +94,11 @@ export class GameTableComponent implements OnInit, AfterViewInit, OnDestroy {
         $('#tie-breakers-modal').foundation('open');
     }
 
+    weekNumberChange() {
+        this.isWeekPublic = false;
+        this.weekChange();
+    }
+
     weekChange() {
         this.weekChanged = (+this.weekNumber !== this.strike3Game.week.weekNumber || this.isWeekPublic !== this.strike3Game.week.public);
     }
