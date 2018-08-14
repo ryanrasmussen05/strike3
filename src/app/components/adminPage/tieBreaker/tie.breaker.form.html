@@ -5,7 +5,7 @@
 <div>
     <label>Week
         <select [(ngModel)]="selectedWeek" (change)="getGamesForWeek()">
-            <option value="">Select Week</option>
+            <option [value]="null">Select Week</option>
             <option *ngFor="let week of availableWeeks" [value]="week">{{ week }}</option>
         </select>
     </label>

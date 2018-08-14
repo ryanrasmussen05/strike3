@@ -33,6 +33,7 @@ import { TieBreakerResultComponent } from './components/adminPage/tieBreaker/tie
 import { ContextModel } from './components/context.model';
 import { TieBreakerPickComponent } from './components/pick/tie.breaker.pick.component';
 import { ViewTieBreakersComponent } from './components/gameTable/tieBreaker/view.tie.breakers.component';
+import { RosterComponent } from './components/adminPage/roster/roster.component';
 
 import * as $ from 'jquery';
 
@@ -53,7 +54,8 @@ import * as $ from 'jquery';
         TieBreakerFormComponent,
         TieBreakerResultComponent,
         TieBreakerPickComponent,
-        ViewTieBreakersComponent
+        ViewTieBreakersComponent,
+        RosterComponent
     ],
     imports: [
         BrowserModule,

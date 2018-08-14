@@ -270,8 +270,10 @@ export class ViewModelUtil {
         strike3Players.sort((a, b): number => {
             if (a.rank < b.rank) return -1;
             if (a.rank > b.rank) return 1;
-            if (a.name < b.name) return -1;
-            if (a.name > b.name) return 1;
+            if (!!a.name && !!b.name) {
+                if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+                if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+            }
             return 0;
         });
     }

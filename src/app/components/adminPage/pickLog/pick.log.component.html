@@ -1,4 +1,4 @@
-<div id="pick-log">
+<div>
     <h1 class="center">Pick Log</h1>
 
     <div class="flex justify-center items-center mb2">
@@ -15,13 +15,13 @@
                 <th>Time</th>
             </tr>
             <tr *ngFor="let playerLog of playerLogs">
-                <td class="log-player center">
+                <td class="center">
                     <div class="mx3">{{ playerLog.playerName }}</div>
                 </td>
-                <td class="log-team center">
+                <td class="center">
                     <div class="mx3">{{ playerLog.team }}</div>
                 </td>
-                <td class="log-time center">
+                <td class="center">
                     <div class="mx3">{{ playerLog.time | date:'short'}}</div>
                 </td>
             </tr>

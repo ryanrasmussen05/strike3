@@ -14,8 +14,8 @@ export class TieBreakerFormComponent implements OnInit, OnDestroy {
     availableWeeks: number[] = [];
     availableGames: NFLGame[] = null;
 
-    selectedWeek: string = '';
-    selectedGame: NFLGame;
+    selectedWeek: string = null;
+    selectedGame: NFLGame = null;
 
     error: boolean = false;
     loading: boolean = false;

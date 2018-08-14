@@ -9,6 +9,7 @@
         <li class="tabs-title"><a href="#tiebreaker-tab">Tie Breakers</a></li>
         <li class="tabs-title"><a href="#picks-log-tab">Picks Log</a></li>
         <li class="tabs-title"><a href="#email-tab">Email</a></li>
+        <li class="tabs-title"><a href="#roster-tab">Roster</a></li>
         <li class="tabs-title"><a href="#schedule-tab">Schedule</a></li>
     </ul>
 
@@ -37,6 +38,12 @@
         <div class="tabs-panel" id="email-tab">
             <div *ngIf="superuser">
                 <app-send-email></app-send-email>
+            </div>
+        </div>
+
+        <div class="tabs-panel" id="roster-tab">
+            <div *ngIf="superuser">
+                <app-roster></app-roster>
             </div>
         </div>
 
