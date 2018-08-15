@@ -25,7 +25,7 @@ export class EmailComponent implements OnInit, OnDestroy {
     strike3Game: Strike3Game;
 
     selectedEmailGroup: string = this.allPlayers;
-    recipients: string[] = [];
+    recipients: Strike3Player[] = [];
     subject: string = '';
     emailBody: string = '';
     attachment: File;
@@ -77,7 +77,17 @@ export class EmailComponent implements OnInit, OnDestroy {
                 this.recipients = this._getMissingPickPlayerEmails();
         }
 
-        this._addAdminEmail();
+        this.recipients.sort((a, b): number => {
+            if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+            if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+            return 0;
+        });
+    }
+
+    removePlayer(player: Strike3Player): void {
+        this.recipients = this.recipients.filter((currentPlayer: Strike3Player) => {
+            return player !== currentPlayer;
+        });
     }
 
     sendEmail() {
@@ -88,7 +98,7 @@ export class EmailComponent implements OnInit, OnDestroy {
         const email: Email = {
             subject: this.subject,
             body: this.emailBody,
-            recipients: this.recipients,
+            recipients: this._getEmailsForSending(),
             file: this.attachment
         };
 
@@ -107,24 +117,24 @@ export class EmailComponent implements OnInit, OnDestroy {
         });
     }
 
-    private _getAllPlayerEmails(): string[] {
-        return this.strike3Game.players.map(player => player.email);
+    private _getAllPlayerEmails(): Strike3Player[] {
+        return [...this.strike3Game.players];
     }
 
-    private _getRemainingPlayerEmails(): string[] {
-        const emails: string[] = [];
+    private _getRemainingPlayerEmails(): Strike3Player[] {
+        const players: Strike3Player[] = [];
 
         this.strike3Game.players.forEach((player: Strike3Player) => {
             if (!this._isPlayerEliminated(player)) {
-                emails.push(player.email);
+                players.push(player);
             }
         });
 
-        return emails;
+        return players;
     }
 
-    private _getMissingPickPlayerEmails(): string[] {
-        const emails: string[] = [];
+    private _getMissingPickPlayerEmails(): Strike3Player[] {
+        const players: Strike3Player[] = [];
 
         const tieBreaker = this.strike3Game.tieBreakers.get(this.currentWeek);
 
@@ -135,26 +145,12 @@ export class EmailComponent implements OnInit, OnDestroy {
                 });
 
                 if (!thisWeeksPick || !thisWeeksPick.team || (tieBreaker && !thisWeeksPick.tieBreakerTeam)) {
-                    emails.push(player.email);
+                    players.push(player);
                 }
             }
         });
 
-        return emails;
-    }
-
-    private _addAdminEmail(): void {
-        const adminPlayer = this.strike3Game.players.find((player: Strike3Player) => {
-            return player.admin;
-        });
-
-        if (adminPlayer) {
-            const index = this.recipients.indexOf(adminPlayer.email);
-
-            if (index < 0) {
-                this.recipients.push(adminPlayer.email);
-            }
-        }
+        return players;
     }
 
     private _isPlayerEliminated(player: Strike3Player): boolean {
@@ -181,4 +177,21 @@ export class EmailComponent implements OnInit, OnDestroy {
         return (eliminationWeek < this.currentWeek - 1);
     }
 
+    private _getEmailsForSending(): string[] {
+        const emails: string[] = this.recipients.map(player => player.email);
+
+        const adminPlayer = this.strike3Game.players.find((player: Strike3Player) => {
+            return player.admin;
+        });
+
+        if (adminPlayer) {
+            const index = this.recipients.indexOf(adminPlayer);
+
+            if (index < 0) {
+                emails.push(adminPlayer.email);
+            }
+        }
+
+        return emails;
+    }
 }

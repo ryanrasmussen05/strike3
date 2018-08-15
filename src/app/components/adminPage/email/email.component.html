@@ -17,6 +17,15 @@
         </select>
     </div>
 
+    <div class="flex flex-wrap recipients-wrapper mb3">
+        <div class="flex items-center recipient mr1 mb1" *ngFor="let player of recipients">
+            <div class="mr1">{{ player.name }}</div>
+            <button class="remove-recipient" (click)="removePlayer(player)">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+
     <div class="flex items-center mb2">
         <div class="mr3">Subject:</div>
         <input [(ngModel)]="subject" type="text" class="mb0" placeholder="Enter Subject..."/>
