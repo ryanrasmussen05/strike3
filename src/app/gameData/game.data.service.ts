@@ -49,6 +49,13 @@ export class GameDataService {
         return firebase.database().ref('players/' + user.uid).set(userEntry);
     }
 
+    changePlayerName(user: firebase.User, name: string): Promise<any> {
+        return firebase.database().ref('players/' + user.uid + '/name').set(name)
+            .then(() => {
+                return this.gameDataModel.updatePlayerName(user.uid, name);
+            });
+    }
+
     setWeek(week: Week): Promise<void> {
         return firebase.database().ref('week').set(week).then(() => {
             this.gameDataModel.setWeek(week);

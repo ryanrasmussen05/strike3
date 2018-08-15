@@ -133,6 +133,20 @@ export class GameDataModel {
         return allPicksIn;
     }
 
+    updatePlayerName(uid: string, name: string) {
+        console.log('updating player name in game data');
+
+        const updatedGameData: GameData = Object.create(this.gameData$.getValue());
+
+        const playerToUpdate = updatedGameData.players.get(uid);
+
+        if (playerToUpdate) {
+            playerToUpdate.name = name;
+        }
+
+        this.gameData$.next(updatedGameData);
+    }
+
     private _isPlayerEliminated(player: Player): boolean {
         let strikes: number = 0;
 
