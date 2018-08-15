@@ -32,7 +32,7 @@ export const sendEmail = functions.https.onCall((data: {email: Email}) => {
         from: { name: 'Strike 3', address: gmailEmail },
         to: data.email.recipients,
         subject: data.email.subject,
-        html: '<p>' + data.email.body + '</p><a href="https://denisonstrike3.com">www.denisonstrike3.com</a>'
+        html: '<p>' + data.email.body + '</p><p>Do not respond to this message. If needed, contact Gary directly at denisongl@yahoo.com</p><a href="https://denisonstrike3.com">www.denisonstrike3.com</a>'
     };
 
     if (data.email.attachment) {
