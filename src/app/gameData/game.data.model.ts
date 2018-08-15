@@ -64,8 +64,8 @@ export class GameDataModel {
         this.gameData$.next(updatedGameData);
     }
 
-    removeTieBreaker(tieBreaker: TieBreaker) {
-        console.log('remove tie breaker');
+    removeTieBreaker(tieBreaker: TieBreaker): void {
+        console.log('removing tie breaker');
 
         const updatedGameData: GameData = Object.create(this.gameData$.getValue());
         updatedGameData.tieBreakers.delete(tieBreaker.week);
@@ -133,7 +133,7 @@ export class GameDataModel {
         return allPicksIn;
     }
 
-    updatePlayerName(uid: string, name: string) {
+    updatePlayerName(uid: string, name: string): void {
         console.log('updating player name in game data');
 
         const updatedGameData: GameData = Object.create(this.gameData$.getValue());
