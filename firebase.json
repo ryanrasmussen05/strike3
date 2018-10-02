@@ -1,17 +1,17 @@
 {
-  "hosting": {
-    "public": "dist",
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  },
-  "functions": {
-    "predeploy": [
-      "npm --prefix ./functions run lint",
-      "npm --prefix ./functions run build"
-    ]
-  }
+    "hosting": {
+        "public": "dist",
+        "rewrites": [
+            {
+                "source": "**",
+                "destination": "/index.html"
+            }
+        ]
+    },
+    "functions": {
+        "predeploy": [
+            "npm --prefix ./functions run lint",
+            "npm --prefix ./functions run build"
+        ]
+    }
 }

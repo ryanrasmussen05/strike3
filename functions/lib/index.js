@@ -17,7 +17,9 @@ exports.sendEmail = functions.https.onCall((data) => {
         from: { name: 'Strike 3', address: gmailEmail },
         to: data.email.recipients,
         subject: data.email.subject,
-        html: '<p>' + data.email.body + '</p><p>Do not respond to this message. If needed, contact Gary directly at denisongl@yahoo.com</p><a href="https://denisonstrike3.com">www.denisonstrike3.com</a>'
+        html: '<p>' + data.email.body + '</p>' +
+            '<p><a href="https://denisonstrike3.com">www.denisonstrike3.com</a></p>' +
+            '<p><i>Do not respond to this message. If needed, contact Gary directly at denisongl@yahoo.com</i></p>'
     };
     if (data.email.attachment) {
         mailOption.attachments = [{

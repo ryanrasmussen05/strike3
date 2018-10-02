@@ -5,12 +5,12 @@
     </div>
 
     <div *ngIf="admin" class="full-width flex justify-center items-center mb2">
-        <select class="auto-width m0" [(ngModel)]="weekNumber" (change)="weekNumberChange()">
+        <select class="form-control auto-width m0" [(ngModel)]="weekNumber" (change)="weekNumberChange()">
             <option *ngFor="let number of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]" [value]="number">{{ "Week " + number }}</option>
         </select>
         <label for="lock-checkbox" class="size-16 ml2 mr1 clickable">All Picks In</label>
         <input id="lock-checkbox" type="checkbox" [(ngModel)]="isWeekPublic" (change)="weekChange()" class="m0">
-        <button class="button ml2" *ngIf="weekChanged" (click)="saveWeek()" [disabled]="savingWeek">
+        <button class="btn btn-primary ml2" *ngIf="weekChanged" (click)="saveWeek()" [disabled]="savingWeek">
             <span *ngIf="!savingWeek">Save Changes</span>
             <i *ngIf="savingWeek" class="fa fa-spinner fa-spin"></i>
         </button>
@@ -24,7 +24,7 @@
             </div>
 
             <div class="mt1" *ngIf="user && !tieBreakerPick?.tieBreakerTeam && !tieBreakerPick?.eliminated">
-                <button class="button" (click)="openTieBreakerModal()">Enter Tie Breaker Pick</button>
+                <button class="btn btn-primary" (click)="openTieBreakerModal()">Enter Tie Breaker Pick</button>
             </div>
 
             <div class="mt1" *ngIf="user && tieBreakerPick?.tieBreakerTeam">
@@ -33,13 +33,13 @@
             </div>
 
             <div>
-                <button class="button secondary mt1" (click)="openTieBreakersModal()">View Tie Breaker Picks</button>
+                <button class="btn btn-secondary mt1" (click)="openTieBreakersModal()">View Tie Breaker Picks</button>
             </div>
         </div>
     </div>
 
     <div *ngIf="!tieBreaker && previousTieBreakers" class="full-width flex justify-center items-center mb2">
-        <button class="button secondary mt1" (click)="openTieBreakersModal()">View Tie Breaker Picks</button>
+        <button class="btn btn-secondary mt1" (click)="openTieBreakersModal()">View Tie Breaker Picks</button>
     </div>
 
     <div class="full-width flex flex-column items-start">
@@ -51,7 +51,7 @@
             </div>
 
             <div class="player-wrapper flex" *ngFor="let strike3Player of strike3Game.players"
-                 [class.current-user]="strike3Player.signedIn">
+                 [class.current-user]="strike3Player.signedIn && !overrideContextGame">
                 <div class="player-rank flex-none center truncate">{{ strike3Player.rank }}</div>
                 <div class="player-name flex-none center truncate">{{ strike3Player.admin ? strike3Player.name + " (admin)" : strike3Player.name }}
                 </div>
@@ -62,20 +62,5 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="reveal" id="pick-modal" data-reveal>
-        <button class="close-button" data-close type="button"><span aria-hidden="true">&times;</span></button>
-        <app-pick [admin]="admin"></app-pick>
-    </div>
-
-    <div class="reveal" id="tie-breaker-pick-modal" data-reveal>
-        <button class="close-button" data-close type="button"><span aria-hidden="true">&times;</span></button>
-        <app-tie-breaker-pick></app-tie-breaker-pick>
-    </div>
-
-    <div class="reveal" id="tie-breakers-modal" data-reveal>
-        <button class="close-button" data-close type="button"><span aria-hidden="true">&times;</span></button>
-        <app-view-tie-breakers></app-view-tie-breakers>
     </div>
 </div>

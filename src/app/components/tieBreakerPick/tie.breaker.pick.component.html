@@ -1,0 +1,51 @@
+<div *ngIf="tieBreaker">
+    <div class="modal-header">
+        <div class="flex-auto center size-24 weight-500 relative">
+            <span>Tie Breaker Pick</span>
+            <span class="weight-300">{{ " ("  + tieBreaker.awayTeam + ' vs. ' + tieBreaker.homeTeam + ")" }}</span>
+            <button type="button" class="close-button" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="!isGameStarted" class="modal-body">
+        <div class="mb2">
+            <label for="team">Winning Team</label>
+            <select [(ngModel)]="winningTeam" class="form-control" id="team">
+                <option value="">Select Team</option>
+                <option [value]="tieBreaker.awayTeam">{{ tieBreaker.awayTeam }}</option>
+                <option [value]="tieBreaker.homeTeam">{{ tieBreaker.homeTeam }}</option>
+            </select>
+        </div>
+
+        <div class="mb2">
+            <label for="totalPoints">Total Combined Points</label>
+            <input type="number" id="totalPoints" name="totalPoints" class="form-control" [(ngModel)]="totalPoints"/>
+        </div>
+
+        <div class="size-12 mb3 center">
+            *Once you submit your pick, only the admin can change it
+        </div>
+
+        <button class="btn btn-primary full-width mb1" [disabled]="!winningTeam || !totalPoints || loading" (click)="submitTieBreaker()">
+            <span *ngIf="!loading">Submit Tie Breaker</span>
+            <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+        </button>
+        <button class="btn btn-secondary full-width mb2" [disabled]="loading" (click)="closeModal()">
+            <span>Cancel (Don't Forget To Submit Later)</span>
+        </button>
+    </div>
+
+    <div *ngIf="isGameStarted" class="modal-body">
+        <div class="center size-16 my3">This game has already started. It's too late to submit your tie breaker pick.</div>
+
+        <button class="button secondary full-width mt1" (click)="closeModal()">
+            <span>Close</span>
+        </button>
+    </div>
+</div>
+
+<alert type="danger mx2 mb2" *ngIf="error">
+    Error Occurred, Pick not saved
+</alert>

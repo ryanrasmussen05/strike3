@@ -1,5 +1,7 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
-import { LoadingService } from '../../loading/loading.service';
+import { select, Store } from '@ngrx/store';
+import { AppState } from '../../reducers';
+import { LoadingSelector } from '../../reducers/loading.reducer';
 
 @Component({
     selector: 'app-loading',
@@ -9,12 +11,11 @@ import { LoadingService } from '../../loading/loading.service';
 export class LoadingComponent implements OnInit {
     @HostBinding('class.hidden') hidden: boolean = true;
 
-    constructor(public loadingService: LoadingService) {
+    constructor(private store: Store<AppState>) {
     }
 
     ngOnInit() {
-        this.loadingService.loading$.subscribe((loading: boolean) => {
-            console.log('loading: ' + loading);
+        this.store.pipe(select(LoadingSelector)).subscribe((loading: boolean) => {
             this.hidden = !loading;
         });
     }

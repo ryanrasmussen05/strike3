@@ -1,47 +1,39 @@
-<div id="header">
+<div>
     <div class="nav-bar flex items-center border-box p1">
         <div class="flex items-center flex-auto">
 
-            <button class="nav-button button mr2" type="button" data-toggle="nav-dropdown" [hidden]="!admin">
-                <i class="fa fa-align-justify size-20"></i>
-            </button>
+            <div dropdown class="relative">
+                <button dropdownToggle type="button" class="nav-button btn btn-primary mr2" aria-controls="mobile-nav-dropdown" [hidden]="!admin">
+                    <i class="fa fa-align-justify"></i>
+                </button>
+
+                <ul id="mobile-nav-dropdown" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                    <li role="menuitem"><a class="dropdown-item" routerLink="../player">Home</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink="../admin">Admin</a></li>
+                </ul>
+            </div>
 
             <div class="size-24 weight-500">Strike 3</div>
             <a *ngIf="admin" class="nav-link size-20 underline ml2" routerLink="../player">Home</a>
-            <a *ngIf="admin" class="nav-link size-20 underline ml2" routerLink="../admin">Admin</a>
+            <a *ngIf="admin" class="nav-link size-20 underline" routerLink="../admin">Admin</a>
         </div>
 
         <div class="flex-none">
-            <button class="button" *ngIf="!user" data-open="login-modal">Sign In</button>
+            <button class="btn btn-primary" *ngIf="!user" (click)="showLoginModal()">Sign In</button>
 
-            <ul class="dropdown menu" data-dropdown-menu data-disable-hover="true" data-click-open="true" [hidden]="!user">
-                <li>
-                    <div class="user-menu">
-                        {{ user?.displayName }}
-                        <i class="fa fa-angle-down"></i>
-                    </div>
-                    <ul class="menu">
-                        <li class="user-menu-item"><a data-open="profile-modal">Profile</a></li>
-                        <li class="user-menu-item"><a (click)="signOut()">Sign Out</a></li>
-                    </ul>
-                </li>
-            </ul>
+            <div dropdown class="relative" [hidden]="!user">
+                <div dropdownToggle class="user-menu" aria-controls="user-menu">
+                    {{ user?.name }}
+                    <i class="fa fa-angle-down"></i>
+                </div>
 
+                <ul id="user-menu" *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="button-basic">
+                    <li role="menuitem"><a class="dropdown-item" routerLink="../superuser" *ngIf="superuser">Superuser</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink="../player" *ngIf="superuser">Player</a></li>
+                    <li role="menuitem"><a class="dropdown-item" (click)="openProfileModal()">Profile</a></li>
+                    <li role="menuitem"><a class="dropdown-item" (click)="signOut()">Sign Out</a></li>
+                </ul>
+            </div>
         </div>
-    </div>
-
-    <div id="nav-dropdown" class="dropdown-pane" data-dropdown data-close-on-click="true" [hidden]="!admin">
-        <div class="nav-dropdown-link" (click)="navigate('player')">Home</div>
-        <div class="nav-dropdown-link" (click)="navigate('admin')">Admin</div>
-    </div>
-
-    <div class="reveal" id="login-modal" data-reveal>
-        <button class="close-button" data-close type="button"><span aria-hidden="true">&times;</span></button>
-        <app-login></app-login>
-    </div>
-
-    <div class="reveal" id="profile-modal" data-reveal>
-        <button class="close-button" data-close type="button"><span aria-hidden="true">&times;</span></button>
-        <app-profile></app-profile>
     </div>
 </div>

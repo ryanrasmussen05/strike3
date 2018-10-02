@@ -1,22 +1,30 @@
-import { Component, Input, NgZone, OnDestroy, OnInit } from '@angular/core';
-import { Strike3Pick } from '../../viewModel/strike3.game';
-import { Pick, PickStatus } from '../../gameData/pick';
-import { TeamModel } from '../../gameData/team.model';
-import { GameDataService } from '../../gameData/game.data.service';
-import { GameDataModel } from '../../gameData/game.data.model';
-import { Team } from '../../gameData/team';
-import { TieBreaker } from '../../gameData/tie.breaker';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ContextModel } from '../context.model';
+import { AppState } from '../../reducers';
+import { select, Store } from '@ngrx/store';
+import { ContextState, ContextStateSelector } from '../../reducers/context.reducer';
+import { Strike3Pick } from '../../models/strike3.game';
+import { PickStatus } from '../../models/pick';
+import { TieBreaker } from '../../models/tie.breaker';
+import { Team } from '../../models/team';
+import { GameDataSelector } from '../../reducers/game.data.reducer';
+import { GameData } from '../../models/game.data';
+import { Pick } from '../../models/pick';
+import { GetAvailableTeamsForPlayerAndWeek } from '../../util/game.data.util';
+import { AllTeams, AllTeamsAdmin } from '../../util/teams.util';
+import { ResetPickState, SubmitPick } from '../../actions/pick.actions';
+import { PickState, PickStateSelector } from '../../reducers/pick.reducer';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { TieBreakerPickComponent } from '../tieBreakerPick/tie.breaker.pick.component';
 
 @Component({
     selector: 'app-pick',
     templateUrl: './pick.component.html'
 })
 export class PickComponent implements OnInit, OnDestroy {
-    @Input('admin') admin: boolean;
+    admin: boolean;
 
-    selectedStrike3Pick: Strike3Pick;
+    strike3Pick: Strike3Pick;
     selectedTeam: string = '';
     pickStatus: PickStatus;
     filteredTeams: Team[] = [];
@@ -25,73 +33,88 @@ export class PickComponent implements OnInit, OnDestroy {
     tieBreakerTeam: string;
     tieBreakerPoints: number;
 
+    gameData: GameData;
+
+    allTeams: Team[] = AllTeams;
+    allTeamsAdmin: Team[] = AllTeamsAdmin;
+
     error: boolean = false;
     loading: boolean = false;
     PickStatus = PickStatus;
 
-    contextTieBreakerSubscription: Subscription;
-    contextStrike3PickSubscription: Subscription;
+    contextSubscription: Subscription;
+    gameDataSubscription: Subscription;
+    pickSubscription: Subscription;
 
-    constructor(public zone: NgZone, public gameDataService: GameDataService, public teamModel: TeamModel,
-                public gameDataModel: GameDataModel, public contextModel: ContextModel) {
+    constructor(private store: Store<AppState>, private modalRef: BsModalRef, private modalService: BsModalService) {
     }
 
     ngOnInit() {
-        $('#pick-modal').on('closed.zf.reveal', () => {
-            this.zone.run(() => {
-                this.selectedTeam = '';
-                this.pickStatus = null;
-                this.error = false;
-                this.loading = false;
-            });
-        });
+        this.contextSubscription = this.store.pipe(select(ContextStateSelector)).subscribe((contextState: ContextState) => {
+            this.tieBreaker = contextState.contextTieBreaker;
 
-        this.contextTieBreakerSubscription = this.contextModel.contextTieBreaker$.subscribe((tieBreaker: TieBreaker) => {
-            this.tieBreaker = tieBreaker;
-        });
-
-        this.contextStrike3PickSubscription = this.contextModel.contextStrike3Pick$.subscribe((strike3Pick: Strike3Pick) => {
-            if (strike3Pick) {
-                this.selectedTeam = strike3Pick.team ? strike3Pick.team : '';
-                this.tieBreakerTeam = strike3Pick.tieBreakerTeam;
-                this.tieBreakerPoints = strike3Pick.tieBreakerPoints;
-                this.pickStatus = strike3Pick.status;
-                this.selectedStrike3Pick = strike3Pick;
+            if (contextState.contextStrike3Pick) {
+                this.selectedTeam = contextState.contextStrike3Pick.team ? contextState.contextStrike3Pick.team : '';
+                this.tieBreakerTeam = contextState.contextStrike3Pick.tieBreakerTeam;
+                this.tieBreakerPoints = contextState.contextStrike3Pick.tieBreakerPoints;
+                this.pickStatus = contextState.contextStrike3Pick.status;
+                this.strike3Pick = contextState.contextStrike3Pick;
                 this.filterGamesForCurrentTime();
+            }
+        });
+
+        this.gameDataSubscription = this.store.pipe(select(GameDataSelector)).subscribe((gameData: GameData) => {
+            this.gameData = gameData;
+            this.filterGamesForCurrentTime();
+        });
+
+        this.pickSubscription = this.store.pipe(select(PickStateSelector)).subscribe((pickState: PickState) => {
+            this.loading = pickState.submitting;
+            this.error = !!pickState.error;
+
+            if (pickState.pickSubmitted) {
+                const shouldShowTieBreaker = !!this.tieBreaker && !this.strike3Pick.tieBreakerTeam && !this.admin;
+                this.store.dispatch(new ResetPickState());
+                this.closeModal();
+
+                if (shouldShowTieBreaker) {
+                    this._openTieBreaker();
+                }
             }
         });
     }
 
     ngOnDestroy() {
-        this.contextTieBreakerSubscription.unsubscribe();
-        $('#pick-modal').off('closed.zf.reveal');
+        this.contextSubscription.unsubscribe();
+        this.gameDataSubscription.unsubscribe();
+        this.pickSubscription.unsubscribe();
+        this.store.dispatch(new ResetPickState());
     }
 
     filterGamesForCurrentTime() {
-        const availTeams = this.gameDataModel.getAvailableTeamsForPlayerAndWeek(this.selectedStrike3Pick.uid, this.selectedStrike3Pick.week);
-        const filteredTeams = [];
+        if (this.gameData && this.strike3Pick) {
+            const availTeams = GetAvailableTeamsForPlayerAndWeek(this.gameData, this.strike3Pick.uid, this.strike3Pick.week);
+            const filteredTeams = [];
 
-        this.teamModel.allTeams.forEach((currentTeam) => {
-            const foundAvailableTeam = availTeams.find((currentAvailTeam) => {
-                return currentAvailTeam === currentTeam.abbreviation;
+            this.allTeams.forEach((currentTeam) => {
+                const foundAvailableTeam = availTeams.find((currentAvailTeam) => {
+                    return currentAvailTeam === currentTeam.abbreviation;
+                });
+
+                if (foundAvailableTeam) {
+                    filteredTeams.push(currentTeam);
+                }
             });
 
-            if (foundAvailableTeam) {
-                filteredTeams.push(currentTeam);
-            }
-        });
-
-        this.filteredTeams = filteredTeams;
+            this.filteredTeams = filteredTeams;
+        }
     }
 
     submitPick() {
-        this.loading = true;
-        this.error = false;
-
         if (!this.pickStatus) this.pickStatus = PickStatus.Open;
 
         const pick: Pick = {
-            week: this.selectedStrike3Pick.week,
+            week: this.strike3Pick.week,
             team: this.selectedTeam,
             status: this.pickStatus,
         };
@@ -99,31 +122,22 @@ export class PickComponent implements OnInit, OnDestroy {
         if (this.tieBreakerTeam) pick.tieBreakerTeam = this.tieBreakerTeam;
         if (this.tieBreakerPoints) pick.tieBreakerPoints = this.tieBreakerPoints;
 
-        if (this.selectedTeam !== this.selectedStrike3Pick.team) {
+        if (this.selectedTeam !== this.strike3Pick.team) {
             pick.time = new Date().getTime();
         }
 
-        this.gameDataService.submitPick(pick, this.selectedStrike3Pick.uid).then(() => {
-            this.loading = false;
-
-            const shouldShowTieBreaker = !!this.tieBreaker && !this.selectedStrike3Pick.tieBreakerTeam && !this.admin;
-            this._closeModal();
-
-            if (shouldShowTieBreaker) {
-                this._openTieBreaker();
-            }
-        }).catch((error) => {
-            console.error(error);
-            this.loading = false;
-            this.error = true;
-        });
+        this.store.dispatch(new SubmitPick({
+            pick: pick,
+            uid: this.strike3Pick.uid,
+            gameData: this.gameData
+        }));
     }
 
-    private _closeModal() {
-        $('#pick-modal').foundation('close');
+    closeModal() {
+        this.modalRef.hide();
     }
 
     private _openTieBreaker() {
-        $('#tie-breaker-pick-modal').foundation('open');
+        this.modalService.show(TieBreakerPickComponent);
     }
 }

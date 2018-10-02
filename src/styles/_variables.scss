@@ -6,7 +6,7 @@ $fa-font-path : '../node_modules/font-awesome/fonts';
 //
 // GLOBAL
 //
-$primary-theme-color: #039BE5;
+$primary-theme-color: #1779ba;
 $secondary-theme-color: #777;
 $media-breakpoint: 600px;
 
@@ -36,3 +36,7 @@ $dropdown-menu-item-hover: rgba(0, 0, 0, 0.12);
 // TABS
 //
 $tab-hover: rgba(0, 0, 0, 0.12);
+
+$theme-colors: (
+    "primary": $primary-theme-color
+);

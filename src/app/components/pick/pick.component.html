@@ -1,66 +1,72 @@
-<div class="center size-24 weight-500 my2">
-    <span>Week {{ selectedStrike3Pick?.week }} Pick</span>
-    <span *ngIf="admin" class="weight-300">{{ " ("  + selectedStrike3Pick?.playerName + ")" }}</span>
-</div>
+<div>
+    <div class="modal-header">
+        <div class="flex-auto center size-24 weight-500 relative">
+            <span>Week {{ strike3Pick?.week }} Pick</span>
+            <span *ngIf="admin" class="weight-300">{{ " ("  + strike3Pick?.playerName + ")" }}</span>
+            <button type="button" class="close-button" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
 
-<div *ngIf="!admin">
-    <label>Team
-        <select [(ngModel)]="selectedTeam">
-            <option value="">Select Team</option>
-            <option *ngFor="let team of filteredTeams" [value]="team.abbreviation">{{ team.name }}</option>
-        </select>
-    </label>
-</div>
+    <div class="modal-body">
 
-<div *ngIf="admin">
-    <label>Team
-        <select [(ngModel)]="selectedTeam">
-            <option value="">Select Team</option>
-            <option *ngFor="let team of teamModel.allTeamsAdmin" [value]="team.abbreviation">{{ team.name }}</option>
-        </select>
-    </label>
-</div>
-
-<div *ngIf="admin && tieBreaker">
-    <div>
-        <label>Tie Breaker Pick
-            <select [(ngModel)]="tieBreakerTeam">
+        <div *ngIf="!admin" class="mb2">
+            <label for="team">Team</label>
+            <select [(ngModel)]="selectedTeam" class="form-control" id="team">
                 <option value="">Select Team</option>
-                <option [value]="tieBreaker.awayTeam">{{ tieBreaker.awayTeam }}</option>
-                <option [value]="tieBreaker.homeTeam">{{ tieBreaker.homeTeam }}</option>
+                <option *ngFor="let team of filteredTeams" [value]="team.abbreviation">{{ team.name }}</option>
             </select>
-        </label>
+        </div>
+
+        <div *ngIf="admin" class="mb2">
+            <label for="adminTeam">Team</label>
+            <select [(ngModel)]="selectedTeam" class="form-control" id="adminTeam">
+                <option value="">Select Team</option>
+                <option *ngFor="let team of allTeamsAdmin" [value]="team.abbreviation">{{ team.name }}</option>
+            </select>
+        </div>
+
+        <div *ngIf="admin && tieBreaker">
+            <div class="mb2">
+                <label for="tieBreaker">Tie Breaker Pick</label>
+                <select [(ngModel)]="tieBreakerTeam" class="form-control" id="tieBreaker">
+                    <option value="">Select Team</option>
+                    <option [value]="tieBreaker.awayTeam">{{ tieBreaker.awayTeam }}</option>
+                    <option [value]="tieBreaker.homeTeam">{{ tieBreaker.homeTeam }}</option>
+                </select>
+            </div>
+
+            <div class="mb2">
+                <label for="tieBreakerPoints">Tie Breaker Combined Points</label>
+                <input type="number" class="form-control" id="tieBreakerPoints" name="tieBreakerPoints" [(ngModel)]="tieBreakerPoints"/>
+            </div>
+        </div>
+
+        <div *ngIf="!admin" class="size-12 mb3 center">
+            *Once you submit your pick, only the admin can change it
+        </div>
+
+        <div *ngIf="admin" class="mb3 mt1 flex items-center">
+            <input type="radio" name="pickStatus" [value]="PickStatus.Open" id="pickOpen" class="m0" [(ngModel)]="pickStatus">
+            <label for="pickOpen" class="mr2">Open</label>
+            <input type="radio" name="pickStatus" [value]="PickStatus.Win" id="pickWin" class="m0" [(ngModel)]="pickStatus">
+            <label for="pickWin" class="mr2">Win</label>
+            <input type="radio" name="pickStatus" [value]="PickStatus.Loss" id="pickLoss" class="m0" [(ngModel)]="pickStatus">
+            <label for="pickLoss" class="mr2">Loss</label>
+            <input type="radio" name="pickStatus" [value]="PickStatus.Tie" id="pickTie" class="m0" [(ngModel)]="pickStatus">
+            <label for="pickTie" class="mr2">Tie</label>
+        </div>
+
+        <div>
+            <button class="btn btn-primary full-width mb2" [disabled]="!selectedTeam" (click)="submitPick()">
+                <span *ngIf="!loading">Submit Pick</span>
+                <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+            </button>
+        </div>
     </div>
-
-    <div>
-        <label>Tie Breaker Combined Points
-            <input type="number" [(ngModel)]="tieBreakerPoints"/>
-        </label>
-    </div>
 </div>
 
-<div *ngIf="!admin" class="size-12 mb2">
-    *Once you submit your pick, only the admin can change it
-</div>
-
-<div *ngIf="admin" class="my2 flex items-center">
-    <input type="radio" name="pickStatus" [value]="PickStatus.Open" id="pickOpen" class="m0" [(ngModel)]="pickStatus">
-    <label for="pickOpen" class="mr2">Open</label>
-    <input type="radio" name="pickStatus" [value]="PickStatus.Win" id="pickWin" class="m0" [(ngModel)]="pickStatus">
-    <label for="pickWin" class="mr2">Win</label>
-    <input type="radio" name="pickStatus" [value]="PickStatus.Loss" id="pickLoss" class="m0" [(ngModel)]="pickStatus">
-    <label for="pickLoss" class="mr2">Loss</label>
-    <input type="radio" name="pickStatus" [value]="PickStatus.Tie" id="pickTie" class="m0" [(ngModel)]="pickStatus">
-    <label for="pickTie" class="mr2">Tie</label>
-</div>
-
-<div class="right-align">
-    <button class="button full-width" [disabled]="!selectedTeam" (click)="submitPick()">
-        <span *ngIf="!loading">Submit Pick</span>
-        <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
-    </button>
-</div>
-
-<div *ngIf="error" class="callout alert mt2">
+<alert type="danger mx2 mb2" *ngIf="error">
     Error Occurred, Pick not saved
-</div>
+</alert>

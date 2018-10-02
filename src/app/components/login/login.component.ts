@@ -1,8 +1,10 @@
 import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
-import { UserService } from '../../user/user.service';
-import { GameDataService } from '../../gameData/game.data.service';
-
-import * as firebase from 'firebase/app';
+import { select, Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { AppState } from '../../reducers';
+import { UserState, UserStateSelector } from '../../reducers/user.reducer';
+import { CreateUser, ResetPassword, SignInUser, UserError } from '../../actions/user.actions';
+import { BsModalRef } from 'ngx-bootstrap';
 
 enum LoginState { Login, Create, ResetPassword, ResetComplete }
 
@@ -27,21 +29,41 @@ export class LoginComponent implements OnInit, OnDestroy {
     errorType: ErrorType;
     loading: boolean = false;
 
-    constructor(public userService: UserService, public gameDataService: GameDataService, public zone: NgZone) {
+    userStateSubscription: Subscription;
+
+    constructor(private zone: NgZone, private store: Store<AppState>, private modalRef: BsModalRef) {
         this.state = LoginState.Login;
     }
 
     ngOnInit() {
-        $('#login-modal').on('closed.zf.reveal', () => {
-            this.zone.run(() => {
-                this.state = LoginState.Login;
-                this._clearForm();
-            });
+        this.userStateSubscription = this.store.pipe(select(UserStateSelector)).subscribe((userState: UserState) => {
+            this.loading = userState.loading;
+
+            if (userState.error) {
+                console.error(userState.error);
+                this.error = this._getErrorText(userState.error.code);
+            } else {
+                this.error = null;
+                this.errorType = null;
+            }
+
+            if (userState.loggedIn && !userState.loading) {
+                this.closeModal();
+            }
+
+            if (userState.passwordResetComplete) {
+                this.state = LoginState.ResetComplete;
+            }
         });
     }
 
     ngOnDestroy() {
-        $('#login-modal').off('closed.zf.reveal');
+        this.userStateSubscription.unsubscribe();
+        this.store.dispatch(new UserError(null));
+    }
+
+    closeModal() {
+        this.modalRef.hide();
     }
 
     toggleCreateAccount() {
@@ -50,58 +72,21 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     toggleResetPassword() {
-        this._clearErrors();
+        this.store.dispatch(new UserError(null));
         this.state = LoginState.ResetPassword;
     }
 
     signIn() {
-        this.loading = true;
-        this._clearErrors();
-
-        this.userService.signIn(this.email, this.password).then(() => {
-            this.loading = false;
-            this._closeModal();
-        }).catch((error: firebase.auth.Error) => {
-            console.error(error);
-            this.loading = false;
-            this.error = this._getErrorText(error.code);
-        });
+        this.store.dispatch(new SignInUser({username: this.email, password: this.password}));
     }
 
     createAccount() {
-        this.loading = true;
-        this._clearErrors();
-
         const displayName = this.firstName + ' ' + this.lastName;
-
-        this.userService.createUser(this.email, displayName, this.password).then(() => {
-            this.gameDataService.getGameData().then(() => {
-                this.loading = false;
-                this._closeModal();
-            });
-        }).catch((error: firebase.auth.Error) => {
-            console.error(error);
-            this.loading = false;
-            this.error = this._getErrorText(error.code);
-        });
+        this.store.dispatch(new CreateUser({email: this.email, displayName: displayName, password: this.password}));
     }
 
     resetPassword() {
-        this.loading = true;
-        this._clearErrors();
-
-        this.userService.resetPassword(this.email).then(() => {
-            this.loading = false;
-            this.state = LoginState.ResetComplete;
-        }).catch((error: firebase.auth.Error) => {
-            console.error(error);
-            this.loading = false;
-            this.error = this._getErrorText(error.code);
-        });
-    }
-
-    private _closeModal() {
-        $('#login-modal').foundation('close');
+        this.store.dispatch(new ResetPassword(this.email));
     }
 
     private _clearForm() {
@@ -110,12 +95,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.email = null;
         this.password = null;
         this.passwordConfirm = null;
-        this._clearErrors();
-    }
-
-    private _clearErrors() {
-        this.error = null;
-        this.errorType = null;
+        this.store.dispatch(new UserError(null));
     }
 
     private _getErrorText(errorCode: string): string {

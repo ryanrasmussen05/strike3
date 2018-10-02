@@ -1,9 +1,0 @@
-@import '../../../styles/variables';
-
-#admin-view {
-    padding: 1rem;
-
-    @media (max-width: $media-breakpoint) {
-        padding: 0;
-    }
-}

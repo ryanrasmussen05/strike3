@@ -1,84 +1,110 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { AppComponent } from './components/app.component';
+import { AppComponent } from './app.component';
+import { AngularFireModule } from 'angularfire2';
+import { environment } from '../environments/environment';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { GameDataService } from './services/game.data.service';
+import { storeLogger } from 'ngrx-store-logger';
+import { storeFreeze } from 'ngrx-store-freeze';
+import { AppState, reducers } from './reducers';
+import { ActionReducer, StoreModule } from '@ngrx/store';
+import { effects } from './effects';
+import { EffectsModule } from '@ngrx/effects';
 import { AppRoutingModule } from './app-routing.module';
-import { FormsModule } from '@angular/forms';
-import { UserModel } from './user/user.model';
-import { UserService } from './user/user.service';
-import { LoginComponent } from './components/login/login.component';
-import { HeaderComponent } from './components/header/header.component';
+import { PlayerPageComponent } from './components/pages/playerPage/player.page.component';
+import { GameDataResolver } from './resolvers/game.data.resolver';
 import { LoadingComponent } from './components/loading/loading.component';
-import { LoadingService } from './loading/loading.service';
-import { GameDataService } from './gameData/game.data.service';
-import { GameDataModel } from './gameData/game.data.model';
-import { PlayerViewModel } from './viewModel/player.view.model';
-import { PickComponent } from './components/pick/pick.component';
-import { AdminViewModel } from './viewModel/admin.view.model';
-import { ViewModelUtil } from './viewModel/view.model.util';
-import { AdminPageComponent } from './components/adminPage/admin.page.component';
-import { PlayerPageComponent } from './components/playerPage/player.page.component';
+import { HeaderComponent } from './components/header/header.component';
+import { LoginComponent } from './components/login/login.component';
+import { FormsModule } from '@angular/forms';
+import { UserService } from './services/user.service';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 import { GameTableComponent } from './components/gameTable/game.table.component';
-import { TeamModel } from './gameData/team.model';
-import { PickLogComponent } from './components/adminPage/pickLog/pick.log.component';
-import { NFLService } from './nfl/nfl.service';
-import { HttpClientModule } from '@angular/common/http';
-import { SuperuserPageComponent } from './components/superuserPage/superuser.page.component';
-import { GameDataResolver } from './components/game.data.resolver';
-import { EmailService } from './email/email.service';
-import { EmailComponent } from './components/adminPage/email/email.component';
-import { TieBreakerComponent } from './components/adminPage/tieBreaker/tie.breaker.component';
-import { TieBreakerFormComponent } from './components/adminPage/tieBreaker/tie.breaker.form';
-import { TieBreakerResultComponent } from './components/adminPage/tieBreaker/tie.breaker.result';
-import { ContextModel } from './components/context.model';
-import { TieBreakerPickComponent } from './components/pick/tie.breaker.pick.component';
-import { ViewTieBreakersComponent } from './components/gameTable/tieBreaker/view.tie.breakers.component';
-import { RosterComponent } from './components/adminPage/roster/roster.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { PickComponent } from './components/pick/pick.component';
+import { AdminPageComponent } from './components/pages/adminPage/admin.page.component';
+import { NFLService } from './services/nfl.service';
+import { HttpClientModule } from '@angular/common/http';
+import { TieBreakerComponent } from './components/tieBreaker/tie.breaker.component';
+import { TieBreakerFormComponent } from './components/tieBreaker/tie.breaker.form';
+import { TieBreakerResultComponent } from './components/tieBreaker/tie.breaker.result';
+import { PickLogComponent } from './components/pickLog/pick.log.component';
+import { RosterComponent } from './components/roster/roster.component';
+import { EmailComponent } from './components/email/email.component';
+import { EmailService } from './services/email.service';
+import { AngularFireFunctionsModule } from 'angularfire2/functions';
+import { TieBreakerPickComponent } from './components/tieBreakerPick/tie.breaker.pick.component';
+import { ViewTieBreakersComponent } from './components/viewTieBreakers/view.tie.breakers.component';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { SuperuserPageComponent } from './components/pages/superuserPage/superuser.page.component';
+import { AngularFireStorageModule } from 'angularfire2/storage';
 
-import * as $ from 'jquery';
+export function logger(reducer: ActionReducer<AppState>): ActionReducer<AppState> {
+    return storeLogger()(reducer);
+}
+
+export const metaReducers = environment.production ? [] : [
+    logger, // console log all dispatched actions (use in development environment only)
+    storeFreeze // trigger an exception if state is ever mutated (use in development environment only)
+];
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        HeaderComponent,
-        PlayerPageComponent,
-        LoginComponent,
-        LoadingComponent,
-        PickComponent,
-        AdminPageComponent,
-        GameTableComponent,
-        PickLogComponent,
-        SuperuserPageComponent,
-        EmailComponent,
-        TieBreakerComponent,
-        TieBreakerFormComponent,
-        TieBreakerResultComponent,
-        TieBreakerPickComponent,
-        ViewTieBreakersComponent,
-        RosterComponent,
-        ProfileComponent
-    ],
     imports: [
         BrowserModule,
         FormsModule,
+        HttpClientModule,
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireDatabaseModule,
+        AngularFireAuthModule,
+        AngularFireFunctionsModule,
+        AngularFireStorageModule,
+        EffectsModule.forRoot(effects),
+        StoreModule.forRoot(reducers, {metaReducers: metaReducers}),
         AppRoutingModule,
-        HttpClientModule
+        BsDropdownModule.forRoot(),
+        ModalModule.forRoot(),
+        AlertModule.forRoot(),
+        TabsModule.forRoot()
+    ],
+    declarations: [
+        AppComponent,
+        LoadingComponent,
+        HeaderComponent,
+        LoginComponent,
+        ProfileComponent,
+        PlayerPageComponent,
+        AdminPageComponent,
+        SuperuserPageComponent,
+        GameTableComponent,
+        PickComponent,
+        TieBreakerComponent,
+        TieBreakerFormComponent,
+        TieBreakerResultComponent,
+        PickLogComponent,
+        RosterComponent,
+        EmailComponent,
+        TieBreakerPickComponent,
+        ViewTieBreakersComponent
+    ],
+    entryComponents: [
+        LoginComponent,
+        PickComponent,
+        TieBreakerPickComponent,
+        ViewTieBreakersComponent,
+        ProfileComponent,
+        TieBreakerFormComponent,
+        TieBreakerResultComponent
     ],
     providers: [
-        UserModel,
-        UserService,
-        TeamModel,
-        GameDataModel,
         GameDataService,
-        PlayerViewModel,
-        AdminViewModel,
-        ViewModelUtil,
-        LoadingService,
+        UserService,
         NFLService,
         GameDataResolver,
-        EmailService,
-        ContextModel
+        EmailService
     ],
     bootstrap: [AppComponent]
 })

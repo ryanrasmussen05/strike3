@@ -1,0 +1,49 @@
+<div *ngIf="!superuser" class="mr2 center">
+    Access Denied: Sign in as superuser to view this page
+</div>
+
+<div [hidden]="!superuser" class="superuser-view flex flex-column">
+
+    <tabset>
+        <tab heading="Spreadsheet">
+            <div *ngIf="superuser" class="mt2">
+                <button class="btn btn-primary mr1" (click)="updateResults()" title="Automatically set win/loss/tie (only works day after games)">Auto-Update Results</button>
+                <button class="btn btn-primary" (click)="screenshot()">Download Spreadsheet Image</button>
+                <app-game-table [admin]="true" class="mb4 mt1"></app-game-table>
+            </div>
+        </tab>
+
+        <tab heading="Tie Breakers">
+            <div *ngIf="superuser" class="mt2">
+                <app-tie-breaker class="mb4"></app-tie-breaker>
+            </div>
+        </tab>
+
+        <tab heading="Picks Log">
+            <div *ngIf="superuser" class="mt2">
+                <app-pick-log class="mb4"></app-pick-log>
+            </div>
+        </tab>
+
+        <tab heading="Email">
+            <div *ngIf="superuser" class="mt3">
+                <app-send-email></app-send-email>
+            </div>
+        </tab>
+
+        <tab heading="Roster">
+            <div *ngIf="superuser" class="mt2">
+                <app-roster></app-roster>
+            </div>
+        </tab>
+
+        <tab heading="Schedule">
+            <div *ngIf="superuser" class="mt2">
+                <button class="btn btn-primary mr1" (click)="fetchSchedule()">Fetch Updated Schedule</button>
+                <button *ngIf="schedule" class="btn btn-primary" (click)="postSchedule()">Post Updated Schedule</button>
+            </div>
+        </tab>
+    </tabset>
+
+</div>
+

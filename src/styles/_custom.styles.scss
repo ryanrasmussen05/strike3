@@ -1,7 +1,7 @@
 @import 'variables';
 @import 'basscss';
-@import 'foundation';
 @import '~font-awesome/scss/font-awesome';
+@import '~bootstrap/scss/bootstrap';
 
 @font-face {
     font-family: "RobotoCustom";
@@ -61,3 +61,36 @@ body {
 .size-20 { font-size: 20px; }
 .size-24 { font-size: 24px; }
 .size-36 { font-size: 36px; }
+
+a {
+    cursor: pointer;
+}
+
+.close-button {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+    cursor: pointer;
+    background-color: transparent;
+    border: 0;
+    -webkit-appearance: none;
+    padding: 1rem;
+    margin: -1rem -1rem -1rem auto;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+label {
+    margin: 0;
+    font-weight: 500;
+    font-size: 14px;
+}

@@ -1,43 +1,49 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { UserModel } from '../../user/user.model';
-import { UserService } from '../../user/user.service';
-import { Router } from '@angular/router';
-import { GameDataModel } from '../../gameData/game.data.model';
-import { merge } from 'rxjs';
-
-import * as firebase from 'firebase/app';
+import { Component, OnInit } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { AppState } from '../../reducers';
+import { combineLatest } from 'rxjs';
+import { GameDataSelector } from '../../reducers/game.data.reducer';
+import { CanUserAccessAdmin, CanUserAccessSuperuser } from '../../util/game.data.util';
+import { SignOutUser } from '../../actions/user.actions';
+import { UserSelector } from '../../reducers/user.reducer';
+import { User } from '../../models/user';
+import { BsModalService } from 'ngx-bootstrap';
+import { LoginComponent } from '../login/login.component';
+import { ProfileComponent } from '../profile/profile.component';
 
 @Component({
     selector: 'app-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit, AfterViewInit {
-    user: firebase.User;
+export class HeaderComponent implements OnInit {
+    user: User;
     admin: boolean;
+    superuser: boolean;
 
-    constructor(public userModel: UserModel, public userService: UserService, public router: Router, public gameDataModel: GameDataModel) {
-    }
-
-    ngAfterViewInit(): void {
-        $('#header').foundation();
+    constructor(private store: Store<AppState>, private modalService: BsModalService) {
     }
 
     ngOnInit(): void {
-        merge(this.userModel.currentUser$, this.gameDataModel.gameData$).subscribe(() => {
-            this.user = this.userModel.currentUser$.getValue();
-            this.admin = this.gameDataModel.canAccessAdmin(this.user ? this.user.uid : null);
+        combineLatest(this.store.pipe(select(UserSelector)), this.store.pipe(select(GameDataSelector))).subscribe(([user, gameData]) => {
+            this.user = user;
+
+            if (gameData) {
+                this.admin = CanUserAccessAdmin(gameData, user ? user.uid : null);
+                this.superuser = CanUserAccessSuperuser(gameData, user ? user.uid : null);
+            }
         });
+    }
+
+    showLoginModal() {
+        this.modalService.show(LoginComponent);
+    }
+
+    openProfileModal() {
+        this.modalService.show(ProfileComponent);
     }
 
     signOut() {
-        this.userService.signOut().then(() => {
-            this.navigate('player');
-        });
-    }
-
-    navigate(page: string) {
-        $('#nav-dropdown').foundation('close');
-        this.router.navigate([page]);
+        this.store.dispatch(new SignOutUser());
     }
 }

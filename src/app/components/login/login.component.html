@@ -1,87 +1,135 @@
 <div *ngIf="state === LoginState.Login">
-    <div class="center size-24 weight-500 my2">Sign In</div>
-
     <form #loginForm="ngForm" (ngSubmit)="signIn()">
-        <label>
-            Email
-            <input type="text" name="email" [(ngModel)]="email" required>
-        </label>
-        <label>
-            Password
-            <input type="password" name="password" [(ngModel)]="password" required>
-        </label>
-        <div class="flex">
-            <button class="button flex-auto" [disabled]="loginForm.invalid || loading">
-                <span *ngIf="!loading">Sign In</span>
-                <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
-            </button>
+        <div class="modal-header">
+            <div class="flex-auto center size-24 weight-500 relative">
+                Sign In
+                <button type="button" class="close-button" aria-label="Close" (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
         </div>
-    </form>
 
-    <div class="center mt2">
-        <a (click)="toggleCreateAccount()" class="underline">Create Account</a>
-    </div>
-</div>
+        <div class="modal-body">
+            <label for="email">Email</label>
+            <div class="input-group">
+                <input type="text" placeholder="Email" class="form-control" id="email" name="email" [(ngModel)]="email" required>
+            </div>
 
+            <label for="password" class="mt2">Password</label>
+            <div class="input-group">
+                <input type="password" placeholder="Password" class="form-control" id="password" name="password" [(ngModel)]="password" required>
+            </div>
 
-<div *ngIf="state === LoginState.Create">
-    <div class="center size-24 weight-500 my2">Create Account</div>
+            <div class="flex mt3">
+                <button class="btn btn-primary flex-auto" [disabled]="loginForm.invalid || loading">
+                    <span *ngIf="!loading">Sign In</span>
+                    <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+                </button>
+            </div>
 
-    <form #createAccountForm="ngForm" (ngSubmit)="createAccount()">
-        <div class="flex">
-            <label class="flex-auto mr1">
-                First Name
-                <input type="text" name="email" [(ngModel)]="firstName" required>
-            </label>
-            <label class="flex-auto">
-                Last Name
-                <input type="text" name="password" [(ngModel)]="lastName" required>
-            </label>
-        </div>
-        <label>
-            Email
-            <input type="text" name="email" [(ngModel)]="email" required>
-        </label>
-        <label>
-            Password
-            <input type="password" name="password" [(ngModel)]="password" required>
-        </label>
-        <label>
-            Confirm Password
-            <input type="password" name="passwordConfirm" [(ngModel)]="passwordConfirm" required>
-        </label>
-        <div class="flex">
-            <button class="button flex-auto" [disabled]="createAccountForm.invalid || (password !== passwordConfirm) || loading">
-                <span *ngIf="!loading">Create Account</span>
-                <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
-            </button>
-        </div>
-    </form>
-</div>
-
-
-<div *ngIf="state === LoginState.ResetPassword || state === LoginState.ResetComplete">
-    <div class="center size-24 weight-500 my2">Reset Password</div>
-
-    <form #resetPasswordForm="ngForm" (ngSubmit)="resetPassword()">
-        <label *ngIf="state === LoginState.ResetPassword">
-            Email
-            <input type="text" name="email" [(ngModel)]="email" required>
-        </label>
-        <div class="flex">
-            <button *ngIf="state === LoginState.ResetPassword" class="button flex-auto" [disabled]="resetPasswordForm.invalid || loading">
-                <span *ngIf="!loading">Reset Password</span>
-                <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
-            </button>
-            <div *ngIf="state === LoginState.ResetComplete" class="callout primary">
-                Password Reset Requested, You will receive an email with reset instructions
+            <div class="center mt2">
+                <a (click)="toggleCreateAccount()" class="underline" tabindex="">Create Account</a>
             </div>
         </div>
     </form>
 </div>
 
-<div *ngIf="error" class="callout alert mt2">
+
+<div *ngIf="state === LoginState.Create">
+    <form #createAccountForm="ngForm" (ngSubmit)="createAccount()">
+        <div class="modal-header">
+            <div class="flex-auto center size-24 weight-500 relative">
+                Create Account
+                <button type="button" class="close-button" aria-label="Close" (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="modal-body">
+            <div class="flex">
+                <div class="flex-auto mr1">
+                    <label for="firstName">First Name</label>
+                    <div class="input-group">
+                        <input type="text" placeholder="First Name" class="form-control" id="firstName" name="firstName" [(ngModel)]="firstName" required>
+                    </div>
+                </div>
+
+                <div class="flex-auto">
+                    <label for="lastName">Last Name</label>
+                    <div class="input-group">
+                        <input type="text" placeholder="Last Name" class="form-control" id="lastName" name="lastName" [(ngModel)]="lastName" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt2">
+                <label for="createEmail">Email</label>
+                <div class="input-group">
+                    <input type="text" placeholder="Email" class="form-control" id="createEmail" name="createEmail" [(ngModel)]="email" required>
+                </div>
+            </div>
+
+            <div class="mt2">
+                <label for="createPassword">Password</label>
+                <div class="input-group">
+                    <input type="password" placeholder="Password" class="form-control" id="createPassword" name="createPassword" [(ngModel)]="password" required>
+                </div>
+            </div>
+
+            <div class="mt2">
+                <label for="confirmPassword">Confirm Password</label>
+                <div class="input-group">
+                    <input type="password" placeholder="Confirm Password" class="form-control" id="confirmPassword" name="confirmPassword" [(ngModel)]="passwordConfirm" required>
+                </div>
+            </div>
+
+            <div class="flex mt3">
+                <button class="btn btn-primary flex-auto" [disabled]="createAccountForm.invalid || (password !== passwordConfirm) || loading">
+                    <span *ngIf="!loading">Create Account</span>
+                    <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div *ngIf="state === LoginState.ResetPassword || state === LoginState.ResetComplete">
+    <form #resetPasswordForm="ngForm" (ngSubmit)="resetPassword()">
+
+        <div class="modal-header">
+            <div class="flex-auto center size-24 weight-500 relative">
+                Reset Password
+                <button type="button" class="close-button" aria-label="Close" (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="modal-body">
+            <div *ngIf="state === LoginState.ResetPassword">
+                <label for="forgotEmail">Email</label>
+                <div class="input-group">
+                    <input type="text" placeholder="Email" class="form-control" id="forgotEmail" name="forgotEmail" [(ngModel)]="email" required>
+                </div>
+            </div>
+
+            <div class="flex mt2">
+                <button *ngIf="state === LoginState.ResetPassword" class="btn btn-primary flex-auto" [disabled]="resetPasswordForm.invalid || loading">
+                    <span *ngIf="!loading">Reset Password</span>
+                    <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+                </button>
+
+                <alert type="info" *ngIf="state === LoginState.ResetComplete">
+                    Password Reset Requested, You will receive an email with reset instructions
+                </alert>
+            </div>
+        </div>
+    </form>
+</div>
+
+<alert type="danger mx2 mb2" *ngIf="error">
     {{error}}
     <a *ngIf="errorType === ErrorType.Create" (click)="toggleCreateAccount()" class="underline">Create Account</a>
     <a *ngIf="errorType === ErrorType.Reset" (click)="toggleResetPassword()" class="underline">Reset Password</a>
-</div>
+</alert>

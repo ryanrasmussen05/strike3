@@ -1,0 +1,44 @@
+<div *ngIf="strike3Game">
+    <div class="modal-header">
+        <div class="flex-auto center size-24 weight-500 relative">
+            Tie Breaker Picks
+            <button type="button" class="close-button" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="modal-body">
+        <div class="flex justify-center items-center mb2">
+            <select class="auto-width m0 form-control" [(ngModel)]="selectedTieBreaker" (change)="tieBreakerChange()">
+                <option *ngFor="let tieBreaker of tieBreakers" [ngValue]="tieBreaker">{{ "Week " + tieBreaker.week }}</option>
+            </select>
+        </div>
+
+        <div *ngIf="selectedTieBreaker" class="mb2">
+            <div class="center size-20 weight-500">{{ selectedTieBreaker.awayTeam + ' vs. ' + selectedTieBreaker.homeTeam }}</div>
+            <div *ngIf="selectedTieBreaker.winningTeam" class="center size-16 weight-500">{{ 'Result: ' + selectedTieBreaker.winningTeam + ' - ' + selectedTieBreaker.points }}</div>
+        </div>
+
+        <div *ngIf="picksForWeek.length > 0">
+            <table class="ml-auto mr-auto mb3">
+                <tr>
+                    <th class="center">Picker</th>
+                    <th class="center">Pick</th>
+                </tr>
+                <tr *ngFor="let pick of picksForWeek">
+                    <td class="log-player center">
+                        <div class="mx3">{{ pick.playerName }}</div>
+                    </td>
+                    <td class="log-team center">
+                        <div class="mx3">{{ pick.tieBreakerTeam + ' - ' + pick.tieBreakerPoints }}</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div *ngIf="selectedTieBreaker && picksForWeek.length <= 0" class="center mb2">
+            {{ "No Tie Breaker Picks Have Been Made for Week " + selectedTieBreaker.week }}
+        </div>
+    </div>
+</div>

@@ -1,27 +1,37 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Strike3Game, Strike3Pick, Strike3Player } from '../../viewModel/strike3.game';
-import { GameDataService } from '../../gameData/game.data.service';
-import { Week } from '../../gameData/week';
-import { PickStatus } from '../../gameData/pick';
-import { TieBreaker } from '../../gameData/tie.breaker';
-import { UserModel } from '../../user/user.model';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ContextModel } from '../context.model';
-
-import * as firebase from 'firebase';
+import { TieBreaker } from '../../models/tie.breaker';
+import { PickStatus } from '../../models/pick';
+import { select, Store } from '@ngrx/store';
+import { AppState } from '../../reducers';
+import { UserSelector } from '../../reducers/user.reducer';
+import { Strike3Game, Strike3Pick, Strike3Player } from '../../models/strike3.game';
+import { ContextStrike3GameSelector } from '../../reducers/context.reducer';
+import { SetContextStrike3Pick, SetContextTieBreaker } from '../../actions/context.actions';
+import { User } from '../../models/user';
+import * as clone from 'clone';
+import { GameDataState, GameDataStateSelector } from '../../reducers/game.data.reducer';
+import { Week } from '../../models/week';
+import { UpdateWeek } from '../../actions/game.data.actions';
+import { BsModalService } from 'ngx-bootstrap';
+import { PickComponent } from '../pick/pick.component';
+import { TieBreakerPickComponent } from '../tieBreakerPick/tie.breaker.pick.component';
+import { ViewTieBreakersComponent } from '../viewTieBreakers/view.tie.breakers.component';
 
 @Component({
     selector: 'app-game-table',
     templateUrl: './game.table.component.html',
     styleUrls: ['./game.table.component.scss']
 })
-export class GameTableComponent implements OnInit, AfterViewInit, OnDestroy {
+export class GameTableComponent implements OnInit, OnDestroy {
     @Input('admin') admin: boolean;
+
+    // strictly for attaching non-admin view game table to emails
+    @Input('overrideContextGame') overrideContextGame: Strike3Game;
 
     strike3Game: Strike3Game;
 
-    user: firebase.User;
-    userSubscription: Subscription;
+    user: User;
 
     weekNumber: number;
     isWeekPublic: boolean;
@@ -29,69 +39,61 @@ export class GameTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     tieBreaker: TieBreaker = null;
     tieBreakerPick: Strike3Pick = null;
-    previousTieBreakers: boolean = false; //show tie breaker button if needed for history
+    previousTieBreakers: boolean = false; // show tie breaker button if needed for history
 
     savingWeek: boolean = false;
 
     pickStatus = PickStatus;
 
     contextSubscription: Subscription;
+    userSubscription: Subscription;
+    gameDataSubscription: Subscription;
 
-    constructor(public gameDataService: GameDataService, public userModel: UserModel, public contextModel: ContextModel) {
+    constructor(private store: Store<AppState>, private modalService: BsModalService) {
     }
 
     ngOnInit(): void {
-        this.userSubscription = this.userModel.currentUser$.subscribe(() => {
-            this.user = this.userModel.currentUser$.getValue();
+        this.userSubscription = this.store.pipe(select(UserSelector)).subscribe((currentUser: User) => {
+            this.user = currentUser;
             this._setTieBreakerPick();
         });
 
-        this.contextSubscription = this.contextModel.contextStrike3Game$.subscribe((strike3Game: Strike3Game) => {
-            this.weekNumber = strike3Game.week.weekNumber;
-            this.isWeekPublic = strike3Game.week.public;
-            this.strike3Game = strike3Game;
+        this.contextSubscription = this.store.pipe(select(ContextStrike3GameSelector)).subscribe((strike3Game: Strike3Game) => {
+            this.strike3Game = this.overrideContextGame ? this.overrideContextGame : strike3Game;
+            this.weekNumber = this.strike3Game.week.weekNumber;
+            this.isWeekPublic = this.strike3Game.week.public;
             this.weekChange();
             this._setTieBreaker();
             this._setTieBreakerPick();
             this._setPreviousTieBreakers();
         });
-    }
 
-    ngAfterViewInit() {
-        $('#game-table').foundation();
+        this.gameDataSubscription = this.store.pipe(select(GameDataStateSelector)).subscribe((gameDataState: GameDataState) => {
+            this.savingWeek = gameDataState.loading;
+        });
     }
 
     ngOnDestroy() {
         this.userSubscription.unsubscribe();
-
-        const pickModalElement = $('#pick-modal');
-        pickModalElement.foundation('_destroy');
-        pickModalElement.remove();
-
-        const tieBreakerPickModal = $('#tie-breaker-pick-modal');
-        tieBreakerPickModal.foundation('_destroy');
-        tieBreakerPickModal.remove();
-
-        const tieBreakersModal = $('#tie-breakers-modal');
-        tieBreakersModal.foundation('_destroy');
-        tieBreakersModal.remove();
+        this.contextSubscription.unsubscribe();
+        this.gameDataSubscription.unsubscribe();
     }
 
     openPickModal(strike3Pick: Strike3Pick) {
         if (strike3Pick.canEdit) {
-            this.contextModel.setContextTieBreaker(this._getTieBreakerForWeek(strike3Pick.week));
-            this.contextModel.setContextStrike3Pick(Object.create(strike3Pick));
-            $('#pick-modal').foundation('open');
+            this.store.dispatch(new SetContextTieBreaker(this._getTieBreakerForWeek(strike3Pick.week)));
+            this.store.dispatch(new SetContextStrike3Pick(clone(strike3Pick)));
+            this.modalService.show(PickComponent, {initialState: {admin: this.admin}});
         }
     }
 
     openTieBreakerModal() {
-        this.contextModel.setContextTieBreaker(this.tieBreaker);
-        $('#tie-breaker-pick-modal').foundation('open');
+        this.store.dispatch(new SetContextTieBreaker(this.tieBreaker));
+        this.modalService.show(TieBreakerPickComponent);
     }
 
     openTieBreakersModal() {
-        $('#tie-breakers-modal').foundation('open');
+        this.modalService.show(ViewTieBreakersComponent, {initialState: {admin: this.admin}});
     }
 
     weekNumberChange() {
@@ -109,14 +111,7 @@ export class GameTableComponent implements OnInit, AfterViewInit, OnDestroy {
             public: this.isWeekPublic
         };
 
-        this.savingWeek = true;
-
-        this.gameDataService.setWeek(week).then(() => {
-            this.savingWeek = false;
-        }).catch((error) => {
-            console.error(error);
-            this.savingWeek = false;
-        });
+        this.store.dispatch(new UpdateWeek(week));
     }
 
     private _getTieBreakerForWeek(week: number) {
@@ -155,7 +150,7 @@ export class GameTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    //handle rare case that there is no tie breaker for current week, but have been previous tie breaker
+    // handle rare case that there is no tie breaker for current week, but have been previous tie breaker
     private _setPreviousTieBreakers() {
         this.previousTieBreakers = this.strike3Game.tieBreakers && this.strike3Game.tieBreakers.size > 0;
     }

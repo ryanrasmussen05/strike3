@@ -1,0 +1,46 @@
+<alert *ngIf="success" type="success">
+    <h5>Email Sent</h5>
+</alert>
+
+<alert *ngIf="error" type="danger">
+    <h5>Email Not Sent</h5>
+    <p>Error occurred while sending email</p>
+</alert>
+
+<div class="send-email">
+    <div class="flex items-center mb2">
+        <div class="nowrap mr1">Recipients:</div>
+        <select [(ngModel)]="selectedEmailGroup" (change)="updateRecipientList()" class="mb0 form-control">
+            <option [value]="allPlayers">All Players</option>
+            <option [value]="remainingPlayers">All Non-Eliminated Players</option>
+            <option [value]="playersMissingPick">{{ 'Players Missing Pick for Week ' + currentWeek }}</option>
+        </select>
+    </div>
+
+    <div class="flex flex-wrap recipients-wrapper mb3">
+        <div class="flex items-center recipient mr1 mb1" *ngFor="let player of recipients">
+            <div class="mr1">{{ player.name }}</div>
+            <button class="remove-recipient" (click)="removePlayer(player)">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="flex items-center mb2">
+        <div class="mr3">Subject:</div>
+        <input [(ngModel)]="subject" type="text" class="form-control mb0" placeholder="Enter Subject..."/>
+    </div>
+
+    <div class="flex mb2">
+        <div class="mr2">Message:</div>
+        <textarea [(ngModel)]="emailBody" rows="10" placeholder="Enter message here..." class="form-control"></textarea>
+    </div>
+
+    <div>
+        <button class="btn btn-primary" (click)="sendEmail()" [disabled]="!subject || !emailBody || !recipients">Send Email</button>
+    </div>
+</div>
+
+<div id="email-screenshot" style="display: none; width: 1100px">
+    <app-game-table [admin]="false" [overrideContextGame]="screenshotStrike3Game"></app-game-table>
+</div>

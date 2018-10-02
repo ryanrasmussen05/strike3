@@ -1,0 +1,37 @@
+@import '../../../styles/variables';
+
+.send-email {
+    display: block;
+    max-width: 100%;
+}
+
+.recipients-wrapper {
+    margin-left: 85px;
+}
+
+.recipient {
+    border: 1px solid #565656;
+    border-radius: 3px;
+    padding: 3px 8px;
+    font-size: 14px;
+}
+
+.remove-recipient {
+    font-size: 24px;
+    color: $primary-theme-color;
+    cursor: pointer;
+
+    overflow: visible;
+    padding: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    border: 0;
+    border-radius: 0;
+    background: 0 0;
+    line-height: 1;
+
+    &:focus {
+        outline: none;
+    }
+}

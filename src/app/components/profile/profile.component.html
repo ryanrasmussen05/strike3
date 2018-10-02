@@ -1,28 +1,38 @@
 <div>
-    <div class="center size-24 weight-500 my2">Update Profile</div>
-
-    <form #profileForm="ngForm" (ngSubmit)="updateProfile()">
-
-        <div class="flex mb2">
-            <label class="flex-auto mr1">
-                First Name
-                <input type="text" name="email" [(ngModel)]="firstName" required>
-            </label>
-            <label class="flex-auto">
-                Last Name
-                <input type="text" name="password" [(ngModel)]="lastName" required>
-            </label>
-        </div>
-
-        <div class="flex">
-            <button class="button flex-auto" [disabled]="profileForm.invalid || !isChanged() || loading">
-                <span *ngIf="!loading">Save Changes</span>
-                <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+    <div class="modal-header">
+        <div class="flex-auto center size-24 weight-500 relative">
+            Update Profile
+            <button type="button" class="close-button" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
             </button>
         </div>
-    </form>
+    </div>
+
+    <div class="modal-body">
+        <form #profileForm="ngForm" (ngSubmit)="updateProfile()">
+
+            <div class="flex mb2">
+                <div class="flex-auto mr1">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" name="firstName" class="form-control" [(ngModel)]="firstName"/>
+                </div>
+
+                <div class="flex-auto">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" name="lastName" class="form-control" [(ngModel)]="lastName"/>
+                </div>
+            </div>
+
+            <div class="flex">
+                <button class="btn btn-primary flex-auto" [disabled]="profileForm.invalid || !isChanged() || loading">
+                    <span *ngIf="!loading">Save Changes</span>
+                    <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 
-<div *ngIf="error" class="callout alert mt2">
+<alert type="danger mx2 mb2" *ngIf="error">
     Error occurred while saving profile
-</div>
+</alert>
