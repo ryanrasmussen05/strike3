@@ -25,7 +25,10 @@ export class SuperuserPageComponent extends AdminPageComponent implements OnInit
 
         this.gameDataSubscription = this.store.pipe(select(GameDataStateSelector)).subscribe((gameDataState: GameDataState) => {
             this.schedule = gameDataState.schedule;
-            console.log(this.schedule);
+
+            if (this.schedule) {
+                console.log(this.schedule);
+            }
         });
     }
 

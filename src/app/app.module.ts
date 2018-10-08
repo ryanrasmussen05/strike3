@@ -44,7 +44,7 @@ import { SuperuserPageComponent } from './components/pages/superuserPage/superus
 import { AngularFireStorageModule } from 'angularfire2/storage';
 
 export function logger(reducer: ActionReducer<AppState>): ActionReducer<AppState> {
-    return storeLogger()(reducer);
+    return storeLogger({ collapsed: true })(reducer);
 }
 
 export const metaReducers = environment.production ? [] : [
