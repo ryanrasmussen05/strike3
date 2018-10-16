@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TieBreaker } from '../../models/tie.breaker';
 import { PickStatus } from '../../models/pick';
@@ -23,7 +23,7 @@ import { ViewTieBreakersComponent } from '../viewTieBreakers/view.tie.breakers.c
     templateUrl: './game.table.component.html',
     styleUrls: ['./game.table.component.scss']
 })
-export class GameTableComponent implements OnInit, OnDestroy {
+export class GameTableComponent implements OnInit, OnDestroy, OnChanges {
     @Input('admin') admin: boolean;
 
     // strictly for attaching non-admin view game table to emails
@@ -59,13 +59,7 @@ export class GameTableComponent implements OnInit, OnDestroy {
         });
 
         this.contextSubscription = this.store.pipe(select(ContextStrike3GameSelector)).subscribe((strike3Game: Strike3Game) => {
-            this.strike3Game = this.overrideContextGame ? this.overrideContextGame : strike3Game;
-            this.weekNumber = this.strike3Game.week.weekNumber;
-            this.isWeekPublic = this.strike3Game.week.public;
-            this.weekChange();
-            this._setTieBreaker();
-            this._setTieBreakerPick();
-            this._setPreviousTieBreakers();
+            this._setup(strike3Game);
         });
 
         this.gameDataSubscription = this.store.pipe(select(GameDataStateSelector)).subscribe((gameDataState: GameDataState) => {
@@ -77,6 +71,12 @@ export class GameTableComponent implements OnInit, OnDestroy {
         this.userSubscription.unsubscribe();
         this.contextSubscription.unsubscribe();
         this.gameDataSubscription.unsubscribe();
+    }
+
+    ngOnChanges() {
+        if (this.strike3Game) {
+            this._setup(this.strike3Game);
+        }
     }
 
     openPickModal(strike3Pick: Strike3Pick) {
@@ -112,6 +112,16 @@ export class GameTableComponent implements OnInit, OnDestroy {
         };
 
         this.store.dispatch(new UpdateWeek(week));
+    }
+
+    private _setup(strike3Game: Strike3Game) {
+        this.strike3Game = this.overrideContextGame ? this.overrideContextGame : strike3Game;
+        this.weekNumber = this.strike3Game.week.weekNumber;
+        this.isWeekPublic = this.strike3Game.week.public;
+        this.weekChange();
+        this._setTieBreaker();
+        this._setTieBreakerPick();
+        this._setPreviousTieBreakers();
     }
 
     private _getTieBreakerForWeek(week: number) {
