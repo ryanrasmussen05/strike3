@@ -3,7 +3,7 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-        "strike3-new": {
+        "strike3": {
             "root": "",
             "sourceRoot": "src",
             "projectType": "application",
@@ -29,8 +29,7 @@
                             "node_modules/moment/min/moment.min.js",
                             "node_modules/clone/clone.js",
                             "node_modules/moment-timezone/builds/moment-timezone-with-data.min.js",
-                            "src/vendor/html2canvas.min.js",
-                            "src/vendor/download.js"
+                            "src/vendor/html2canvas.min.js"
                         ]
                     },
                     "configurations": {
@@ -56,18 +55,18 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "strike3-new:build"
+                        "browserTarget": "strike3:build"
                     },
                     "configurations": {
                         "production": {
-                            "browserTarget": "strike3-new:build:production"
+                            "browserTarget": "strike3:build:production"
                         }
                     }
                 },
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "strike3-new:build"
+                        "browserTarget": "strike3:build"
                     }
                 },
                 "lint": {
@@ -84,5 +83,5 @@
             }
         }
     },
-    "defaultProject": "strike3-new"
+    "defaultProject": "strike3"
 }

@@ -8,7 +8,6 @@
         <tab heading="Spreadsheet">
             <div *ngIf="superuser" class="mt2">
                 <button class="btn btn-primary mr1" (click)="updateResults()" title="Automatically set win/loss/tie (only works day after games)">Auto-Update Results</button>
-                <button class="btn btn-primary" (click)="screenshot()">Download Spreadsheet Image</button>
                 <app-game-table [admin]="true" class="mb4 mt1"></app-game-table>
             </div>
         </tab>

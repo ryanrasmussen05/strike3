@@ -11,9 +11,6 @@ import { CanUserAccessAdmin, CanUserAccessSuperuser } from '../../../util/game.d
 import { UpdateResults } from '../../../actions/game.data.actions';
 import { GameData } from '../../../models/game.data';
 
-declare const html2canvas: any;
-declare const download: any;
-
 @Component({
     templateUrl: './admin.page.component.html',
     styleUrls: ['./admin.page.component.scss']
@@ -50,20 +47,5 @@ export class AdminPageComponent implements OnInit, OnDestroy {
 
     updateResults() {
         this.store.dispatch(new UpdateResults(this.gameData));
-    }
-
-    screenshot() {
-        const config = {
-            backgroundColor: '#ffffff',
-            width: 1100,
-            onclone: (document) => {
-                // makes local clone, in that clone make sure the table is visible
-                document.getElementById('game-table-results').style.backgroundColor = 'white';
-            }
-        };
-
-        html2canvas(document.getElementById('game-table-results'), config).then((canvas) => {
-            download(canvas.toDataURL('image/png'), 'strike3.png', 'image/png');
-        });
     }
 }
