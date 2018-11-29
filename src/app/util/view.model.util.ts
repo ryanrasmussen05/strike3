@@ -177,15 +177,6 @@ function GetRankForPlayer(playerToRank: Strike3Player, strike3Game: Strike3Game)
     strike3Game.players.forEach((player: Strike3Player) => {
         if (player.uid !== playerToRank.uid) {
 
-            // skip everything if player to rank has less strikes
-            if (playerToRank.strikes < player.strikes) return;
-
-            // if player has less strikes
-            if (player.strikes < playerToRank.strikes) {
-                playersAhead.push(player);
-                return;
-            }
-
             const playerToRankEliminationWeek = GetEliminationWeek(playerToRank);
             const playerEliminationWeek = GetEliminationWeek(player);
 
@@ -195,14 +186,36 @@ function GetRankForPlayer(playerToRank: Strike3Player, strike3Game: Strike3Game)
                 return;
             }
 
-            // if players eliminated same week, go to tie breaker
+            // if player was eliminated sooner
+            if (playerToRankEliminationWeek > playerEliminationWeek) {
+                return;
+            }
+
+            /*
+             * Players Have Same Elimination Week At This Point
+             */
+
+            // if player to rank has less strikes, other player is not ahead
+            if (playerToRank.strikes < player.strikes) return;
+
+            // if player to rank has more strikes, other player is ahead
+            if (player.strikes < playerToRank.strikes) {
+                playersAhead.push(player);
+                return;
+            }
+
+            /*
+             *  Players Have Same Elimination Week And Same Number Of Strikes At This Point
+             */
+
+            // If players are both struck out, check tie breaker for elimination week
             if ((playerToRankEliminationWeek === playerEliminationWeek) && playerEliminationWeek <= 17) {
                 if (DidOtherPlayerWinTieBreaker(playerToRank, player, strike3Game, playerEliminationWeek)) {
                     playersAhead.push(player);
                 }
             }
 
-            // if both players not yet eliminated
+            // If both players are not struck out, use tie breaker for week 17
             if ((playerToRankEliminationWeek === playerEliminationWeek) && playerEliminationWeek > 17) {
                 // use final tie breaker
                 if (DidOtherPlayerWinTieBreaker(playerToRank, player, strike3Game, 17)) {
